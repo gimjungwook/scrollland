@@ -100,16 +100,23 @@ async function enhanceLesson() {
   let loading = false; let complete = false;
   const load = async () => {
     if (loading || complete) return;
-    loading = true; retry.disabled = true;
+    loading = true; retry.setAttribute('aria-disabled', 'true');
     if (!notice.hidden) message.textContent = '답변 확인과 단계 강조를 다시 불러오고 있습니다. 본문과 모든 해설은 계속 읽을 수 있습니다.';
     try {
       const lesson = await loadVerifiedLesson(lessonSource, { slug: lessonSlug, sectionCount: Number(sectionCount), fingerprint: contentFingerprint });
-      enhanceQuiz(lesson); enhanceTraces(); complete = true; notice.hidden = true; retry.hidden = true;
+      enhanceQuiz(lesson); enhanceTraces(); complete = true;
+      if (document.activeElement === retry) {
+        notice.hidden = false;
+        message.textContent = '답변 확인과 단계 강조를 사용할 수 있습니다.';
+        message.tabIndex = -1;
+        message.focus({ preventScroll: true });
+      } else notice.hidden = true;
+      retry.hidden = true;
       enhanceMotion();
     } catch {
       notice.hidden = false; retry.hidden = false;
       message.textContent = '선택 확인 문항의 답변 확인과 실행 흐름 살펴보기의 단계 강조를 불러오지 못했습니다. 본문·예제·결과·모든 해설은 계속 읽을 수 있습니다.';
-    } finally { loading = false; retry.disabled = false; }
+    } finally { loading = false; retry.removeAttribute('aria-disabled'); }
   };
   retry.addEventListener('click', load); await load();
 }
