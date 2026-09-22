@@ -25,7 +25,7 @@ npm run validate
 
 - `curriculum.json`: 코스 순서와 레슨 식별자.
 - `lessons/<slug>.json`: 레슨 설명·독립 예제·출력·도식·확인 문항 원본.
-- `scripts/generate.mjs`: 구조와 참조를 검증하고 `index.html`, `learn/<slug>.html`을 생성합니다.
+- `scripts/generate.mjs`: 구조와 참조를 검증하고 `index.html`, `learn/<slug>.html`, `404.html`을 생성합니다.
 - `scripts/validate-examples.mjs`: 각 예제를 4초 제한으로 별도 임시 폴더에서 실행합니다. `stdin`과 `files` 입력 자료를 준비하고 표준 출력을 대조합니다. 자체 모듈 예제를 위해 이 임시 폴더만 모듈 검색 경로의 앞에 추가합니다.
 - `lib/contract.js`: 생성기와 브라우저가 함께 쓰는 데이터 계약·내용 지문·검색 규칙.
 - `app.js`, `styles.css`: 선택 기능과 화면 표현.
@@ -48,4 +48,4 @@ npm run validate
 
 ## 확인 범위
 
-이 자료는 학습 자료 초판입니다. 자동 검사는 구조·연결·출력을 확인하며 설명의 교육적 타당성이나 학습 효과를 입증하지 않습니다. 실제 수행한 검증 결과는 `docs/verification.md`에 기록합니다. 내용 검토·학생 학습 효과 검증·실제 기기 검증은 수행한 증거가 있을 때만 완료로 기록합니다.
+이 자료는 학습 자료 초판입니다. 자동 검사는 구조·연결·출력을 확인하며 설명의 교육적 타당성이나 학습 효과를 입증하지 않습니다. 실제 수행한 결과와 미검증 범위는 [구현 검증 기록](docs/verification.md)에 기록합니다. 내용 검토·학생 학습 효과 검증·실제 기기 검증은 수행한 증거가 있을 때만 완료로 기록합니다.
