@@ -5,7 +5,10 @@
   "problem": "기록을 수량 기준으로 정렬하려는데 딕셔너리 자체는 바로 비교할 수 없습니다.",
   "goal": "lambda의 입력·표현식과 정렬 기준 함수의 역할을 설명합니다.",
   "prerequisites": [
-    "iterators-generators"
+    "list-transform",
+    "nested-data",
+    "comprehensions",
+    "functions"
   ],
   "topics": [
     "lambda",

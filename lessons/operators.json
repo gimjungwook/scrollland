@@ -5,7 +5,9 @@
   "problem": "비슷하게 생긴 연산 기호 때문에 조건이 의도와 다르게 동작합니다.",
   "goal": "값 비교·동일성·포함 여부·비트 연산을 구별합니다.",
   "prerequisites": [
-    "branching"
+    "variables",
+    "numbers",
+    "booleans"
   ],
   "topics": [
     "연산자",

@@ -5,7 +5,7 @@
   "problem": "날짜를 문자열로 더했더니 다음 날짜가 계산되지 않습니다.",
   "goal": "date·timedelta·datetime의 역할을 구별하고 날짜 차이를 계산합니다.",
   "prerequisites": [
-    "environments"
+    "modules"
   ],
   "topics": [
     "날짜",

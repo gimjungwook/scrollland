@@ -5,7 +5,7 @@
   "problem": "같은 합계 계산을 여러 곳에 복사하면 수정할 곳이 늘어납니다.",
   "goal": "함수 정의·호출·인자·반환값을 연결해 설명합니다.",
   "prerequisites": [
-    "comprehensions"
+    "variables"
   ],
   "topics": [
     "함수",

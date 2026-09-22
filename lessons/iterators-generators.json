@@ -5,7 +5,9 @@
   "problem": "전체 결과를 한 번에 만들지 않고 필요한 만큼 차례대로 처리하고 싶습니다.",
   "goal": "반복 가능한 객체·반복자·제너레이터의 소비와 재개를 설명합니다.",
   "prerequisites": [
-    "scope"
+    "for-range",
+    "comprehensions",
+    "functions"
   ],
   "topics": [
     "반복 가능한 객체",

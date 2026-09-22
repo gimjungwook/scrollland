@@ -5,8 +5,9 @@
   "problem": "메모에서 관찰 코드만 찾고 코드 전체의 형식도 검사해야 합니다.",
   "goal": "정규 표현식의 검색·전체 일치·추출·치환을 구별합니다.",
   "prerequisites": [
-    "math",
-    "text-tools"
+    "text-tools",
+    "branching",
+    "modules"
   ],
   "topics": [
     "정규 표현식",

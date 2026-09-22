@@ -5,7 +5,8 @@
   "problem": "보고서에서만 쓰는 상태 자료형을 보고서와 함께 찾기 쉽게 묶고 싶습니다.",
   "goal": "중첩 클래스의 이름 경로와 바깥 인스턴스 연결의 한계를 설명합니다.",
   "prerequisites": [
-    "special-methods"
+    "objects",
+    "methods"
   ],
   "topics": [
     "중첩 클래스",

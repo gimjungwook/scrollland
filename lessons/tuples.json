@@ -5,7 +5,7 @@
   "problem": "좌표처럼 항목 수와 순서의 의미가 정해진 값을 함께 전달해야 합니다.",
   "goal": "튜플의 불변성과 언패킹을 설명하고 항목을 꺼냅니다.",
   "prerequisites": [
-    "list-transform"
+    "lists"
   ],
   "topics": [
     "튜플",

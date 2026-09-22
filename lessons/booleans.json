@@ -5,7 +5,7 @@
   "problem": "수량이 기준을 넘었는지와 기록이 비어 있는지 판단해야 합니다.",
   "goal": "비교 결과와 논리 연산을 bool 값으로 설명합니다.",
   "prerequisites": [
-    "input-output"
+    "data-types"
   ],
   "topics": [
     "불리언",

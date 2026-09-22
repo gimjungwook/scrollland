@@ -5,7 +5,7 @@
   "problem": "여러 함수의 실행 시작과 종료를 알리는 코드를 반복해서 쓰고 있습니다.",
   "goal": "함수를 감싸는 함수와 @ 표기의 관계를 설명합니다.",
   "prerequisites": [
-    "recursion",
+    "arguments",
     "scope"
   ],
   "topics": [

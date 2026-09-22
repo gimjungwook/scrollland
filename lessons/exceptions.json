@@ -5,8 +5,9 @@
   "problem": "숫자가 아닌 입력 하나 때문에 전체 기록 처리가 멈춥니다.",
   "goal": "예외 종류·처리 범위·정상 경로·정리 작업을 구별합니다.",
   "prerequisites": [
-    "nested-classes",
-    "input-output"
+    "data-types",
+    "branching",
+    "functions"
   ],
   "topics": [
     "예외",

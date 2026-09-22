@@ -2,7 +2,7 @@
   "slug": "numbers",
   "courseId": "values",
   "title": "수량과 나머지 계산하기",
-  "problem": "17개를 네 개씩 포장하고 남은 수량과 평균을 구해야 합니다.",
+  "problem": "17개를 네 개씩 포장했을 때 완성된 포장 수와 남은 수량을 구하고 싶습니다.",
   "goal": "나눗셈의 종류를 구별하고 소수의 표시와 정확성을 설명합니다.",
   "prerequisites": [
     "data-types"

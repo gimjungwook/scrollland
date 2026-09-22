@@ -5,7 +5,8 @@
   "problem": "관찰 장소를 순서대로 기록하고 잘못 적은 항목을 고쳐야 합니다.",
   "goal": "리스트의 항목을 읽고 추가·수정·삭제한 결과를 설명합니다.",
   "prerequisites": [
-    "operators"
+    "variables",
+    "strings"
   ],
   "topics": [
     "리스트",

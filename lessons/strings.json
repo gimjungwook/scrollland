@@ -5,7 +5,7 @@
   "problem": "기록 코드에서 날짜 부분만 꺼내고 읽기 좋은 안내문을 만들고 싶습니다.",
   "goal": "문자열의 위치·부분 범위·서식을 구분해 사용합니다.",
   "prerequisites": [
-    "numbers"
+    "data-types"
   ],
   "topics": [
     "문자열",

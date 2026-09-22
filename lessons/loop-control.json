@@ -5,6 +5,8 @@
   "problem": "잘못된 기록은 제외하고 찾던 항목을 발견하면 검색을 끝내고 싶습니다.",
   "goal": "continue·break·반복문의 else가 실행되는 조건을 구별합니다.",
   "prerequisites": [
+    "branching",
+    "for-range",
     "while-loops"
   ],
   "topics": [

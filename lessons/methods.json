@@ -5,7 +5,8 @@
   "problem": "수량을 바꾸는 규칙을 코드 여러 곳에서 반복하지 않으려 합니다.",
   "goal": "인스턴스·클래스·정적 메서드의 첫 인자와 목적을 구별합니다.",
   "prerequisites": [
-    "attributes"
+    "objects",
+    "decorators"
   ],
   "topics": [
     "메서드",

@@ -5,6 +5,8 @@
   "problem": "같은 함수에서 기본 단위·선택 옵션·여러 수량을 일관되게 받고 싶습니다.",
   "goal": "위치·키워드·기본 인자와 가변 인자의 연결 방식을 설명합니다.",
   "prerequisites": [
+    "tuples",
+    "dictionaries",
     "functions"
   ],
   "topics": [

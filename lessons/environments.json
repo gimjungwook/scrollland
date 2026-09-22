@@ -5,6 +5,7 @@
   "problem": "프로젝트 A에서 설치한 패키지가 프로젝트 B와 충돌할까 걱정됩니다.",
   "goal": "인터프리터·가상 환경·pip의 역할과 실행 경계를 구별합니다.",
   "prerequisites": [
+    "run-python",
     "modules"
   ],
   "topics": [

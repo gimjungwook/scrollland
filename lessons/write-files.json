@@ -5,8 +5,7 @@
   "problem": "계산 결과를 저장해야 하지만 기존 기록을 실수로 덮거나 지우고 싶지 않습니다.",
   "goal": "생성·덮어쓰기·추가 모드와 파일·빈 폴더 삭제의 차이를 설명합니다.",
   "prerequisites": [
-    "read-files",
-    "json-data"
+    "read-files"
   ],
   "topics": [
     "파일 쓰기",

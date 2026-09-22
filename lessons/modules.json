@@ -5,7 +5,8 @@
   "problem": "다른 파일의 함수와 Python에 포함된 도구를 재사용하고 싶습니다.",
   "goal": "모듈 가져오기·자체 모듈 연결·리스트와 수치 배열의 차이를 설명합니다.",
   "prerequisites": [
-    "decorators"
+    "lists",
+    "functions"
   ],
   "topics": [
     "모듈",

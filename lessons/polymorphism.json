@@ -5,7 +5,7 @@
   "problem": "기록 종류가 늘 때마다 종류별 조건문을 계속 추가하고 있습니다.",
   "goal": "동일한 호출 계약을 여러 객체가 제공하는 다형성을 설명합니다.",
   "prerequisites": [
-    "inheritance"
+    "methods"
   ],
   "topics": [
     "다형성",

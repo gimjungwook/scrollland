@@ -5,7 +5,7 @@
   "problem": "매번 같은 기록을 다시 입력하지 않고 파일 내용을 읽고 싶습니다.",
   "goal": "경로·텍스트 인코딩·읽기 범위·자동 닫기를 설명합니다.",
   "prerequisites": [
-    "exceptions",
+    "for-range",
     "modules"
   ],
   "topics": [

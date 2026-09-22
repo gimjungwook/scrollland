@@ -5,7 +5,10 @@
   "problem": "유효한 관찰 수량만 골라 같은 단위로 바꾼 목록이 필요합니다.",
   "goal": "컴프리헨션을 반복·필터·변환의 순서로 해석합니다.",
   "prerequisites": [
-    "loop-control"
+    "branching",
+    "sets",
+    "dictionaries",
+    "for-range"
   ],
   "topics": [
     "리스트 컴프리헨션",

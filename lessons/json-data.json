@@ -5,8 +5,8 @@
   "problem": "Python 안의 기록을 다른 프로그램과 교환할 텍스트로 만들고 싶습니다.",
   "goal": "JSON 문자열과 Python 객체를 구분해 직렬화·역직렬화합니다.",
   "prerequisites": [
-    "regex",
-    "nested-data"
+    "nested-data",
+    "modules"
   ],
   "topics": [
     "JSON",

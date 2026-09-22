@@ -5,7 +5,8 @@
   "problem": "장소가 늘어날 때마다 출력 코드를 한 줄씩 더 쓰고 있습니다.",
   "goal": "for가 항목을 꺼내는 순서와 range의 끝 경계를 설명합니다.",
   "prerequisites": [
-    "nested-data"
+    "lists",
+    "tuples"
   ],
   "topics": [
     "for",

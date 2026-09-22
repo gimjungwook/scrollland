@@ -5,7 +5,9 @@
   "problem": "직접 만든 객체를 print·len·정렬·덧셈 같은 기본 도구와 함께 쓰고 싶습니다.",
   "goal": "특수 메서드가 표준 연산과 연결되는 방식을 설명합니다.",
   "prerequisites": [
-    "polymorphism"
+    "operators",
+    "list-transform",
+    "methods"
   ],
   "topics": [
     "특수 메서드",

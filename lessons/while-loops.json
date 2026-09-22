@@ -5,7 +5,8 @@
   "problem": "목표 수량에 도달하는 데 몇 번이 걸릴지 반복 전에 알 수 없습니다.",
   "goal": "while의 조건 검사와 상태 갱신으로 종료를 설명합니다.",
   "prerequisites": [
-    "for-range"
+    "booleans",
+    "operators"
   ],
   "topics": [
     "while",

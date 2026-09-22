@@ -2,10 +2,12 @@
   "slug": "recursion",
   "courseId": "reuse",
   "title": "작은 같은 문제로 나누기",
-  "problem": "큰 문제를 한 단계 작은 같은 문제의 답으로 계산할 수 있습니다.",
+  "problem": "0 이상의 정수 n이 주어졌을 때 1부터 n까지의 합을 구해야 합니다. n이 0이면 합을 0으로 정합니다.",
   "goal": "재귀의 종료 조건·축소 단계·돌아오는 반환값을 추적합니다.",
   "prerequisites": [
-    "lambda"
+    "branching",
+    "for-range",
+    "functions"
   ],
   "topics": [
     "재귀",

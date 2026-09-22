@@ -5,8 +5,8 @@
   "problem": "기본 연산만으로는 평균·거리·소수 비교의 의도가 잘 드러나지 않습니다.",
   "goal": "수학·통계·정확한 십진 계산에 알맞은 도구를 고릅니다.",
   "prerequisites": [
-    "dates",
-    "numbers"
+    "numbers",
+    "modules"
   ],
   "topics": [
     "math",

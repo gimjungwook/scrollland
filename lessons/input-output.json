@@ -5,7 +5,6 @@
   "problem": "사용자가 입력한 관찰 횟수로 합계를 계산해야 합니다.",
   "goal": "input()의 문자열 결과를 변환하고 print()로 답을 구성합니다.",
   "prerequisites": [
-    "text-tools",
     "data-types"
   ],
   "topics": [
