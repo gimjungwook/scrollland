@@ -91,5 +91,5 @@ test('example comparison preserves meaningful internal whitespace and removes on
 test('runtime has no persistence, code execution, scroll interception or analytics', async () => {
   const app = await readFile(new URL('../app.js', import.meta.url), 'utf8');
   assert(!/localStorage|sessionStorage|document\.cookie|eval\(|new Function|scrollTo\(|scrollIntoView|scroll-snap|scrub\s*:|pin\s*:/.test(app));
-  assert(app.includes('prefers-reduced-motion: reduce')); assert(app.includes("rootMargin: '-10% 0px -30% 0px'"));
+  assert(app.includes('prefers-reduced-motion: reduce'));
 });

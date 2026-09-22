@@ -30,12 +30,23 @@ function enhanceCurrentScene() {
     indicator.textContent = `${scenes.indexOf(scene) + 1} / ${scenes.length}`;
   };
   mark(scenes[0]); document.querySelector('.current-scene').hidden = false;
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => entry.isIntersecting ? visible.add(entry.target) : visible.delete(entry.target));
-    const candidates = [...visible].sort((a, b) => Math.abs(a.getBoundingClientRect().top) - Math.abs(b.getBoundingClientRect().top));
-    if (candidates.length) mark(candidates[0]);
-  }, { rootMargin: '-10% 0px -30% 0px', threshold: 0 });
-  scenes.forEach(scene => observer.observe(scene));
+  let observer; let height;
+  const observe = () => {
+    const nextHeight = document.documentElement.clientHeight;
+    if (nextHeight === height) return;
+    height = nextHeight;
+    if (observer) observer.disconnect();
+    visible.clear();
+    observer = new IntersectionObserver((entries, source) => {
+      if (source !== observer) return;
+      entries.forEach(entry => entry.isIntersecting ? visible.add(entry.target) : visible.delete(entry.target));
+      const candidates = [...visible].sort((a, b) => Math.abs(a.getBoundingClientRect().top) - Math.abs(b.getBoundingClientRect().top));
+      if (candidates.length) mark(candidates[0]);
+    }, { rootMargin: `-${height * 0.1}px 0px -${height * 0.3}px 0px`, threshold: 0 });
+    scenes.forEach(scene => observer.observe(scene));
+  };
+  observe();
+  window.addEventListener('resize', observe);
 }
 
 function enhanceQuiz(lesson) {
