@@ -1,8 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { validateLesson, validateCurriculum, fingerprint, matchesSearch } from '../lib/contract.js';
-import { loadVerifiedLesson } from '../lib/load-lesson.js';
+import { validateLesson, validateCurriculum, fingerprint } from '../lib/contract.js';
 import { renderLesson, renderIndex, renderNotFound, normalizeBasePath, escapeHTML } from '../scripts/generate.mjs';
 import { executeExample, normalizeOutput } from '../scripts/validate-examples.mjs';
 
@@ -37,12 +36,6 @@ test('curriculum order teaches prerequisites before the lessons that use them', 
   c.curriculum.courses[0].lessons.reverse();
   assert.throws(() => validateCurriculum(c.curriculum, c.lessons, { exactCounts: false }), /선행 레슨은 목차에서 먼저/);
 });
-test('search applies NFKC, case folding, trimmed whitespace and AND terms', () => {
-  const text = 'Python 리스트 값을 정리하기 list-transform';
-  assert(matchesSearch(text, '  ＰＹＴＨＯＮ  리스트 '));
-  assert(matchesSearch(text, '')); assert(matchesSearch(text, '리스트 transform'));
-  assert(!matchesSearch(text, '리스트 함수'));
-});
 test('static lesson includes full code, output, diagrams, trace and answer explanations without JavaScript', () => {
   const c = content(); c.lessons.example.sections[0].body[0] = '<script>alert(1)</script>';
   const html = renderLesson(c.lessons.example, c);
@@ -51,15 +44,19 @@ test('static lesson includes full code, output, diagrams, trace and answer expla
   assert(html.includes('data-content-fingerprint')); assert(html.includes('정답: 2'));
   assert(html.includes('실행 전')); assert(html.includes('x는 2를 가리킵니다.')); assert(html.includes('print(2)'));
   assert(!html.includes('이전 레슨')); assert(!html.includes('다음 레슨 →')); assert(html.includes('전체 목차 보기'));
-  assert(html.includes('href="#section-1"')); assert(html.includes('href="../styles.css"'));
-  const index = renderIndex(c); assert(index.includes('href="learn/example.html"')); assert(index.includes('data-search=')); assert(index.includes('class="search-form" role="search" hidden'));
+  assert(html.includes('id="example-scene-1"')); assert.match(html, /href="\.\.\/styles\.css(?:\?[^"\s]*)?"/);
+  const index = renderIndex(c); assert(index.includes('href="#lesson-example"'));
+  assert(index.includes('id="lesson-example"'));
+  assert(!/<(?:button|input|select|textarea)\b/.test(index), 'the continuous learning path must not require form controls');
   assert.equal(escapeHTML('"<>&'), '&quot;&lt;&gt;&amp;');
 });
 test('previous and next links follow the flattened course order and include destination titles', () => {
   const c = content(); const second = { ...fixture(), slug: 'second', title: '두 번째 문제', courseId: 'tools' };
   c.curriculum.courses.push({ id: 'tools', title: '도구', question: '도구는?', lessons: ['second'] }); c.lessons.second = second; c.order.push('second');
-  assert(renderLesson(c.lessons.example, c).includes('href="second.html"><span>다음 레슨 →</span><strong>두 번째 문제'));
-  assert(renderLesson(second, c).includes('href="example.html"><span>← 이전 레슨</span><strong>예제 읽기'));
+  assert(renderLesson(c.lessons.example, c).includes('href="../index.html#lesson-second">이어서 · 두 번째 문제'));
+  assert(renderLesson(second, c).includes('href="example.html">이전 · 예제 읽기'));
+  const index = renderIndex(c);
+  assert(index.indexOf('id="lesson-example"') < index.indexOf('id="lesson-second"'), 'continuous lessons must follow the same flattened order');
 });
 test('missing-page navigation reaches the configured catalog without JavaScript', () => {
   assert(renderNotFound().includes('href="/index.html"'));
@@ -67,18 +64,6 @@ test('missing-page navigation reaches the configured catalog without JavaScript'
   assert(nested.includes('href="/scrollland/index.html"'));
   assert(!nested.includes('<script'));
   for (const value of ['scrollland', '//other/', '/../', '/<script>/', '/scrollland']) assert.throws(() => normalizeBasePath(value));
-});
-test('optional data loading validates identity before enhancing and can recover after failure', async () => {
-  const l = fixture(); const expected = { slug: l.slug, sectionCount: 3, fingerprint: fingerprint(l) };
-  const ok = async () => ({ ok: true, json: async () => l });
-  assert.deepEqual(await loadVerifiedLesson('example.json', expected, { fetchImpl: ok }), l);
-  for (const fetchImpl of [async () => { throw new Error('network'); }, async () => ({ ok: false, status: 404 }), async () => ({ ok: true, json: async () => { throw new SyntaxError('JSON'); } }), async () => ({ ok: true, json: async () => ({}) }), async () => ({ ok: true, json: async () => ({ ...l, title: 'changed' }) })]) await assert.rejects(loadVerifiedLesson('example.json', expected, { fetchImpl }));
-  await assert.rejects(loadVerifiedLesson('example.json', { ...expected, slug: 'other' }, { fetchImpl: ok }));
-  assert.equal((await loadVerifiedLesson('example.json', expected, { fetchImpl: ok })).slug, 'example');
-});
-test('optional data requests abort at their timeout', async () => {
-  const fetchImpl = async (_, { signal }) => new Promise((_, reject) => signal.addEventListener('abort', () => reject(new Error('aborted')), { once: true }));
-  await assert.rejects(loadVerifiedLesson('slow.json', {}, { fetchImpl, timeoutMs: 15 }), /aborted/);
 });
 test('example comparison preserves meaningful internal whitespace and removes one final newline', async () => {
   assert.equal(normalizeOutput('a\r\n\r\n'), 'a\n');
@@ -88,8 +73,8 @@ test('example comparison preserves meaningful internal whitespace and removes on
   await assert.rejects(executeExample({ code: 'print(2)', output: '3' }), /출력 불일치/);
   await assert.rejects(executeExample({ code: 'while True: pass', output: '' }, { timeout: 50 }), /제한/);
 });
-test('runtime has no persistence, code execution, scroll interception or analytics', async () => {
+test('runtime has no persistence, code execution, wheel interception or arbitrary page scrolling', async () => {
   const app = await readFile(new URL('../app.js', import.meta.url), 'utf8');
-  assert(!/localStorage|sessionStorage|document\.cookie|eval\(|new Function|scrollTo\(|scrollIntoView|scroll-snap|scrub\s*:|pin\s*:/.test(app));
+  assert(!/localStorage|sessionStorage|document\.cookie|eval\(|new Function|scrollTo\(|preventDefault\(/.test(app));
   assert(app.includes('prefers-reduced-motion: reduce'));
 });
