@@ -1,0 +1,108 @@
+{
+  "title": "ScrollLand",
+  "subtitle": "설명과 코드, 값의 변화를 함께 읽는 Python",
+  "language": "ko",
+  "pythonVersion": "3.10 이상",
+  "courses": [
+    {
+      "id": "values",
+      "title": "값으로 생각하기",
+      "question": "계산한 값에 이름을 붙이고 설명할 수 있을까요?",
+      "lessons": [
+        "run-python",
+        "variables",
+        "data-types",
+        "numbers",
+        "strings"
+      ]
+    },
+    {
+      "id": "decisions",
+      "title": "입력을 판단으로 바꾸기",
+      "question": "입력한 글을 읽고 상황에 맞는 답을 고를 수 있을까요?",
+      "lessons": [
+        "text-tools",
+        "input-output",
+        "booleans",
+        "branching",
+        "operators"
+      ]
+    },
+    {
+      "id": "collections",
+      "title": "여러 값을 정리하기",
+      "question": "여러 기록을 필요한 순서와 기준으로 찾을 수 있을까요?",
+      "lessons": [
+        "lists",
+        "list-transform",
+        "tuples",
+        "sets",
+        "dictionaries",
+        "nested-data"
+      ]
+    },
+    {
+      "id": "repetition",
+      "title": "반복을 맡기기",
+      "question": "같은 작업을 값마다 반복하고 멈출 때를 정할 수 있을까요?",
+      "lessons": [
+        "for-range",
+        "while-loops",
+        "loop-control",
+        "comprehensions"
+      ]
+    },
+    {
+      "id": "reuse",
+      "title": "해결 방법을 재사용하기",
+      "question": "한 번 작성한 계산을 다른 입력에도 쓸 수 있을까요?",
+      "lessons": [
+        "functions",
+        "arguments",
+        "scope",
+        "iterators-generators",
+        "lambda",
+        "recursion",
+        "decorators"
+      ]
+    },
+    {
+      "id": "tools",
+      "title": "외부 도구와 데이터 연결하기",
+      "question": "검증된 도구로 날짜와 텍스트 데이터를 처리할 수 있을까요?",
+      "lessons": [
+        "modules",
+        "environments",
+        "dates",
+        "math",
+        "regex",
+        "json-data"
+      ]
+    },
+    {
+      "id": "objects",
+      "title": "함께 움직이는 데이터 만들기",
+      "question": "데이터와 그 데이터를 바꾸는 규칙을 한곳에 둘 수 있을까요?",
+      "lessons": [
+        "objects",
+        "attributes",
+        "methods",
+        "inheritance",
+        "polymorphism",
+        "special-methods",
+        "nested-classes"
+      ]
+    },
+    {
+      "id": "persistence",
+      "title": "결과를 안전하게 남기기",
+      "question": "잘못된 입력을 처리하고 다음 실행에 쓸 결과를 저장할 수 있을까요?",
+      "lessons": [
+        "exceptions",
+        "read-files",
+        "write-files",
+        "final-project"
+      ]
+    }
+  ]
+}

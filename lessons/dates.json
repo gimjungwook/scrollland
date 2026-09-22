@@ -1,0 +1,151 @@
+{
+  "slug": "dates",
+  "courseId": "tools",
+  "title": "날짜를 값으로 계산하기",
+  "problem": "날짜를 문자열로 더했더니 다음 날짜가 계산되지 않습니다.",
+  "goal": "date·timedelta·datetime의 역할을 구별하고 날짜 차이를 계산합니다.",
+  "prerequisites": [
+    "environments"
+  ],
+  "topics": [
+    "날짜",
+    "date",
+    "timedelta",
+    "datetime",
+    "시간대",
+    "isoformat",
+    "strptime",
+    "strftime"
+  ],
+  "takeaway": "날짜 계산은 날짜 객체로 하고, 입력과 출력 경계에서 문자열로 바꿉니다.",
+  "sections": [
+    {
+      "title": "달력 날짜를 객체로 만들기",
+      "body": [
+        "datetime 모듈의 date는 연·월·일을 나타냅니다. date(2026, 9, 20)처럼 만들면 달력 규칙에 맞는지 확인하며, 존재하지 않는 날짜에는 오류를 냅니다.",
+        "fromisoformat()은 YYYY-MM-DD 형식의 문자열을 날짜로 읽습니다. isoformat()은 같은 형식의 문자열을 만듭니다. 날짜를 그냥 이어 붙이지 않고 객체로 바꾸는 것이 계산의 출발점입니다."
+      ],
+      "code": "from datetime import date\n\nstart = date(2026, 9, 20)\nend = date.fromisoformat(\"2026-09-23\")\nprint(start.isoformat())\nprint(end > start)",
+      "output": "2026-09-20\nTrue",
+      "diagram": {
+        "type": "pipeline",
+        "nodes": [
+          {
+            "label": "문자열 입력",
+            "value": "2026-09-23"
+          },
+          {
+            "label": "날짜 객체",
+            "value": "2026년 9월 23일"
+          }
+        ],
+        "caption": "문자열 입력: 2026-09-23 · 날짜 객체: 2026년 9월 23일"
+      },
+      "trace": [
+        {
+          "label": "파싱",
+          "state": "형식에 맞는 문자열을 날짜로 읽습니다."
+        },
+        {
+          "label": "비교",
+          "state": "날짜 객체끼리 선후 관계를 비교합니다."
+        }
+      ]
+    },
+    {
+      "title": "기간을 더하고 날짜를 빼기",
+      "body": [
+        "timedelta는 두 시점 사이의 기간을 나타냅니다. 날짜에 timedelta(days=3)을 더하면 달력 경계를 넘어도 올바른 날짜를 계산합니다.",
+        "날짜에서 날짜를 빼면 timedelta가 됩니다. days로 일수를 읽을 수 있습니다. 아래에서는 월말에서 사흘 뒤가 다음 달이 되는 것을 확인합니다."
+      ],
+      "code": "from datetime import date, timedelta\n\nstart = date(2026, 9, 29)\nend = start + timedelta(days=3)\nprint(end.isoformat())\nprint((end - start).days)",
+      "output": "2026-10-02\n3",
+      "diagram": {
+        "type": "timeline",
+        "nodes": [
+          {
+            "label": "시작 날짜",
+            "value": "2026-09-29"
+          },
+          {
+            "label": "기간",
+            "value": "3일"
+          },
+          {
+            "label": "계산 결과",
+            "value": "2026-10-02"
+          }
+        ],
+        "caption": "시작 날짜: 2026-09-29 · 기간: 3일 · 계산 결과: 2026-10-02"
+      },
+      "trace": [
+        {
+          "label": "기간 더하기",
+          "state": "월말을 지나 다음 달로 넘어갑니다."
+        },
+        {
+          "label": "차이 계산",
+          "state": "결과 날짜에서 시작을 빼면 3일입니다."
+        }
+      ]
+    },
+    {
+      "title": "시각과 시간대를 명시하기",
+      "body": [
+        "datetime은 날짜와 시각을 함께 나타냅니다. strptime()은 지정 서식의 문자열을 읽고 strftime()은 지정 서식으로 표시합니다. %H는 24시간 기준 시, %M은 분입니다.",
+        "시간대는 지역에 따른 시각 기준입니다. 서로 다른 지역의 실제 순간을 비교하려면 UTC 같은 기준을 명시해야 합니다. 아래는 이미 UTC라고 정한 입력에만 timezone.utc를 붙이며, 다른 지역 시각을 UTC로 변환하는 예제는 아닙니다."
+      ],
+      "code": "from datetime import datetime, timezone\n\ntext = \"2026-09-23 09:30\"\nmoment = datetime.strptime(text, \"%Y-%m-%d %H:%M\").replace(tzinfo=timezone.utc)\nprint(moment.strftime(\"%H:%M\"))\nprint(moment.isoformat())",
+      "output": "09:30\n2026-09-23T09:30:00+00:00",
+      "diagram": {
+        "type": "pipeline",
+        "nodes": [
+          {
+            "label": "정한 입력 기준",
+            "value": "UTC의 2026-09-23 09:30"
+          },
+          {
+            "label": "표준 표시",
+            "value": "2026-09-23T09:30:00+00:00"
+          }
+        ],
+        "caption": "정한 입력 기준: UTC의 2026-09-23 09:30 · 표준 표시: 2026-09-23T09:30:00+00:00"
+      },
+      "trace": [
+        {
+          "label": "문자열 읽기",
+          "state": "연월일·시·분을 지정 형식으로 읽습니다."
+        },
+        {
+          "label": "기준 표시",
+          "state": "UTC 기준임을 결과 문자열에 남깁니다."
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "question": "date 객체에 사흘을 더하는 올바른 방법은 무엇인가요?",
+    "options": [
+      {
+        "text": "날짜 문자열 뒤에 \"3\"을 붙입니다.",
+        "correct": false,
+        "feedback": "문자열 연결은 달력 날짜를 계산하지 않습니다."
+      },
+      {
+        "text": "date 객체에 timedelta(days=3)을 더합니다.",
+        "correct": true,
+        "feedback": "timedelta가 기간을 나타내며 날짜 연산이 달력 경계를 처리합니다."
+      },
+      {
+        "text": "date 객체의 day에 직접 3을 더해 대입합니다.",
+        "correct": false,
+        "feedback": "date는 불변 객체이며 월 경계도 별도로 처리해야 하므로 날짜 연산을 사용합니다."
+      }
+    ]
+  },
+  "sourceUrls": [
+    "https://docs.python.org/3/library/datetime.html#date-objects",
+    "https://docs.python.org/3/library/datetime.html#timedelta-objects",
+    "https://docs.python.org/3/library/datetime.html#datetime-objects"
+  ]
+}

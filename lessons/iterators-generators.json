@@ -1,0 +1,170 @@
+{
+  "slug": "iterators-generators",
+  "courseId": "reuse",
+  "title": "필요한 값부터 하나씩 만들기",
+  "problem": "전체 결과를 한 번에 만들지 않고 필요한 만큼 차례대로 처리하고 싶습니다.",
+  "goal": "반복 가능한 객체·반복자·제너레이터의 소비와 재개를 설명합니다.",
+  "prerequisites": [
+    "scope"
+  ],
+  "topics": [
+    "반복 가능한 객체",
+    "반복자",
+    "iter",
+    "next",
+    "제너레이터",
+    "yield",
+    "제너레이터 식"
+  ],
+  "takeaway": "반복자는 다음 항목을 기억하고, 제너레이터는 멈춘 위치에서 다시 값을 만듭니다.",
+  "sections": [
+    {
+      "title": "다음 항목을 꺼내는 대상",
+      "body": [
+        "반복 가능한 객체는 for가 항목을 받을 수 있는 대상입니다. iter()는 그 대상에서 다음 항목의 위치를 기억하는 반복자를 만듭니다. next()로 항목을 하나씩 꺼냅니다.",
+        "모두 소비한 반복자는 처음으로 자동 돌아가지 않습니다. next()의 두 번째 인자는 끝났을 때 돌려줄 기본값입니다. 기본값이 없으면 StopIteration이라는 종료 신호가 나고 for는 이를 정상 종료로 처리합니다."
+      ],
+      "code": "cursor = iter([4, 2])\nprint(next(cursor))\nprint(next(cursor))\nprint(next(cursor, \"끝\"))",
+      "output": "4\n2\n끝",
+      "diagram": {
+        "type": "timeline",
+        "nodes": [
+          {
+            "label": "처음 위치",
+            "value": "4를 꺼낼 차례"
+          },
+          {
+            "label": "다음 위치",
+            "value": "2를 꺼낼 차례"
+          },
+          {
+            "label": "소비 완료",
+            "value": "기본값 끝"
+          }
+        ],
+        "caption": "처음 위치: 4를 꺼낼 차례 · 다음 위치: 2를 꺼낼 차례 · 소비 완료: 기본값 끝"
+      },
+      "trace": [
+        {
+          "label": "첫 next",
+          "state": "4를 받고 위치가 이동합니다."
+        },
+        {
+          "label": "둘째 next",
+          "state": "2를 받고 항목이 없어집니다."
+        },
+        {
+          "label": "셋째 next",
+          "state": "종료 기본값을 받습니다."
+        }
+      ]
+    },
+    {
+      "title": "yield에서 멈추고 재개하기",
+      "body": [
+        "제너레이터는 값을 필요할 때 만드는 반복자의 한 종류입니다. yield가 있는 함수를 호출하면 본문을 바로 끝까지 실행하지 않고 제너레이터 객체를 돌려줍니다.",
+        "next()가 요청될 때 본문을 진행하고 yield에서 값 하나를 내보내며 멈춥니다. 다음 요청은 멈춘 다음 줄에서 이어집니다. return이나 본문 끝은 제너레이터를 종료합니다."
+      ],
+      "code": "def milestones():\n    yield 2\n    yield 5\n    yield 9\n\nstream = milestones()\nprint(next(stream))\nprint(list(stream))",
+      "output": "2\n[5, 9]",
+      "diagram": {
+        "type": "timeline",
+        "nodes": [
+          {
+            "label": "첫 요청",
+            "value": "2 반환 뒤 멈춤"
+          },
+          {
+            "label": "남은 요청",
+            "value": "5와 9 반환"
+          },
+          {
+            "label": "종료",
+            "value": "본문 끝 도달"
+          }
+        ],
+        "caption": "첫 요청: 2 반환 뒤 멈춤 · 남은 요청: 5와 9 반환 · 종료: 본문 끝 도달"
+      },
+      "trace": [
+        {
+          "label": "객체 생성",
+          "state": "아직 yield를 실행하지 않았습니다."
+        },
+        {
+          "label": "next 실행",
+          "state": "첫 yield가 2를 내보냅니다."
+        },
+        {
+          "label": "list 실행",
+          "state": "남아 있는 5와 9를 소비합니다."
+        }
+      ]
+    },
+    {
+      "title": "짧은 제너레이터 식 쓰기",
+      "body": [
+        "괄호 안의 (값 식 for ...)는 제너레이터 식입니다. 리스트 컴프리헨션과 달리 모든 결과를 미리 리스트에 모으지 않습니다. sum()처럼 항목을 순서대로 소비하는 함수에 전달할 수 있습니다.",
+        "아래 stream은 sum()을 한 번 계산하면서 끝까지 소비됩니다. 다시 sum()에 전달하면 남은 항목이 없어서 합계 0이 됩니다. 다시 계산하려면 새 제너레이터를 만들어야 합니다."
+      ],
+      "code": "stream = (n * n for n in range(1, 4))\nprint(sum(stream))\nprint(sum(stream))\nprint(sum(n * n for n in range(1, 4)))",
+      "output": "14\n0\n14",
+      "diagram": {
+        "type": "timeline",
+        "nodes": [
+          {
+            "label": "첫 소비",
+            "value": "1 + 4 + 9 → 14"
+          },
+          {
+            "label": "재사용한 객체",
+            "value": "남은 항목 없음 → 0"
+          },
+          {
+            "label": "새 객체",
+            "value": "새로 만든 항목 → 14"
+          }
+        ],
+        "caption": "첫 소비: 1 + 4 + 9 → 14 · 재사용한 객체: 남은 항목 없음 → 0 · 새 객체: 새로 만든 항목 → 14"
+      },
+      "trace": [
+        {
+          "label": "첫 합계",
+          "state": "세 결과를 소비합니다."
+        },
+        {
+          "label": "둘째 합계",
+          "state": "같은 stream은 이미 끝났습니다."
+        },
+        {
+          "label": "새 식",
+          "state": "새 제너레이터를 만들어 다시 계산합니다."
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "question": "g에서 next(g)로 첫 값을 꺼낸 뒤 list(g)는 무엇을 모으나요?",
+    "options": [
+      {
+        "text": "처음 값부터 모든 값",
+        "correct": false,
+        "feedback": "반복자는 자동으로 처음으로 되돌아가지 않습니다."
+      },
+      {
+        "text": "아직 꺼내지 않은 나머지 값",
+        "correct": true,
+        "feedback": "next()가 소비한 첫 값 이후부터 계속 진행합니다."
+      },
+      {
+        "text": "항상 빈 리스트",
+        "correct": false,
+        "feedback": "남은 값이 있다면 계속 꺼내 모읍니다."
+      }
+    ]
+  },
+  "sourceUrls": [
+    "https://docs.python.org/3/tutorial/classes.html#iterators",
+    "https://docs.python.org/3/tutorial/classes.html#generators",
+    "https://docs.python.org/3/reference/expressions.html#generator-expressions"
+  ]
+}

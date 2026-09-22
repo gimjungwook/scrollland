@@ -1,0 +1,186 @@
+{
+  "slug": "special-methods",
+  "courseId": "objects",
+  "title": "기본 연산과 객체 연결하기",
+  "problem": "직접 만든 객체를 print·len·정렬·덧셈 같은 기본 도구와 함께 쓰고 싶습니다.",
+  "goal": "특수 메서드가 표준 연산과 연결되는 방식을 설명합니다.",
+  "prerequisites": [
+    "polymorphism"
+  ],
+  "topics": [
+    "특수 메서드",
+    "__str__",
+    "__repr__",
+    "__len__",
+    "__contains__",
+    "__eq__",
+    "__lt__",
+    "__add__",
+    "__call__",
+    "NotImplemented"
+  ],
+  "takeaway": "특수 메서드는 표준 연산이 객체에 요청하는 약속이며, 뜻이 자연스러운 연산만 구현합니다.",
+  "sections": [
+    {
+      "title": "사용자 표시와 개발 확인 구별하기",
+      "body": [
+        "특수 메서드는 앞뒤에 밑줄 두 개가 있는 이름으로 Python의 기본 동작과 연결됩니다. 매직 메서드라고도 불리지만 이 과정에서는 특수 메서드로 표기를 통일합니다.",
+        "__str__은 print()처럼 사람이 읽을 표시를, __repr__은 repr()처럼 개발 중 객체를 구별할 표현을 제공합니다. 둘 다 문자열을 반환해야 합니다."
+      ],
+      "code": "class Observation:\n    def __init__(self, count):\n        self.count = count\n    def __str__(self):\n        return f\"관찰 {self.count}개\"\n    def __repr__(self):\n        return f\"Observation(count={self.count})\"\n\nrecord = Observation(4)\nprint(record)\nprint(repr(record))",
+      "output": "관찰 4개\nObservation(count=4)",
+      "diagram": {
+        "type": "object",
+        "nodes": [
+          {
+            "label": "str 표현",
+            "value": "관찰 4개"
+          },
+          {
+            "label": "repr 표현",
+            "value": "Observation(count=4)"
+          }
+        ],
+        "caption": "str 표현: 관찰 4개 · repr 표현: Observation(count=4)"
+      },
+      "trace": [
+        {
+          "label": "print 요청",
+          "state": "__str__의 읽기 쉬운 문자열을 사용합니다."
+        },
+        {
+          "label": "repr 요청",
+          "state": "__repr__의 구별 가능한 표현을 사용합니다."
+        }
+      ]
+    },
+    {
+      "title": "길이와 포함 여부 제공하기",
+      "body": [
+        "__len__은 len()의 결과를, __contains__는 in의 포함 여부를 제공합니다. 길이는 0 이상의 정수여야 합니다. 객체가 목록을 감싸고 있다면 내부 목록에 질문을 전달할 수 있습니다.",
+        "직접 __len__을 호출하기보다 len(record)처럼 표준 연산을 사용하면 다른 자료형과 같은 문법으로 읽힙니다. 포함 여부 역시 객체가 가진 항목이라는 의미가 분명해야 합니다."
+      ],
+      "code": "class Places:\n    def __init__(self, names):\n        self.names = list(names)\n    def __len__(self):\n        return len(self.names)\n    def __contains__(self, name):\n        return name in self.names\n\nplaces = Places([\"숲\", \"강\"])\nprint(len(places))\nprint(\"강\" in places)\nprint(\"못\" in places)",
+      "output": "2\nTrue\nFalse",
+      "diagram": {
+        "type": "object",
+        "nodes": [
+          {
+            "label": "len 요청",
+            "value": "내부 목록 길이 2"
+          },
+          {
+            "label": "in 요청",
+            "value": "강 포함, 못 미포함"
+          }
+        ],
+        "caption": "len 요청: 내부 목록 길이 2 · in 요청: 강 포함, 못 미포함"
+      },
+      "trace": [
+        {
+          "label": "길이 계산",
+          "state": "__len__이 내부 목록의 크기를 반환합니다."
+        },
+        {
+          "label": "포함 검사",
+          "state": "__contains__가 내부 목록에 같은 질문을 전달합니다."
+        }
+      ]
+    },
+    {
+      "title": "값 비교와 정렬 기준 정의하기",
+      "body": [
+        "__eq__는 ==의 값 비교를, __lt__는 < 비교를 제공합니다. 아래에서는 관찰 수량을 비교 기준으로 정해 sorted()가 사용할 수 있게 합니다.",
+        "지원하지 않는 상대 자료형에는 NotImplemented를 반환할 수 있습니다. 이는 오류를 직접 던지는 지시가 아니라 다른 비교 처리 기회를 Python에 돌려주는 특별한 값입니다. 비교 규칙은 서로 일관되어야 합니다."
+      ],
+      "code": "class Observation:\n    def __init__(self, count):\n        self.count = count\n    def __eq__(self, other):\n        if not isinstance(other, Observation):\n            return NotImplemented\n        return self.count == other.count\n    def __lt__(self, other):\n        if not isinstance(other, Observation):\n            return NotImplemented\n        return self.count < other.count\n\nprint(Observation(4) == Observation(4))\nprint([item.count for item in sorted([Observation(4), Observation(2)])])",
+      "output": "True\n[2, 4]",
+      "diagram": {
+        "type": "collection",
+        "nodes": [
+          {
+            "label": "동등성 기준",
+            "value": "count 값이 같은가"
+          },
+          {
+            "label": "정렬 기준",
+            "value": "count 값이 작은가"
+          }
+        ],
+        "caption": "동등성 기준: count 값이 같은가 · 정렬 기준: count 값이 작은가"
+      },
+      "trace": [
+        {
+          "label": "동등성 비교",
+          "state": "서로 다른 객체라도 수량 4가 같아 참입니다."
+        },
+        {
+          "label": "정렬",
+          "state": "2가 4보다 작아 앞에 배치됩니다."
+        }
+      ]
+    },
+    {
+      "title": "덧셈과 호출에 의미 부여하기",
+      "body": [
+        "__add__는 + 연산, __call__은 객체 자체에 괄호를 붙인 호출을 정의합니다. 여기서 두 수량 묶음의 덧셈은 합계를 가진 새 객체를 반환합니다.",
+        "__call__은 배수를 인자로 받아 계산값을 반환합니다. 이런 연결이 코드를 더 어렵게 만든다면 combine()이나 scaled()처럼 이름 있는 일반 메서드를 쓰는 편이 낫습니다. 원본 변경 여부도 명시하세요."
+      ],
+      "code": "class Count:\n    def __init__(self, value):\n        self.value = value\n    def __add__(self, other):\n        if not isinstance(other, Count):\n            return NotImplemented\n        return Count(self.value + other.value)\n    def __call__(self, factor=1):\n        return self.value * factor\n\na = Count(2)\nb = Count(3)\ncombined = a + b\nprint(combined())\nprint(combined(2))\nprint(a.value)",
+      "output": "5\n10\n2",
+      "diagram": {
+        "type": "object",
+        "nodes": [
+          {
+            "label": "합친 객체",
+            "value": "새 Count(5)"
+          },
+          {
+            "label": "배수 계산",
+            "value": "5 × 2 → 10"
+          },
+          {
+            "label": "원래 객체 a",
+            "value": "value=2 유지"
+          }
+        ],
+        "caption": "합친 객체: 새 Count(5) · 배수 계산: 5 × 2 → 10 · 원래 객체 a: value=2 유지"
+      },
+      "trace": [
+        {
+          "label": "덧셈",
+          "state": "a와 b의 값을 더한 새 객체를 만듭니다."
+        },
+        {
+          "label": "호출",
+          "state": "combined에 괄호를 붙여 배수 계산을 요청합니다."
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "question": "print(obj)에서 사람이 읽을 문자열을 정하는 특수 메서드는 무엇인가요?",
+    "options": [
+      {
+        "text": "__len__",
+        "correct": false,
+        "feedback": "__len__은 길이 계산을 제공합니다."
+      },
+      {
+        "text": "__str__",
+        "correct": true,
+        "feedback": "__str__은 print() 등에 쓰는 사용자 표시 문자열을 반환합니다."
+      },
+      {
+        "text": "__add__",
+        "correct": false,
+        "feedback": "__add__는 + 연산을 제공합니다."
+      }
+    ]
+  },
+  "sourceUrls": [
+    "https://docs.python.org/3/reference/datamodel.html#special-method-names",
+    "https://docs.python.org/3/reference/datamodel.html#object.__str__",
+    "https://docs.python.org/3/reference/datamodel.html#object.__eq__"
+  ]
+}

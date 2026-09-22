@@ -1,0 +1,163 @@
+{
+  "slug": "environments",
+  "courseId": "tools",
+  "title": "프로젝트마다 도구 환경 나누기",
+  "problem": "프로젝트 A에서 설치한 패키지가 프로젝트 B와 충돌할까 걱정됩니다.",
+  "goal": "인터프리터·가상 환경·pip의 역할과 실행 경계를 구별합니다.",
+  "prerequisites": [
+    "modules"
+  ],
+  "topics": [
+    "인터프리터",
+    "가상 환경",
+    "venv",
+    "pip",
+    "패키지 설치",
+    "의존성"
+  ],
+  "takeaway": "프로젝트별 가상 환경을 만들고 그 환경의 Python으로 도구를 실행합니다.",
+  "sections": [
+    {
+      "title": "지금 실행하는 Python 확인하기",
+      "body": [
+        "인터프리터는 Python 코드를 읽어 실행하는 프로그램입니다. 한 컴퓨터에 여러 Python이 있을 수 있으므로 실행 파일과 버전을 확인해야 합니다. sys는 실행 환경 정보를 제공하는 표준 모듈입니다.",
+        "sys.version_info에는 버전 숫자가 들어 있습니다. 예제에서는 실제 버전 문자열 대신 이 과정의 최소 버전인 3.10 이상인지 검사합니다. 사이트를 읽는 데에는 설치가 필요 없고 직접 실행할 때에만 이 준비가 필요합니다."
+      ],
+      "code": "import sys\n\nprint(sys.version_info >= (3, 10))\nprint(sys.version_info.major)",
+      "output": "True\n3",
+      "diagram": {
+        "type": "flow",
+        "nodes": [
+          {
+            "label": "코드를 실행하는 주체",
+            "value": "선택한 Python 인터프리터"
+          },
+          {
+            "label": "최소 버전 확인",
+            "value": "3.10 이상인지 비교"
+          }
+        ],
+        "caption": "코드를 실행하는 주체: 선택한 Python 인터프리터 · 최소 버전 확인: 3.10 이상인지 비교"
+      },
+      "trace": [
+        {
+          "label": "정보 읽기",
+          "state": "sys에서 현재 버전 정보를 확인합니다."
+        },
+        {
+          "label": "기준 비교",
+          "state": "이 과정의 구문을 실행할 수 있는 버전인지 판정합니다."
+        }
+      ]
+    },
+    {
+      "title": "임시 폴더에서 가상 환경 만들어 보기",
+      "body": [
+        "가상 환경은 프로젝트별로 설치한 패키지와 실행 경로를 구분하는 Python 환경입니다. 일반 작업 폴더에서는 터미널에 python3 -m venv .venv를 입력해 만듭니다. Windows에서는 py -m venv .venv를 사용할 수 있습니다.",
+        "아래는 실제 프로젝트 대신 예제 전용 임시 폴더에 환경을 만듭니다. with tempfile.TemporaryDirectory() as folder는 새 임시 폴더의 경로를 folder로 받고, 들여쓴 구간이 끝날 때 폴더를 정리합니다. venv.create(folder, with_pip=False)는 그 경로에 가상 환경을 만들되 이번 확인에 필요 없는 pip 준비는 생략합니다. 외부 패키지 설치나 업데이트를 요청하지 않습니다.",
+        "os.path.join(folder, \"pyvenv.cfg\")는 폴더 경로와 설정 파일 이름을 이어 파일 경로를 만듭니다. os.path.isfile()은 그 경로에 파일이 있으면 True를 반환합니다. 이 예제의 True는 가상 환경의 설정 파일이 생겼다는 뜻이며, 현재 코드를 실행하던 Python이 새 환경으로 바뀌었다는 뜻은 아닙니다.",
+        "프로젝트 폴더에서 앞의 터미널 명령으로 만든 .venv를 사용하려면 macOS·Linux에서 .venv/bin/python practice.py, Windows에서 .venv\\Scripts\\python.exe practice.py처럼 환경 안의 Python을 직접 지정합니다. 아래 예제용 임시 환경은 코드 종료 때 삭제되므로 나중에 실행할 경로로 사용하지 않습니다."
+      ],
+      "code": "import os\nimport tempfile\nimport venv\n\nwith tempfile.TemporaryDirectory() as folder:\n    venv.create(folder, with_pip=False)\n    configuration = os.path.join(folder, \"pyvenv.cfg\")\n    print(os.path.isfile(configuration))",
+      "output": "True",
+      "diagram": {
+        "type": "pipeline",
+        "nodes": [
+          {
+            "label": "예제 전용 위치",
+            "value": "새 임시 폴더 경로 folder"
+          },
+          {
+            "label": "생성한 설정 파일",
+            "value": "pyvenv.cfg"
+          },
+          {
+            "label": "존재 여부 출력",
+            "value": "True"
+          }
+        ],
+        "caption": "임시 폴더에 가상 환경을 만들고 pyvenv.cfg 파일이 존재하는지 확인합니다. 구간 종료 때 임시 환경을 정리합니다."
+      },
+      "trace": [
+        {
+          "label": "임시 경로 준비",
+          "state": "folder가 이번 예제만의 임시 폴더 경로를 받습니다."
+        },
+        {
+          "label": "환경 생성",
+          "state": "venv.create가 그 폴더에 환경 파일들을 만듭니다."
+        },
+        {
+          "label": "생성 확인",
+          "state": "pyvenv.cfg가 파일로 존재하므로 True를 출력합니다."
+        },
+        {
+          "label": "구간 종료",
+          "state": "현재 Python을 바꾸지 않고 임시 폴더와 환경을 정리합니다."
+        }
+      ]
+    },
+    {
+      "title": "pip와 설치 범위 구별하기",
+      "body": [
+        "pip는 Python 패키지를 설치하고 조회하는 도구입니다. 의존성은 프로젝트가 실행에 필요로 하는 외부 패키지입니다. 가상 환경을 활성화하면 python 명령이 그 환경을 가리키게 할 수 있고, 환경 안의 실행 파일을 직접 지정해도 됩니다.",
+        "아래 코드는 터미널에서 쓸 명령을 출력할 뿐 실행하거나 설치하지 않습니다. python -m pip는 선택한 Python에 연결된 pip를 사용합니다. 보통 python -m pip install 패키지이름으로 설치하고 python -m pip freeze로 버전 목록을 남깁니다. 이번 학습 예제는 표준 라이브러리만 사용하므로 외부 설치가 필요 없습니다."
+      ],
+      "code": "commands = [\"python -m pip --version\", \"python -m pip list\", \"python -m pip freeze\"]\nfor command in commands:\n    print(command)",
+      "output": "python -m pip --version\npython -m pip list\npython -m pip freeze",
+      "diagram": {
+        "type": "pipeline",
+        "nodes": [
+          {
+            "label": "버전 조회",
+            "value": "python -m pip --version"
+          },
+          {
+            "label": "설치 목록 조회",
+            "value": "python -m pip list"
+          },
+          {
+            "label": "버전 목록 기록 준비",
+            "value": "python -m pip freeze"
+          }
+        ],
+        "caption": "버전 조회: python -m pip --version · 설치 목록 조회: python -m pip list · 버전 목록 기록 준비: python -m pip freeze"
+      },
+      "trace": [
+        {
+          "label": "명령 구성",
+          "state": "같은 Python에 연결된 pip를 사용하도록 적습니다."
+        },
+        {
+          "label": "이번 예제",
+          "state": "명령 문자열만 출력하며 외부 설치는 수행하지 않습니다."
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "question": "가상 환경을 나누는 가장 직접적인 목적은 무엇인가요?",
+    "options": [
+      {
+        "text": "모든 코드 실행 오류를 자동으로 없애기",
+        "correct": false,
+        "feedback": "가상 환경은 코드의 논리 오류를 고치지 않습니다."
+      },
+      {
+        "text": "프로젝트별 설치 패키지와 실행 환경을 구분하기",
+        "correct": true,
+        "feedback": "프로젝트마다 필요한 패키지 조합을 따로 관리할 수 있습니다."
+      },
+      {
+        "text": "Python 없이 코드를 실행하기",
+        "correct": false,
+        "feedback": "각 가상 환경도 Python 인터프리터를 사용합니다."
+      }
+    ]
+  },
+  "sourceUrls": [
+    "https://docs.python.org/3/tutorial/venv.html",
+    "https://docs.python.org/3/library/venv.html",
+    "https://docs.python.org/3/library/sys.html#sys.prefix"
+  ]
+}

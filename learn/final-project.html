@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="입력 검증·집계·JSON 저장을 각각 검증 가능한 단계로 연결합니다."><meta name="theme-color" content="#f7f8f4"><meta name="color-scheme" content="light"><title>관찰 기록을 읽고 요약해 저장하기 · ScrollLand</title><link rel="icon" href="../favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../styles.css"><script defer src="../lib/gsap.min.js"></script><script defer src="../lib/ScrollTrigger.min.js"></script><script type="module" src="../app.js"></script></head>
+<body data-lesson-slug="final-project" data-lesson-source="../lessons/final-project.json" data-content-fingerprint="fnv1a-bf8a8fff-5585" data-section-count="3"><a class="skip-link" href="#main">본문으로 건너뛰기</a><header class="site-header"><a class="brand" href="../index.html"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>ScrollLand</span></a><span class="header-note">코드의 변화를 읽는 Python</span><a class="header-link" href="../index.html#courses">전체 목차 <span aria-hidden="true">↗</span></a></header><div class="lesson-shell"><aside class="lesson-aside"><a class="back-link" href="../index.html#course-persistence">← 결과를 안전하게 남기기</a><p class="eyebrow">레슨 44 / 44</p><nav aria-label="이 레슨의 장면"><ol><li><a href="#section-1" data-scene-link="section-1"><span>01</span>한 줄의 입력 계약 정하기</a></li><li><a href="#section-2" data-scene-link="section-2"><span>02</span>유효한 줄만 장소별로 더하기</a></li><li><a href="#section-3" data-scene-link="section-3"><span>03</span>저장한 파일을 다시 읽어 대조하기</a></li><li><a href="#lesson-check"><span>?</span>선택 확인 문항</a></li><li><a href="#takeaway"><span>↳</span>기억할 내용</a></li></ol></nav><p class="current-scene" hidden>현재 장면 <span data-current-scene>1 / 3</span></p></aside><main id="main" class="lesson-content"><header class="lesson-intro"><p class="eyebrow">결과를 안전하게 남기기</p><h1>관찰 기록을 읽고 요약해 저장하기</h1><p class="lesson-problem">여러 관찰 줄에서 유효한 수량을 모으고 다음에 읽을 요약을 남기고 싶습니다.</p><div class="learning-goal"><span>읽고 나면</span><p>입력 검증·집계·JSON 저장을 각각 검증 가능한 단계로 연결합니다.</p></div><p class="prerequisites"><span>먼저 읽으면 좋은 레슨</span> <a href="write-files.html">파일을 만들고 안전하게 정리하기</a> · <a href="dictionaries.html">이름표로 값 찾기</a> · <a href="functions.html">계산에 이름을 붙여 재사용하기</a> · <a href="exceptions.html">예외를 구별해 처리하기</a></p><p class="reading-note">아래로 이어 읽으세요. 결과와 상태는 항상 보이며, 확인 문항은 원할 때 답하면 됩니다.</p></header><div class="enhancement-notice" role="status" hidden><p data-load-message></p><button data-retry type="button">답변 확인·단계 강조 다시 불러오기</button></div><noscript><p class="static-notice">본문·예제·결과는 모두 읽을 수 있습니다. 선택 확인 문항의 정답과 해설도 아래에 표시되어 있습니다.</p></noscript><section id="section-1" class="scene" data-scene><div class="scene-title"><span class="scene-number">01</span><h2>한 줄의 입력 계약 정하기</h2></div><div class="scene-body"><p>입력은 장소:수량 형식으로 정하고, 장소는 비어 있지 않아야 하며 수량은 0 이상인 정수여야 합니다. parse_line은 그 계약을 확인해 장소와 수량의 튜플을 반환합니다.</p><p>문자열에 콜론이 정확히 하나 있다는 조건도 검사합니다. int() 자체가 발생시키는 ValueError도 호출자가 처리할 수 있습니다. 먼저 한 줄을 함수로 검증하면 여러 줄 처리와 파일 저장에서 같은 규칙을 재사용합니다.</p></div><div class="example"><div class="code-panel"><div class="panel-heading"><h3>Python 코드</h3><span>Python 3.10+</span></div><pre tabindex="0" aria-label="한 줄의 입력 계약 정하기 예제 코드"><code>def parse_line(line):
+    parts = line.strip().split(&quot;:&quot;)
+    if len(parts) != 2 or not parts[0].strip():
+        raise ValueError(&quot;장소:수량 형식이 필요합니다&quot;)
+    place = parts[0].strip()
+    count = int(parts[1])
+    if count &lt; 0:
+        raise ValueError(&quot;수량은 0 이상이어야 합니다&quot;)
+    return place, count
+
+print(parse_line(&quot; 숲 : 4 &quot;))
+try:
+    parse_line(&quot;강:-1&quot;)
+except ValueError as error:
+    print(error)</code></pre></div><div class="output-panel"><h3>예제 실행 결과</h3><pre tabindex="0" aria-label="한 줄의 입력 계약 정하기 예제 실행 결과"><samp>(&#39;숲&#39;, 4)
+수량은 0 이상이어야 합니다</samp></pre></div></div><figure class="diagram diagram-pipeline" data-preset="fade-up"><div class="diagram-heading"><span class="motion-mark" data-motion-mark aria-hidden="true"></span><h3>입력에서 결과까지</h3></div><ol class="diagram-nodes"><li><span class="node-label">유효 입력</span><strong class="node-value">숲 : 4 → (숲, 4)</strong><span class="node-connector" aria-hidden="true">→</span></li><li><span class="node-label">거부 입력</span><strong class="node-value">강:-1 → 범위 오류</strong></li></ol><figcaption>유효 입력: 숲 : 4 → (숲, 4) · 거부 입력: 강:-1 → 범위 오류</figcaption></figure><div class="trace" data-trace="0"><div class="trace-heading"><h3>실행 흐름 살펴보기</h3><p>검증한 예제의 상태를 순서대로 읽습니다.</p></div><ol class="trace-steps"><li data-trace-step><span class="trace-number">1</span><div><h4>형식 확인</h4><p>항목 두 개와 비어 있지 않은 장소를 확인합니다.</p></div></li><li data-trace-step><span class="trace-number">2</span><div><h4>값 확인</h4><p>정수 변환 후 음수 여부를 확인합니다.</p></div></li><li data-trace-step><span class="trace-number">3</span><div><h4>반환</h4><p>검사를 통과한 값만 튜플로 반환합니다.</p></div></li></ol><div class="trace-controls" hidden><button type="button" data-previous aria-label="한 줄의 입력 계약 정하기 이전 상태 강조">이전 상태</button><span data-trace-status role="status" aria-live="polite"></span><button type="button" data-next aria-label="한 줄의 입력 계약 정하기 다음 상태 강조">다음 상태</button></div></div></section><section id="section-2" class="scene" data-scene><div class="scene-title"><span class="scene-number">02</span><h2>유효한 줄만 장소별로 더하기</h2></div><div class="scene-body"><p>여러 줄을 처리할 때는 실패한 줄 번호와 이유를 남기고 다음 줄로 진행할지 정합니다. 여기서는 오류를 보고한 뒤 다음 줄을 계속 처리하는 규칙을 선택합니다.</p><p>totals.get(place, 0)은 첫 기록의 기본 합계이고, 다음 기록부터는 기존 합계에 더합니다. 계산 결과와 오류 목록을 따로 보관하면 잘못된 입력을 정상 수량으로 오해하지 않습니다.</p></div><div class="example"><div class="code-panel"><div class="panel-heading"><h3>Python 코드</h3><span>Python 3.10+</span></div><pre tabindex="0" aria-label="유효한 줄만 장소별로 더하기 예제 코드"><code>def parse_line(line):
+    parts = line.strip().split(&quot;:&quot;)
+    if len(parts) != 2 or not parts[0].strip():
+        raise ValueError(&quot;장소:수량 형식이 필요합니다&quot;)
+    count = int(parts[1])
+    if count &lt; 0:
+        raise ValueError(&quot;수량은 0 이상이어야 합니다&quot;)
+    return parts[0].strip(), count
+
+totals = {}
+errors = []
+for number, line in enumerate([&quot;숲:4&quot;, &quot;강:2&quot;, &quot;숲:3&quot;, &quot;못:-1&quot;], start=1):
+    try:
+        place, count = parse_line(line)
+    except ValueError as error:
+        errors.append(f&quot;{number}행: {error}&quot;)
+        continue
+    totals[place] = totals.get(place, 0) + count
+print(totals)
+print(errors[0])</code></pre></div><div class="output-panel"><h3>예제 실행 결과</h3><pre tabindex="0" aria-label="유효한 줄만 장소별로 더하기 예제 실행 결과"><samp>{&#39;숲&#39;: 7, &#39;강&#39;: 2}
+4행: 수량은 0 이상이어야 합니다</samp></pre></div></div><figure class="diagram diagram-pipeline" data-preset="slide-in"><div class="diagram-heading"><span class="motion-mark" data-motion-mark aria-hidden="true"></span><h3>입력에서 결과까지</h3></div><ol class="diagram-nodes"><li><span class="node-label">숲 합계</span><strong class="node-value">4 + 3 → 7</strong><span class="node-connector" aria-hidden="true">→</span></li><li><span class="node-label">강 합계</span><strong class="node-value">2</strong><span class="node-connector" aria-hidden="true">→</span></li><li><span class="node-label">오류 목록</span><strong class="node-value">4행 음수 입력</strong></li></ol><figcaption>숲 합계: 4 + 3 → 7 · 강 합계: 2 · 오류 목록: 4행 음수 입력</figcaption></figure><div class="trace" data-trace="1"><div class="trace-heading"><h3>실행 흐름 살펴보기</h3><p>검증한 예제의 상태를 순서대로 읽습니다.</p></div><ol class="trace-steps"><li data-trace-step><span class="trace-number">1</span><div><h4>정상 줄 처리</h4><p>장소별 딕셔너리에 합계를 누적합니다.</p></div></li><li data-trace-step><span class="trace-number">2</span><div><h4>실패 줄 처리</h4><p>오류를 기록하고 그 수량은 누적하지 않습니다.</p></div></li><li data-trace-step><span class="trace-number">3</span><div><h4>결과 확인</h4><p>숲 7, 강 2와 오류 1건을 구별합니다.</p></div></li></ol><div class="trace-controls" hidden><button type="button" data-previous aria-label="유효한 줄만 장소별로 더하기 이전 상태 강조">이전 상태</button><span data-trace-status role="status" aria-live="polite"></span><button type="button" data-next aria-label="유효한 줄만 장소별로 더하기 다음 상태 강조">다음 상태</button></div></div></section><section id="section-3" class="scene" data-scene><div class="scene-title"><span class="scene-number">03</span><h2>저장한 파일을 다시 읽어 대조하기</h2></div><div class="scene-body"><p>마지막 예제는 입력 파일을 읽고 같은 검증 규칙으로 집계한 뒤 summary.json에 저장합니다. 파일은 모두 새 임시 폴더에서 만들므로 실제 기록에 영향을 주지 않습니다.</p><p>쓰기 호출이 끝난 것만 확인하지 않고 파일을 다시 읽어 예상 구조와 같은지 비교합니다. 오류 건수도 요약에 남깁니다. 직접 확장할 때는 입력 경로, 덮어쓰기 정책, 허용 형식을 먼저 정하세요.</p><p>splitlines()는 읽은 문자열을 줄바꿈을 제외한 줄 목록으로 나눕니다. json.dump(객체, 열린 파일)은 JSON을 그 파일에 씁니다. 앞에서 배운 dumps()는 JSON 문자열을 반환하므로 결과를 받을 대상이 다릅니다.</p></div><div class="example"><div class="code-panel"><div class="panel-heading"><h3>Python 코드</h3><span>Python 3.10+</span></div><pre tabindex="0" aria-label="저장한 파일을 다시 읽어 대조하기 예제 코드"><code>import json
+from pathlib import Path
+from tempfile import TemporaryDirectory
+
+def parse_line(line):
+    parts = line.strip().split(&quot;:&quot;)
+    if len(parts) != 2 or not parts[0].strip():
+        raise ValueError(&quot;장소:수량 형식이 필요합니다&quot;)
+    count = int(parts[1])
+    if count &lt; 0:
+        raise ValueError(&quot;수량은 0 이상이어야 합니다&quot;)
+    return parts[0].strip(), count
+
+with TemporaryDirectory() as folder:
+    root = Path(folder)
+    source = root / &quot;observations.txt&quot;
+    source.write_text(&quot;숲:4\n강:2\n숲:3\n못:-1\n&quot;, encoding=&quot;utf-8&quot;)
+    totals = {}
+    errors = []
+    for number, line in enumerate(source.read_text(encoding=&quot;utf-8&quot;).splitlines(), start=1):
+        try:
+            place, count = parse_line(line)
+        except ValueError as error:
+            errors.append({&quot;line&quot;: number, &quot;reason&quot;: str(error)})
+            continue
+        totals[place] = totals.get(place, 0) + count
+    summary = {&quot;totals&quot;: totals, &quot;error_count&quot;: len(errors)}
+    target = root / &quot;summary.json&quot;
+    with target.open(&quot;x&quot;, encoding=&quot;utf-8&quot;) as output:
+        json.dump(summary, output, ensure_ascii=False)
+    restored = json.loads(target.read_text(encoding=&quot;utf-8&quot;))
+    print(restored[&quot;totals&quot;])
+    print(restored[&quot;error_count&quot;])
+    print(restored == summary)</code></pre></div><div class="output-panel"><h3>예제 실행 결과</h3><pre tabindex="0" aria-label="저장한 파일을 다시 읽어 대조하기 예제 실행 결과"><samp>{&#39;숲&#39;: 7, &#39;강&#39;: 2}
+1
+True</samp></pre></div></div><figure class="diagram diagram-pipeline" data-preset="stage-swap"><div class="diagram-heading"><span class="motion-mark" data-motion-mark aria-hidden="true"></span><h3>입력에서 결과까지</h3></div><ol class="diagram-nodes"><li><span class="node-label">입력 파일</span><strong class="node-value">정상 3줄, 음수 오류 1줄</strong><span class="node-connector" aria-hidden="true">→</span></li><li><span class="node-label">집계 객체</span><strong class="node-value">숲 7, 강 2, 오류 1건</strong><span class="node-connector" aria-hidden="true">→</span></li><li><span class="node-label">JSON 다시 읽기</span><strong class="node-value">저장 전 구조와 같음</strong></li></ol><figcaption>입력 파일: 정상 3줄, 음수 오류 1줄 · 집계 객체: 숲 7, 강 2, 오류 1건 · JSON 다시 읽기: 저장 전 구조와 같음</figcaption></figure><div class="trace" data-trace="2"><div class="trace-heading"><h3>실행 흐름 살펴보기</h3><p>검증한 예제의 상태를 순서대로 읽습니다.</p></div><ol class="trace-steps"><li data-trace-step><span class="trace-number">1</span><div><h4>읽기와 검증</h4><p>임시 입력 파일의 줄마다 계약을 검사합니다.</p></div></li><li data-trace-step><span class="trace-number">2</span><div><h4>집계</h4><p>허용한 수량만 장소별로 더합니다.</p></div></li><li data-trace-step><span class="trace-number">3</span><div><h4>저장</h4><p>새 summary.json 파일을 만듭니다.</p></div></li><li data-trace-step><span class="trace-number">4</span><div><h4>대조</h4><p>다시 읽은 결과와 저장 전 객체가 같은지 확인합니다.</p></div></li></ol><div class="trace-controls" hidden><button type="button" data-previous aria-label="저장한 파일을 다시 읽어 대조하기 이전 상태 강조">이전 상태</button><span data-trace-status role="status" aria-live="polite"></span><button type="button" data-next aria-label="저장한 파일을 다시 읽어 대조하기 다음 상태 강조">다음 상태</button></div></div></section><section id="lesson-check" class="knowledge-check"><p class="eyebrow">원할 때 확인하세요</p><h2>코드를 읽고, 한 번 예측하기</h2><p class="quiz-question">최종 결과에서 숲:4와 숲:3은 어떻게 처리하고 못:-1은 어떻게 처리하나요?</p><div class="quiz-options" hidden><button type="button" data-option="0" aria-pressed="false"><span aria-hidden="true">A</span>숲은 7로 합치고, 못의 음수는 오류로 기록해 합계에서 제외합니다.</button><button type="button" data-option="1" aria-pressed="false"><span aria-hidden="true">B</span>모든 값을 더해 전체 6만 저장합니다.</button><button type="button" data-option="2" aria-pressed="false"><span aria-hidden="true">C</span>오류가 한 건 있으므로 정상 기록도 설명 없이 모두 버립니다.</button></div><p class="quiz-feedback" role="status" aria-live="polite" hidden></p><details class="answer-details" open><summary>정답과 모든 선택지의 해설 읽기</summary><ol><li><strong>정답: 숲은 7로 합치고, 못의 음수는 오류로 기록해 합계에서 제외합니다.</strong><p>수량 계약을 통과한 줄만 합계에 반영하고 실패를 따로 남깁니다.</p></li><li><strong>오답: 모든 값을 더해 전체 6만 저장합니다.</strong><p>이 실습은 장소별로 집계하고 음수 입력은 허용하지 않습니다.</p></li><li><strong>오답: 오류가 한 건 있으므로 정상 기록도 설명 없이 모두 버립니다.</strong><p>정한 규칙은 오류를 기록하고 다음 줄을 계속 처리하는 것입니다.</p></li></ol></details></section><section id="takeaway" class="takeaway"><p class="eyebrow">기억할 내용</p><h2>입력·계산·저장을 나누고, 거부한 기록과 저장한 결과를 모두 확인합니다.</h2><p>처음의 문제로 돌아가 코드가 만든 변화를 자신의 말로 설명해 보세요.</p></section><nav class="lesson-navigation" aria-label="이전·다음 레슨"><a class="lesson-neighbor" href="write-files.html"><span>← 이전 레슨</span><strong>파일을 만들고 안전하게 정리하기</strong></a><a class="all-lessons" href="../index.html#courses">전체 목차 보기</a></nav><details class="sources"><summary>이 레슨의 공식 참고 자료</summary><ul><li><a href="https://docs.python.org/3/tutorial/errors.html">https://docs.python.org/3/tutorial/errors.html</a></li><li><a href="https://docs.python.org/3/tutorial/inputoutput.html#saving-structured-data-with-json">https://docs.python.org/3/tutorial/inputoutput.html#saving-structured-data-with-json</a></li><li><a href="https://docs.python.org/3/library/pathlib.html">https://docs.python.org/3/library/pathlib.html</a></li><li><a href="https://docs.python.org/3/library/json.html">https://docs.python.org/3/library/json.html</a></li></ul></details></main></div><footer class="site-footer"><a href="../index.html">ScrollLand</a><p>학습 자료 초판 · 내용 검토와 학습 효과 검증 전</p><a href="../README.md">실행 방법·검증 범위</a></footer></body></html>

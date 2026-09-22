@@ -1,0 +1,147 @@
+{
+  "slug": "tuples",
+  "courseId": "collections",
+  "title": "한 묶음의 의미를 고정하기",
+  "problem": "좌표처럼 항목 수와 순서의 의미가 정해진 값을 함께 전달해야 합니다.",
+  "goal": "튜플의 불변성과 언패킹을 설명하고 항목을 꺼냅니다.",
+  "prerequisites": [
+    "list-transform"
+  ],
+  "topics": [
+    "튜플",
+    "불변",
+    "언패킹",
+    "별표 언패킹",
+    "tuple"
+  ],
+  "takeaway": "튜플은 항목 연결을 바꾸지 않는 순서 묶음이며, 쉼표가 튜플을 만듭니다.",
+  "sections": [
+    {
+      "title": "정해진 역할의 묶음",
+      "body": [
+        "튜플은 순서가 있으면서 항목을 바꿀 수 없는 묶음입니다. 아래 두 숫자는 각각 가로와 세로 좌표를 뜻합니다. 인덱스와 len()은 리스트처럼 사용할 수 있습니다.",
+        "튜플을 만드는 핵심은 쉼표입니다. 항목 하나인 (3,)과 단순 괄호 식 (3)은 다릅니다. 불변이라는 말은 튜플 내부 항목이 가리키는 변경 가능한 객체까지 고정한다는 뜻은 아닙니다."
+      ],
+      "code": "point = (3, 8)\nsingle = (3,)\nprint(point[0])\nprint(len(single))\nprint(type((3)))",
+      "output": "3\n1\n<class 'int'>",
+      "diagram": {
+        "type": "collection",
+        "nodes": [
+          {
+            "label": "좌표 튜플",
+            "value": "가로 3, 세로 8"
+          },
+          {
+            "label": "한 항목 튜플",
+            "value": "(3,)"
+          }
+        ],
+        "caption": "좌표 튜플: 가로 3, 세로 8 · 한 항목 튜플: (3,)"
+      },
+      "trace": [
+        {
+          "label": "묶음 생성",
+          "state": "쉼표로 두 값을 튜플로 묶습니다."
+        },
+        {
+          "label": "형태 비교",
+          "state": "(3)은 정수이고 (3,)은 튜플입니다."
+        }
+      ]
+    },
+    {
+      "title": "이름으로 나누어 받기",
+      "body": [
+        "언패킹은 묶음의 각 항목을 여러 이름에 나누어 연결하는 일입니다. x, y = point는 순서대로 첫 값과 두 번째 값을 받습니다.",
+        "별표를 붙인 이름은 남는 여러 항목을 리스트로 받습니다. 아래에서는 first와 last 사이의 항목들을 middle에 모읍니다. 별표가 없으면 이름 수와 항목 수가 맞아야 합니다."
+      ],
+      "code": "point = (3, 8)\nx, y = point\nfirst, *middle, last = (2, 4, 6, 8)\nprint(x, y)\nprint(middle)",
+      "output": "3 8\n[4, 6]",
+      "diagram": {
+        "type": "binding",
+        "nodes": [
+          {
+            "label": "point의 분해",
+            "value": "x → 3, y → 8"
+          },
+          {
+            "label": "남는 항목",
+            "value": "middle → [4, 6]"
+          }
+        ],
+        "caption": "point의 분해: x → 3, y → 8 · 남는 항목: middle → [4, 6]"
+      },
+      "trace": [
+        {
+          "label": "일반 언패킹",
+          "state": "두 이름이 두 항목을 하나씩 받습니다."
+        },
+        {
+          "label": "별표 언패킹",
+          "state": "가운데 이름이 남은 항목의 리스트를 받습니다."
+        }
+      ]
+    },
+    {
+      "title": "바꿔야 할 때 새 튜플 만들기",
+      "body": [
+        "튜플의 항목에 직접 대입할 수는 없지만 새 튜플을 만들어 이름을 다시 연결할 수 있습니다. list()와 tuple()로 묶음 종류를 변환할 수 있습니다.",
+        "두 튜플을 +로 이으면 새 튜플이 생깁니다. 아래 원래 좌표 point는 그대로이고, 수정할 때 쓴 리스트가 바뀐 뒤 updated라는 새 튜플을 만듭니다."
+      ],
+      "code": "point = (3, 8)\neditable = list(point)\neditable[0] = 5\nupdated = tuple(editable)\nprint(point)\nprint(updated)\nprint(updated + (1,))",
+      "output": "(3, 8)\n(5, 8)\n(5, 8, 1)",
+      "diagram": {
+        "type": "pipeline",
+        "nodes": [
+          {
+            "label": "원본 튜플",
+            "value": "(3, 8)"
+          },
+          {
+            "label": "중간 리스트",
+            "value": "[5, 8]"
+          },
+          {
+            "label": "새 튜플",
+            "value": "(5, 8)"
+          }
+        ],
+        "caption": "원본 튜플: (3, 8) · 중간 리스트: [5, 8] · 새 튜플: (5, 8)"
+      },
+      "trace": [
+        {
+          "label": "변환",
+          "state": "수정 가능한 리스트를 만듭니다."
+        },
+        {
+          "label": "수정 후 재구성",
+          "state": "바뀐 리스트에서 새 튜플을 만듭니다."
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "question": "항목 하나가 정수 5인 튜플은 어느 것인가요?",
+    "options": [
+      {
+        "text": "(5)",
+        "correct": false,
+        "feedback": "괄호만 있으면 정수 5입니다."
+      },
+      {
+        "text": "(5,)",
+        "correct": true,
+        "feedback": "항목이 하나여도 쉼표를 적으면 튜플이 됩니다."
+      },
+      {
+        "text": "[5]",
+        "correct": false,
+        "feedback": "대괄호는 리스트를 만듭니다."
+      }
+    ]
+  },
+  "sourceUrls": [
+    "https://docs.python.org/3/tutorial/datastructures.html#tuples-and-sequences",
+    "https://docs.python.org/3/library/stdtypes.html#tuples"
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "slug": "inheritance",
+  "courseId": "objects",
+  "title": "공통 행동을 이어받아 바꾸기",
+  "problem": "여러 기록 종류가 기본 정보는 같지만 안내문 일부가 다릅니다.",
+  "goal": "상속·부모 초기화·메서드 재정의의 실행 관계를 설명합니다.",
+  "prerequisites": [
+    "methods"
+  ],
+  "topics": [
+    "상속",
+    "부모 클래스",
+    "자식 클래스",
+    "super",
+    "재정의"
+  ],
+  "takeaway": "상속은 부모의 계약을 이어받는 관계이며, 단순히 코드가 비슷하다는 이유만으로 사용하지 않습니다.",
+  "sections": [
+    {
+      "title": "공통 속성과 행동 이어받기",
+      "body": [
+        "상속은 기존 클래스의 속성과 메서드를 다른 클래스가 이어받는 방식입니다. 부모 클래스는 공통 규칙을 제공하고 자식 클래스는 그 규칙을 바탕으로 정의됩니다.",
+        "class BirdObservation(Observation)은 새 종류가 Observation의 한 종류임을 나타냅니다. 자식 클래스에 같은 이름이 없으면 부모에서 메서드를 찾습니다."
+      ],
+      "code": "class Observation:\n    def __init__(self, count):\n        self.count = count\n    def summary(self):\n        return f\"관찰 {self.count}개\"\n\nclass BirdObservation(Observation):\n    pass\n\nrecord = BirdObservation(4)\nprint(record.summary())\nprint(isinstance(record, Observation))",
+      "output": "관찰 4개\nTrue",
+      "diagram": {
+        "type": "object",
+        "nodes": [
+          {
+            "label": "부모",
+            "value": "Observation의 count와 summary"
+          },
+          {
+            "label": "자식",
+            "value": "BirdObservation이 공통 동작 사용"
+          }
+        ],
+        "caption": "부모: Observation의 count와 summary · 자식: BirdObservation이 공통 동작 사용"
+      },
+      "trace": [
+        {
+          "label": "생성",
+          "state": "부모의 초기화 메서드로 count를 설정합니다."
+        },
+        {
+          "label": "호출",
+          "state": "부모에서 찾은 summary를 실행합니다."
+        }
+      ]
+    },
+    {
+      "title": "부모 초기화 후 새 정보 더하기",
+      "body": [
+        "자식에서 __init__을 정의하면 부모의 __init__이 자동으로 추가 실행되는 것은 아닙니다. super().__init__(...)으로 공통 초기화를 호출한 뒤 자식의 정보를 설정할 수 있습니다.",
+        "super()는 메서드 탐색 순서에서 다음 구현에 접근하는 도구입니다. 이 단일 상속 예제에서는 부모 Observation의 초기화를 호출합니다."
+      ],
+      "code": "class Observation:\n    def __init__(self, count):\n        self.count = count\n\nclass BirdObservation(Observation):\n    def __init__(self, count, species):\n        super().__init__(count)\n        self.species = species\n\nrecord = BirdObservation(4, \"참새\")\nprint(record.count, record.species)",
+      "output": "4 참새",
+      "diagram": {
+        "type": "pipeline",
+        "nodes": [
+          {
+            "label": "부모 초기화",
+            "value": "count=4"
+          },
+          {
+            "label": "자식 초기화",
+            "value": "species=참새"
+          }
+        ],
+        "caption": "부모 초기화: count=4 · 자식 초기화: species=참새"
+      },
+      "trace": [
+        {
+          "label": "super 호출",
+          "state": "공통 수량 속성을 설정합니다."
+        },
+        {
+          "label": "추가 설정",
+          "state": "자식에게 필요한 종 이름을 붙입니다."
+        }
+      ]
+    },
+    {
+      "title": "같은 메서드 이름에 새 행동 제공하기",
+      "body": [
+        "재정의는 자식 클래스에서 부모와 같은 이름의 메서드를 정의해 동작을 바꾸는 일입니다. record.summary()를 호출하면 자식의 구현을 먼저 찾습니다.",
+        "자식 구현 안에서 super().summary()를 호출하면 공통 결과에 글을 덧붙일 수 있습니다. 호출자는 계속 summary()로 문자열을 받으므로 입력과 반환의 약속을 유지합니다."
+      ],
+      "code": "class Observation:\n    def summary(self):\n        return \"현장 기록\"\n\nclass BirdObservation(Observation):\n    def summary(self):\n        return super().summary() + \" / 조류\"\n\nprint(Observation().summary())\nprint(BirdObservation().summary())",
+      "output": "현장 기록\n현장 기록 / 조류",
+      "diagram": {
+        "type": "pipeline",
+        "nodes": [
+          {
+            "label": "부모 결과",
+            "value": "현장 기록"
+          },
+          {
+            "label": "자식 결과",
+            "value": "현장 기록 / 조류"
+          }
+        ],
+        "caption": "부모 결과: 현장 기록 · 자식 결과: 현장 기록 / 조류"
+      },
+      "trace": [
+        {
+          "label": "자식 호출",
+          "state": "자식 summary에 진입합니다."
+        },
+        {
+          "label": "부모 재사용",
+          "state": "공통 문자열을 받고 자식 설명을 붙입니다."
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "question": "자식 클래스가 __init__을 새로 정의한 경우 부모 초기화를 실행하려면 무엇을 하나요?",
+    "options": [
+      {
+        "text": "항상 자동으로 추가 실행되므로 아무것도 하지 않습니다.",
+        "correct": false,
+        "feedback": "자식이 초기화를 재정의하면 필요한 부모 초기화를 명시해야 합니다."
+      },
+      {
+        "text": "super().__init__(...)을 호출합니다.",
+        "correct": true,
+        "feedback": "부모의 공통 상태를 초기화하고 자식 상태를 추가할 수 있습니다."
+      },
+      {
+        "text": "부모 클래스 이름을 문자열로 출력합니다.",
+        "correct": false,
+        "feedback": "이름 출력은 초기화 메서드를 실행하지 않습니다."
+      }
+    ]
+  },
+  "sourceUrls": [
+    "https://docs.python.org/3/tutorial/classes.html#inheritance",
+    "https://docs.python.org/3/library/functions.html#super"
+  ]
+}

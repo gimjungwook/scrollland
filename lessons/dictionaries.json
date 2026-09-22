@@ -1,0 +1,152 @@
+{
+  "slug": "dictionaries",
+  "courseId": "collections",
+  "title": "이름표로 값 찾기",
+  "problem": "순번을 외우지 않고 장소 이름으로 관찰 횟수를 찾고 싶습니다.",
+  "goal": "딕셔너리의 키와 값을 읽고 추가·수정·삭제합니다.",
+  "prerequisites": [
+    "sets"
+  ],
+  "topics": [
+    "딕셔너리",
+    "키",
+    "값",
+    "get",
+    "items",
+    "update",
+    "pop"
+  ],
+  "takeaway": "딕셔너리는 위치 대신 키로 값을 찾습니다. 같은 키의 값은 하나입니다.",
+  "sections": [
+    {
+      "title": "키와 값의 관계 만들기",
+      "body": [
+        "딕셔너리 dict는 키로 값을 찾는 묶음입니다. 키는 값을 식별하는 이름표이고, 각 키는 값 하나에 연결됩니다. 중괄호 안에 키: 값 형태로 적습니다.",
+        "키는 문자열·정수처럼 해시 가능한 값이어야 합니다. 해시 가능은 저장 중 비교와 검색에 쓸 식별값이 안정적으로 유지된다는 뜻입니다. 변경 가능한 리스트는 키로 쓸 수 없습니다."
+      ],
+      "code": "counts = {\"숲\": 4, \"강\": 2}\nprint(counts[\"강\"])\nprint(\"숲\" in counts)\nprint(len(counts))",
+      "output": "2\nTrue\n2",
+      "diagram": {
+        "type": "collection",
+        "nodes": [
+          {
+            "label": "키 숲",
+            "value": "값 4"
+          },
+          {
+            "label": "키 강",
+            "value": "값 2"
+          }
+        ],
+        "caption": "키 숲: 값 4 · 키 강: 값 2"
+      },
+      "trace": [
+        {
+          "label": "매핑 생성",
+          "state": "장소 이름 두 개에 수량을 연결합니다."
+        },
+        {
+          "label": "검색",
+          "state": "강이라는 키로 값 2를 찾습니다."
+        }
+      ]
+    },
+    {
+      "title": "없는 키에 응답하기",
+      "body": [
+        "counts[\"못\"]처럼 없는 키를 직접 읽으면 KeyError라는 예외가 납니다. get()은 키가 없을 때 사용할 기본값을 함께 지정할 수 있습니다.",
+        "get()이 기본값을 돌려줘도 딕셔너리에 그 키를 추가하지는 않습니다. in은 값이 아닌 키의 포함 여부를 확인하므로 실제 등록 여부를 따로 확인할 수 있습니다."
+      ],
+      "code": "counts = {\"숲\": 4}\nprint(counts.get(\"못\", 0))\nprint(\"못\" in counts)\nprint(counts.get(\"숲\", 0))",
+      "output": "0\nFalse\n4",
+      "diagram": {
+        "type": "branch",
+        "nodes": [
+          {
+            "label": "등록된 키",
+            "value": "숲 → 4"
+          },
+          {
+            "label": "등록되지 않은 키",
+            "value": "못 → 조회할 때 기본값 0"
+          }
+        ],
+        "caption": "등록된 키: 숲 → 4 · 등록되지 않은 키: 못 → 조회할 때 기본값 0"
+      },
+      "trace": [
+        {
+          "label": "기본값 조회",
+          "state": "못이 없으므로 0을 반환합니다."
+        },
+        {
+          "label": "등록 여부 확인",
+          "state": "못은 여전히 딕셔너리에 없습니다."
+        }
+      ]
+    },
+    {
+      "title": "같은 키를 갱신하기",
+      "body": [
+        "키에 대입하면 기존 키의 값을 바꾸거나 새 키를 추가합니다. update()는 여러 키·값을 한 번에 반영합니다. pop()은 키를 제거하고 그 값을 반환합니다.",
+        "keys()는 키들을, values()는 값들을, items()는 키·값 쌍을 보여주는 뷰를 만듭니다. 뷰는 원본 딕셔너리의 변경을 반영하는 조회 대상입니다. 예제에서는 list()로 현재 항목을 한 번 모아 출력합니다."
+      ],
+      "code": "counts = {\"숲\": 4, \"강\": 2}\ncounts[\"숲\"] = 5\ncounts.update({\"못\": 3})\nremoved = counts.pop(\"강\")\nprint(removed)\nprint(list(counts.items()))",
+      "output": "2\n[('숲', 5), ('못', 3)]",
+      "diagram": {
+        "type": "collection",
+        "nodes": [
+          {
+            "label": "갱신한 키",
+            "value": "숲 → 5"
+          },
+          {
+            "label": "새 키",
+            "value": "못 → 3"
+          },
+          {
+            "label": "제거한 키",
+            "value": "강의 이전 값 2 반환"
+          }
+        ],
+        "caption": "갱신한 키: 숲 → 5 · 새 키: 못 → 3 · 제거한 키: 강의 이전 값 2 반환"
+      },
+      "trace": [
+        {
+          "label": "변경 전",
+          "state": "숲 4, 강 2"
+        },
+        {
+          "label": "추가와 수정",
+          "state": "숲 5, 강 2, 못 3"
+        },
+        {
+          "label": "제거 후",
+          "state": "숲 5, 못 3"
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "question": "scores.get(\"못\", 0)은 못 키가 없을 때 무엇을 하나요?",
+    "options": [
+      {
+        "text": "0을 반환하지만 키를 추가하지 않습니다.",
+        "correct": true,
+        "feedback": "get()은 조회이며 딕셔너리를 수정하지 않습니다."
+      },
+      {
+        "text": "못: 0을 자동으로 추가합니다.",
+        "correct": false,
+        "feedback": "추가하려면 키에 직접 대입해야 합니다."
+      },
+      {
+        "text": "항상 KeyError를 냅니다.",
+        "correct": false,
+        "feedback": "직접 키 접근과 달리 get()은 기본값을 반환할 수 있습니다."
+      }
+    ]
+  },
+  "sourceUrls": [
+    "https://docs.python.org/3/library/stdtypes.html#mapping-types-dict"
+  ]
+}

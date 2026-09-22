@@ -1,0 +1,147 @@
+{
+  "slug": "strings",
+  "courseId": "values",
+  "title": "글의 위치와 표현 다루기",
+  "problem": "기록 코드에서 날짜 부분만 꺼내고 읽기 좋은 안내문을 만들고 싶습니다.",
+  "goal": "문자열의 위치·부분 범위·서식을 구분해 사용합니다.",
+  "prerequisites": [
+    "numbers"
+  ],
+  "topics": [
+    "문자열",
+    "인덱스",
+    "슬라이스",
+    "이스케이프",
+    "f-string"
+  ],
+  "takeaway": "문자열의 위치는 0부터 세고, 부분 범위의 끝 위치는 포함하지 않습니다.",
+  "sections": [
+    {
+      "title": "첫 글자와 마지막 글자 찾기",
+      "body": [
+        "인덱스는 항목의 위치를 나타내는 정수입니다. 문자열의 첫 위치는 0이고, -1은 마지막 위치입니다. 대괄호에 인덱스를 적어 한 글자를 읽습니다.",
+        "len()은 문자열의 길이를 구합니다. 존재하지 않는 위치를 하나 선택하면 오류가 납니다. 문자열은 만든 뒤 내부 글자를 직접 바꿀 수 없는 불변 객체입니다."
+      ],
+      "code": "code = \"OBS-27\"\nprint(code[0])\nprint(code[-1])\nprint(len(code))",
+      "output": "O\n7\n6",
+      "diagram": {
+        "type": "collection",
+        "nodes": [
+          {
+            "label": "앞에서 센 위치",
+            "value": "0: O, 1: B, 2: S"
+          },
+          {
+            "label": "뒤에서 센 위치",
+            "value": "-1: 7, -2: 2"
+          }
+        ],
+        "caption": "앞에서 센 위치: 0: O, 1: B, 2: S · 뒤에서 센 위치: -1: 7, -2: 2"
+      },
+      "trace": [
+        {
+          "label": "문자열 준비",
+          "state": "길이 6의 문자열을 code에 연결합니다."
+        },
+        {
+          "label": "위치 읽기",
+          "state": "0에서 O, -1에서 7을 가져옵니다."
+        }
+      ]
+    },
+    {
+      "title": "부분 범위를 잘라 읽기",
+      "body": [
+        "슬라이스는 시작 위치부터 끝 위치 직전까지의 부분을 가져오는 표기입니다. code[0:3]은 위치 0, 1, 2의 글자를 모으고 3은 포함하지 않습니다.",
+        "시작이나 끝을 생략하면 문자열의 처음이나 끝까지 사용합니다. 슬라이스는 원본을 바꾸지 않고 새 문자열을 돌려줍니다."
+      ],
+      "code": "code = \"OBS-27\"\nprint(code[:3])\nprint(code[4:])\nprint(code)",
+      "output": "OBS\n27\nOBS-27",
+      "diagram": {
+        "type": "collection",
+        "nodes": [
+          {
+            "label": "전체",
+            "value": "OBS-27"
+          },
+          {
+            "label": "선택 범위",
+            "value": "[:3] → OBS"
+          },
+          {
+            "label": "다른 범위",
+            "value": "[4:] → 27"
+          }
+        ],
+        "caption": "전체: OBS-27 · 선택 범위: [:3] → OBS · 다른 범위: [4:] → 27"
+      },
+      "trace": [
+        {
+          "label": "선택 전",
+          "state": "code는 OBS-27입니다."
+        },
+        {
+          "label": "선택 후",
+          "state": "OBS와 27을 각각 읽어도 원본은 유지됩니다."
+        }
+      ]
+    },
+    {
+      "title": "값을 문장 안에 넣기",
+      "body": [
+        "f-string은 f를 붙인 문자열 안의 중괄호 자리에 값을 넣는 표기입니다. {distance:.1f}는 숫자를 소수점 아래 한 자리로 표시합니다. 표시 자릿수를 정해도 distance의 저장값은 바뀌지 않습니다.",
+        "이스케이프는 역슬래시로 특수 문자를 적는 방법입니다. \\n은 줄바꿈이고 \\\"는 문자열 안의 큰따옴표입니다. 두 줄 안내문을 하나의 문자열로 만들 수 있습니다."
+      ],
+      "code": "distance = 2.36\nprint(f\"산책 거리: {distance:.1f} km\")\nprint(\"관찰\\n기록\")",
+      "output": "산책 거리: 2.4 km\n관찰\n기록",
+      "diagram": {
+        "type": "flow",
+        "nodes": [
+          {
+            "label": "수치",
+            "value": "distance → 2.36"
+          },
+          {
+            "label": "문장에 표시",
+            "value": "산책 거리: 2.4 km"
+          }
+        ],
+        "caption": "수치: distance → 2.36 · 문장에 표시: 산책 거리: 2.4 km"
+      },
+      "trace": [
+        {
+          "label": "서식 적용",
+          "state": "2.36을 소수점 아래 한 자리로 표시합니다."
+        },
+        {
+          "label": "줄바꿈 처리",
+          "state": "\\n 위치에서 다음 출력 줄로 넘어갑니다."
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "question": "name = \"river\"일 때 name[1:4]의 값은 무엇인가요?",
+    "options": [
+      {
+        "text": "ive",
+        "correct": true,
+        "feedback": "위치 1, 2, 3을 포함하고 끝 위치 4는 제외합니다."
+      },
+      {
+        "text": "iver",
+        "correct": false,
+        "feedback": "끝 위치 4의 r은 포함하지 않습니다."
+      },
+      {
+        "text": "riv",
+        "correct": false,
+        "feedback": "시작 위치 1은 r이 아니라 i입니다."
+      }
+    ]
+  },
+  "sourceUrls": [
+    "https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str",
+    "https://docs.python.org/3/reference/lexical_analysis.html#f-strings"
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "slug": "polymorphism",
+  "courseId": "objects",
+  "title": "같은 요청을 여러 종류에 보내기",
+  "problem": "기록 종류가 늘 때마다 종류별 조건문을 계속 추가하고 있습니다.",
+  "goal": "동일한 호출 계약을 여러 객체가 제공하는 다형성을 설명합니다.",
+  "prerequisites": [
+    "inheritance"
+  ],
+  "topics": [
+    "다형성",
+    "덕 타이핑",
+    "호출 계약"
+  ],
+  "takeaway": "같은 요청에 같은 의미의 결과를 제공하면 여러 종류를 같은 흐름에서 사용할 수 있습니다.",
+  "sections": [
+    {
+      "title": "같은 함수가 여러 종류에 동작하기",
+      "body": [
+        "다형성은 같은 연산이나 요청을 여러 종류의 객체에 적용할 수 있는 성질입니다. len()은 문자열의 글자 수와 리스트의 항목 수를 각각 구합니다.",
+        "출력 숫자가 같더라도 무엇을 세었는지 의미는 다릅니다. 공통 요청의 뜻을 “항목 수”처럼 설명할 수 있어야 다른 자료형에 사용한 결과도 이해할 수 있습니다."
+      ],
+      "code": "print(len(\"관찰\"))\nprint(len([4, 2]))\nprint(len({\"숲\": 4, \"강\": 2}))",
+      "output": "2\n2\n2",
+      "diagram": {
+        "type": "collection",
+        "nodes": [
+          {
+            "label": "문자열",
+            "value": "글자 2개"
+          },
+          {
+            "label": "리스트",
+            "value": "항목 2개"
+          },
+          {
+            "label": "딕셔너리",
+            "value": "키·값 항목 2개"
+          }
+        ],
+        "caption": "문자열: 글자 2개 · 리스트: 항목 2개 · 딕셔너리: 키·값 항목 2개"
+      },
+      "trace": [
+        {
+          "label": "같은 호출",
+          "state": "모두 len()으로 크기를 묻습니다."
+        },
+        {
+          "label": "종류별 처리",
+          "state": "각 객체의 크기 규칙에 따라 2를 반환합니다."
+        }
+      ]
+    },
+    {
+      "title": "상속 없이 같은 요청에 답하기",
+      "body": [
+        "호출 계약은 객체를 사용하는 쪽과 정한 호출 방법과 결과의 약속입니다. 여기서는 인자 없는 summary()를 호출하면 설명 문자열을 돌려준다는 약속입니다.",
+        "덕 타이핑은 정확한 클래스 이름보다 필요한 동작을 제공하는지에 따라 객체를 사용하는 방식입니다. 두 클래스가 상속 관계가 아니어도 summary()를 제공하면 같은 반복에서 호출할 수 있습니다."
+      ],
+      "code": "class BirdRecord:\n    def summary(self):\n        return \"조류 4마리\"\n\nclass WeatherRecord:\n    def summary(self):\n        return \"날씨 맑음\"\n\nfor record in [BirdRecord(), WeatherRecord()]:\n    print(record.summary())",
+      "output": "조류 4마리\n날씨 맑음",
+      "diagram": {
+        "type": "pipeline",
+        "nodes": [
+          {
+            "label": "BirdRecord 응답",
+            "value": "조류 4마리"
+          },
+          {
+            "label": "WeatherRecord 응답",
+            "value": "날씨 맑음"
+          }
+        ],
+        "caption": "BirdRecord 응답: 조류 4마리 · WeatherRecord 응답: 날씨 맑음"
+      },
+      "trace": [
+        {
+          "label": "첫 객체 요청",
+          "state": "summary()로 조류 설명을 받습니다."
+        },
+        {
+          "label": "둘째 객체 요청",
+          "state": "같은 호출로 날씨 설명을 받습니다."
+        }
+      ]
+    },
+    {
+      "title": "반환 의미까지 같은 계약 유지하기",
+      "body": [
+        "메서드 이름만 같다고 교체 가능한 것은 아닙니다. 한 객체는 문자열을 반환하고 다른 객체는 출력만 하고 None을 반환한다면 호출자가 기대한 결합이 깨집니다.",
+        "아래 render는 summary()가 문자열을 반환한다는 계약에 의존합니다. 각 클래스의 안쪽 구현은 달라도 이 계약을 유지하면 render를 고치지 않고 새 기록 종류를 추가할 수 있습니다."
+      ],
+      "code": "def render(record):\n    return \"기록: \" + record.summary()\n\nclass CountRecord:\n    def __init__(self, count):\n        self.count = count\n    def summary(self):\n        return f\"{self.count}개\"\n\nclass NoteRecord:\n    def summary(self):\n        return \"수량 확인 전\"\n\nprint(render(CountRecord(5)))\nprint(render(NoteRecord()))",
+      "output": "기록: 5개\n기록: 수량 확인 전",
+      "diagram": {
+        "type": "pipeline",
+        "nodes": [
+          {
+            "label": "공통 계약",
+            "value": "summary() → 설명 문자열"
+          },
+          {
+            "label": "사용하는 함수",
+            "value": "render가 접두어를 붙임"
+          }
+        ],
+        "caption": "공통 계약: summary() → 설명 문자열 · 사용하는 함수: render가 접두어를 붙임"
+      },
+      "trace": [
+        {
+          "label": "요청",
+          "state": "render가 객체의 summary를 호출합니다."
+        },
+        {
+          "label": "결합",
+          "state": "반환 문자열에 기록:을 붙여 돌려줍니다."
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "question": "두 객체를 같은 summary() 호출로 사용하려면 무엇을 맞춰야 하나요?",
+    "options": [
+      {
+        "text": "클래스 이름만 같습니다.",
+        "correct": false,
+        "feedback": "이름이 아니라 실제 호출 가능 여부와 반환 의미가 중요합니다."
+      },
+      {
+        "text": "반드시 같은 부모 클래스만 상속합니다.",
+        "correct": false,
+        "feedback": "상속 없이도 필요한 동작을 제공할 수 있습니다."
+      },
+      {
+        "text": "입력과 반환 의미를 포함한 호출 계약을 맞춥니다.",
+        "correct": true,
+        "feedback": "같은 이름뿐 아니라 호출자가 기대하는 결과를 제공해야 합니다."
+      }
+    ]
+  },
+  "sourceUrls": [
+    "https://docs.python.org/3/glossary.html#term-duck-typing",
+    "https://docs.python.org/3/reference/datamodel.html#special-method-names"
+  ]
+}

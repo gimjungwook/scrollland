@@ -1,0 +1,167 @@
+{
+  "slug": "exceptions",
+  "courseId": "persistence",
+  "title": "예외를 구별해 처리하기",
+  "problem": "숫자가 아닌 입력 하나 때문에 전체 기록 처리가 멈춥니다.",
+  "goal": "예외 종류·처리 범위·정상 경로·정리 작업을 구별합니다.",
+  "prerequisites": [
+    "nested-classes",
+    "input-output"
+  ],
+  "topics": [
+    "예외",
+    "try",
+    "except",
+    "else",
+    "finally",
+    "raise",
+    "ValueError",
+    "TypeError"
+  ],
+  "takeaway": "예상한 예외만 좁은 범위에서 처리하고, 성공과 실패를 숨기지 않습니다.",
+  "sections": [
+    {
+      "title": "예상한 입력 오류에 응답하기",
+      "body": [
+        "예외는 실행을 계속할 수 없는 상황을 알리는 객체입니다. try 안에서 예외가 발생하면 해당 종류를 받는 except로 이동하고, 오류가 난 뒤의 try 지시는 건너뜁니다.",
+        "숫자 변환 실패는 ValueError로 처리합니다. 모든 오류를 한꺼번에 무시하면 코드 실수까지 숨길 수 있으므로 위험한 변환 부분만 try로 감싸세요. 아래 입력 문자열은 예제 안에 고정되어 있습니다."
+      ],
+      "code": "text = \"여섯\"\ntry:\n    count = int(text)\nexcept ValueError:\n    print(\"정수로 입력해 주세요\")\nprint(\"다음 기록을 받을 수 있습니다\")",
+      "output": "정수로 입력해 주세요\n다음 기록을 받을 수 있습니다",
+      "diagram": {
+        "type": "branch",
+        "nodes": [
+          {
+            "label": "입력",
+            "value": "여섯"
+          },
+          {
+            "label": "변환",
+            "value": "ValueError 발생"
+          },
+          {
+            "label": "응답",
+            "value": "정수 입력 안내"
+          }
+        ],
+        "caption": "입력: 여섯 · 변환: ValueError 발생 · 응답: 정수 입력 안내"
+      },
+      "trace": [
+        {
+          "label": "try 진입",
+          "state": "문자열을 정수로 바꾸려 합니다."
+        },
+        {
+          "label": "예외 처리",
+          "state": "ValueError와 맞는 except를 실행합니다."
+        },
+        {
+          "label": "계속 실행",
+          "state": "처리가 끝나면 바깥 다음 지시로 갑니다."
+        }
+      ]
+    },
+    {
+      "title": "정상 경로와 정리 구별하기",
+      "body": [
+        "try의 else는 try가 예외 없이 끝났을 때 실행됩니다. finally는 정상·예외 여부와 관계없이 정리 지시를 실행하는 구간입니다. 파일처럼 반드시 닫아야 하는 대상에는 다음 레슨의 with를 주로 사용합니다.",
+        "아래는 정상 변환 예제입니다. else에서 성공 결과를 쓰고 finally에서 처리 종료를 알립니다. finally 안의 return으로 앞의 반환이나 예외를 덮지 않도록 주의하세요."
+      ],
+      "code": "try:\n    count = int(\"6\")\nexcept ValueError:\n    print(\"입력 오류\")\nelse:\n    print(\"수량\", count)\nfinally:\n    print(\"처리 종료\")",
+      "output": "수량 6\n처리 종료",
+      "diagram": {
+        "type": "timeline",
+        "nodes": [
+          {
+            "label": "정상 변환",
+            "value": "count=6"
+          },
+          {
+            "label": "else",
+            "value": "수량 출력"
+          },
+          {
+            "label": "finally",
+            "value": "처리 종료"
+          }
+        ],
+        "caption": "정상 변환: count=6 · else: 수량 출력 · finally: 처리 종료"
+      },
+      "trace": [
+        {
+          "label": "try 성공",
+          "state": "예외가 없으므로 except를 건너뜁니다."
+        },
+        {
+          "label": "else 실행",
+          "state": "성공한 값을 사용합니다."
+        },
+        {
+          "label": "finally 실행",
+          "state": "종료 작업을 수행합니다."
+        }
+      ]
+    },
+    {
+      "title": "함수의 입력 규칙 위반 알리기",
+      "body": [
+        "raise는 예외를 직접 발생시키는 지시입니다. 자료형이 맞지 않으면 TypeError, 정수이지만 허용 범위를 벗어나면 ValueError처럼 이유를 구분할 수 있습니다.",
+        "except ... as error는 예외 객체에 이름을 붙여 메시지를 읽게 합니다. 호출자는 처리할 수 있는 오류에 응답하고, 예상하지 못한 예외는 조용히 성공으로 바꾸지 않습니다."
+      ],
+      "code": "def checked_count(value):\n    if not isinstance(value, int) or isinstance(value, bool):\n        raise TypeError(\"수량은 정수여야 합니다\")\n    if value < 0:\n        raise ValueError(\"수량은 0 이상이어야 합니다\")\n    return value\n\ntry:\n    checked_count(-2)\nexcept ValueError as error:\n    print(error)\nprint(checked_count(3))",
+      "output": "수량은 0 이상이어야 합니다\n3",
+      "diagram": {
+        "type": "branch",
+        "nodes": [
+          {
+            "label": "입력 -2",
+            "value": "자료형은 정수지만 범위 위반"
+          },
+          {
+            "label": "입력 3",
+            "value": "모든 검사 통과"
+          }
+        ],
+        "caption": "입력 -2: 자료형은 정수지만 범위 위반 · 입력 3: 모든 검사 통과"
+      },
+      "trace": [
+        {
+          "label": "검사",
+          "state": "음수 입력에 ValueError를 발생시킵니다."
+        },
+        {
+          "label": "호출자 처리",
+          "state": "설명 메시지를 출력합니다."
+        },
+        {
+          "label": "정상 호출",
+          "state": "3은 그대로 반환됩니다."
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "question": "숫자 변환 실패만 처리하려면 어떤 예외를 받는 것이 알맞나요?",
+    "options": [
+      {
+        "text": "이유에 상관없이 except: pass",
+        "correct": false,
+        "feedback": "오류를 모두 숨기면 프로그램의 다른 문제도 발견하기 어렵습니다."
+      },
+      {
+        "text": "int() 변환을 감싼 except ValueError",
+        "correct": true,
+        "feedback": "예상한 변환 오류를 좁은 범위에서 처리합니다."
+      },
+      {
+        "text": "모든 코드를 try 바깥에 두기",
+        "correct": false,
+        "feedback": "처리 구간이 없으면 실패가 호출한 쪽으로 전파됩니다."
+      }
+    ]
+  },
+  "sourceUrls": [
+    "https://docs.python.org/3/tutorial/errors.html",
+    "https://docs.python.org/3/library/exceptions.html"
+  ]
+}

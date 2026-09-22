@@ -1,0 +1,154 @@
+{
+  "slug": "json-data",
+  "courseId": "tools",
+  "title": "다른 도구와 읽을 수 있는 기록 만들기",
+  "problem": "Python 안의 기록을 다른 프로그램과 교환할 텍스트로 만들고 싶습니다.",
+  "goal": "JSON 문자열과 Python 객체를 구분해 직렬화·역직렬화합니다.",
+  "prerequisites": [
+    "regex",
+    "nested-data"
+  ],
+  "topics": [
+    "JSON",
+    "직렬화",
+    "역직렬화",
+    "dumps",
+    "loads",
+    "null"
+  ],
+  "takeaway": "JSON은 텍스트 형식이며, Python 딕셔너리 그 자체가 아닙니다.",
+  "sections": [
+    {
+      "title": "객체를 JSON 문자열로 바꾸기",
+      "body": [
+        "JSON은 문자열·숫자·불리언·null·배열·객체를 표현하는 데이터 교환용 텍스트 형식입니다. Python의 dict와 list를 json.dumps()로 JSON 문자열로 바꾸는 일을 직렬화라고 합니다.",
+        "ensure_ascii=False는 한글을 이스케이프 표기 대신 읽을 수 있는 글로 남깁니다. 결과 text는 딕셔너리가 아닌 문자열이므로 키로 접근하기 전에 다시 읽어야 합니다."
+      ],
+      "code": "import json\n\nrecord = {\"place\": \"숲\", \"count\": 4}\ntext = json.dumps(record, ensure_ascii=False)\nprint(text)\nprint(type(text))",
+      "output": "{\"place\": \"숲\", \"count\": 4}\n<class 'str'>",
+      "diagram": {
+        "type": "pipeline",
+        "nodes": [
+          {
+            "label": "Python 객체",
+            "value": "딕셔너리 record"
+          },
+          {
+            "label": "직렬화 결과",
+            "value": "JSON 문자열 text"
+          }
+        ],
+        "caption": "Python 객체: 딕셔너리 record · 직렬화 결과: JSON 문자열 text"
+      },
+      "trace": [
+        {
+          "label": "dumps 실행",
+          "state": "객체의 내용을 JSON 규칙의 글로 만듭니다."
+        },
+        {
+          "label": "자료형 확인",
+          "state": "결과는 str입니다."
+        }
+      ]
+    },
+    {
+      "title": "텍스트에서 객체 복원하기",
+      "body": [
+        "json.loads()는 JSON 문자열을 Python 객체로 읽는 역직렬화 함수입니다. JSON의 true와 false는 Python의 True와 False, null은 None으로 읽힙니다.",
+        "JSON은 키에 큰따옴표를 사용합니다. Python 딕셔너리의 출력처럼 작은따옴표를 쓰거나 True를 적은 글을 그대로 JSON이라고 간주하면 안 됩니다."
+      ],
+      "code": "import json\n\ntext = '{\"place\":\"강\",\"confirmed\":true,\"note\":null}'\nrecord = json.loads(text)\nprint(record[\"place\"])\nprint(record[\"confirmed\"])\nprint(record[\"note\"] is None)",
+      "output": "강\nTrue\nTrue",
+      "diagram": {
+        "type": "pipeline",
+        "nodes": [
+          {
+            "label": "JSON true",
+            "value": "Python True"
+          },
+          {
+            "label": "JSON null",
+            "value": "Python None"
+          }
+        ],
+        "caption": "JSON true: Python True · JSON null: Python None"
+      },
+      "trace": [
+        {
+          "label": "텍스트 읽기",
+          "state": "JSON 형식에 따라 객체를 만듭니다."
+        },
+        {
+          "label": "객체 사용",
+          "state": "딕셔너리 키로 복원한 값을 읽습니다."
+        }
+      ]
+    },
+    {
+      "title": "왕복해도 모든 자료형이 같지는 않기",
+      "body": [
+        "JSON 배열은 loads()에서 리스트가 됩니다. Python 튜플을 dumps()로 쓰면 JSON 배열이 되므로 다시 읽었을 때 튜플로 돌아오지는 않습니다. 집합은 기본 설정으로 JSON에 바로 쓸 수 없습니다.",
+        "서로 주고받을 데이터의 구조와 키 이름을 정해야 합니다. JSON은 단지 형식을 읽게 해 줄 뿐, count가 허용한 수량인지 같은 업무 규칙까지 확인하지 않습니다.",
+        "isinstance(값, 자료형)은 그 값이 지정한 자료형에 속하는지 확인하는 내장 함수입니다. 여기서는 restored[\"place\"]가 문자열을 나타내는 str 자료형인지 검사하므로 True가 나옵니다."
+      ],
+      "code": "import json\n\nrecord = {\"counts\": (2, 4), \"place\": \"숲\"}\nrestored = json.loads(json.dumps(record, ensure_ascii=False))\nprint(restored[\"counts\"])\nprint(type(restored[\"counts\"]))\nprint(isinstance(restored[\"place\"], str))",
+      "output": "[2, 4]\n<class 'list'>\nTrue",
+      "diagram": {
+        "type": "pipeline",
+        "nodes": [
+          {
+            "label": "원본 counts",
+            "value": "튜플 (2, 4)"
+          },
+          {
+            "label": "JSON 중간 표현",
+            "value": "배열 [2, 4]"
+          },
+          {
+            "label": "복원 counts",
+            "value": "리스트 [2, 4]"
+          }
+        ],
+        "caption": "원본 counts: 튜플 (2, 4) · JSON 중간 표현: 배열 [2, 4] · 복원 counts: 리스트 [2, 4]"
+      },
+      "trace": [
+        {
+          "label": "쓰기",
+          "state": "튜플 항목을 JSON 배열로 표현합니다."
+        },
+        {
+          "label": "읽기",
+          "state": "JSON 배열을 Python 리스트로 만듭니다."
+        },
+        {
+          "label": "구조 확인",
+          "state": "필요한 필드의 자료형을 별도로 검사합니다."
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "question": "json.dumps(record)의 반환값 자료형은 무엇인가요?",
+    "options": [
+      {
+        "text": "dict",
+        "correct": false,
+        "feedback": "딕셔너리는 입력 객체일 수 있지만 dumps()는 텍스트를 만듭니다."
+      },
+      {
+        "text": "str",
+        "correct": true,
+        "feedback": "JSON 형식으로 적힌 문자열이 반환됩니다."
+      },
+      {
+        "text": "파일",
+        "correct": false,
+        "feedback": "dumps()는 파일을 만들지 않습니다. 파일 저장은 별도 단계입니다."
+      }
+    ]
+  },
+  "sourceUrls": [
+    "https://docs.python.org/3/library/json.html",
+    "https://docs.python.org/3/library/functions.html#isinstance"
+  ]
+}

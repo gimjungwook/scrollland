@@ -1,0 +1,152 @@
+{
+  "slug": "methods",
+  "courseId": "objects",
+  "title": "객체의 행동에 이름 붙이기",
+  "problem": "수량을 바꾸는 규칙을 코드 여러 곳에서 반복하지 않으려 합니다.",
+  "goal": "인스턴스·클래스·정적 메서드의 첫 인자와 목적을 구별합니다.",
+  "prerequisites": [
+    "attributes"
+  ],
+  "topics": [
+    "메서드",
+    "인스턴스 메서드",
+    "classmethod",
+    "staticmethod",
+    "cls"
+  ],
+  "takeaway": "메서드는 필요한 상태가 인스턴스인지 클래스인지에 따라 형태를 고릅니다.",
+  "sections": [
+    {
+      "title": "인스턴스 상태를 사용하는 메서드",
+      "body": [
+        "인스턴스 메서드는 현재 객체를 self로 받아 그 속성을 읽거나 바꿉니다. record.add(2)는 Python이 record를 self로 전달한 호출입니다.",
+        "메서드는 함수와 마찬가지로 결과를 반환할 수 있습니다. 아래 add는 수량을 바꾼 후 새 수량을 반환합니다. 상태 변경과 반환의 두 역할을 설명에 함께 남겨야 호출자가 예상할 수 있습니다."
+      ],
+      "code": "class Observation:\n    def __init__(self, count):\n        self.count = count\n    def add(self, amount):\n        self.count += amount\n        return self.count\n\nrecord = Observation(4)\nprint(record.add(2))\nprint(record.count)",
+      "output": "6\n6",
+      "diagram": {
+        "type": "object",
+        "nodes": [
+          {
+            "label": "변경 전",
+            "value": "record.count=4"
+          },
+          {
+            "label": "호출 입력",
+            "value": "amount=2"
+          },
+          {
+            "label": "변경 후",
+            "value": "record.count=6"
+          }
+        ],
+        "caption": "변경 전: record.count=4 · 호출 입력: amount=2 · 변경 후: record.count=6"
+      },
+      "trace": [
+        {
+          "label": "인자 연결",
+          "state": "self는 record, amount는 2입니다."
+        },
+        {
+          "label": "상태 갱신",
+          "state": "count를 6으로 바꾸고 6을 반환합니다."
+        }
+      ]
+    },
+    {
+      "title": "클래스로 만드는 다른 경로 제공하기",
+      "body": [
+        "@classmethod는 인스턴스 대신 클래스를 첫 인자로 받습니다. 첫 매개변수 이름으로 cls를 관례적으로 사용합니다. 문자열 등 다른 입력 형식에서 인스턴스를 만드는 대체 생성 경로에 쓸 수 있습니다.",
+        "cls(...)로 새 객체를 만들면 상속받은 클래스에서 메서드를 호출했을 때 그 클래스의 객체를 만들 수 있습니다. 아래에서는 숫자 문자열을 정수로 읽어 초기화합니다."
+      ],
+      "code": "class Observation:\n    def __init__(self, count):\n        self.count = count\n    @classmethod\n    def from_text(cls, text):\n        return cls(int(text))\n\nrecord = Observation.from_text(\"7\")\nprint(record.count)\nprint(isinstance(record, Observation))",
+      "output": "7\nTrue",
+      "diagram": {
+        "type": "pipeline",
+        "nodes": [
+          {
+            "label": "클래스 메서드 입력",
+            "value": "cls=Observation, text=\"7\""
+          },
+          {
+            "label": "새 인스턴스",
+            "value": "count=7"
+          }
+        ],
+        "caption": "클래스 메서드 입력: cls=Observation, text=\"7\" · 새 인스턴스: count=7"
+      },
+      "trace": [
+        {
+          "label": "문자열 변환",
+          "state": "7이라는 글을 정수로 읽습니다."
+        },
+        {
+          "label": "생성",
+          "state": "cls(7)로 새 인스턴스를 만듭니다."
+        }
+      ]
+    },
+    {
+      "title": "객체 상태가 필요 없는 보조 함수",
+      "body": [
+        "@staticmethod는 self나 cls를 자동으로 받지 않습니다. 클래스와 개념적으로 관련 있지만 객체의 상태를 읽지 않는 계산을 함께 둘 때 사용합니다.",
+        "단순한 독립 함수로 두는 것도 가능합니다. 클래스 안에 있다는 이유만으로 상태를 바꾸는 메서드라고 생각하지 말고, 입력과 사용하는 속성을 확인하세요."
+      ],
+      "code": "class Observation:\n    @staticmethod\n    def is_valid_count(value):\n        return isinstance(value, int) and not isinstance(value, bool) and value >= 0\n\nprint(Observation.is_valid_count(4))\nprint(Observation.is_valid_count(-1))\nprint(Observation.is_valid_count(True))",
+      "output": "True\nFalse\nFalse",
+      "diagram": {
+        "type": "branch",
+        "nodes": [
+          {
+            "label": "정수 4",
+            "value": "허용"
+          },
+          {
+            "label": "정수 -1",
+            "value": "거부"
+          },
+          {
+            "label": "불리언 True",
+            "value": "수량으로 받지 않음"
+          }
+        ],
+        "caption": "정수 4: 허용 · 정수 -1: 거부 · 불리언 True: 수량으로 받지 않음"
+      },
+      "trace": [
+        {
+          "label": "자료형 확인",
+          "state": "정수인지 확인하고 정수의 하위형인 bool은 제외합니다."
+        },
+        {
+          "label": "범위 확인",
+          "state": "0 이상인 수량만 허용합니다."
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "question": "@classmethod의 첫 매개변수 cls는 무엇을 받나요?",
+    "options": [
+      {
+        "text": "현재 개별 인스턴스",
+        "correct": false,
+        "feedback": "인스턴스를 자동으로 받는 것은 일반 인스턴스 메서드의 self입니다."
+      },
+      {
+        "text": "호출에 사용한 클래스",
+        "correct": true,
+        "feedback": "클래스 메서드는 클래스를 받아 대체 생성 경로 등에 사용할 수 있습니다."
+      },
+      {
+        "text": "아무 값도 받지 않습니다.",
+        "correct": false,
+        "feedback": "자동 첫 인자가 없는 것은 staticmethod입니다."
+      }
+    ]
+  },
+  "sourceUrls": [
+    "https://docs.python.org/3/tutorial/classes.html#method-objects",
+    "https://docs.python.org/3/library/functions.html#classmethod",
+    "https://docs.python.org/3/library/functions.html#staticmethod"
+  ]
+}

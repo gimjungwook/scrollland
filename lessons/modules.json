@@ -1,0 +1,148 @@
+{
+  "slug": "modules",
+  "courseId": "tools",
+  "title": "모듈을 불러와 연결하기",
+  "problem": "다른 파일의 함수와 Python에 포함된 도구를 재사용하고 싶습니다.",
+  "goal": "모듈 가져오기·자체 모듈 연결·리스트와 수치 배열의 차이를 설명합니다.",
+  "prerequisites": [
+    "decorators"
+  ],
+  "topics": [
+    "모듈",
+    "import",
+    "from",
+    "별칭",
+    "패키지",
+    "__name__",
+    "array"
+  ],
+  "takeaway": "필요한 도구의 출처를 드러내고 같은 이름의 파일로 표준 모듈을 가리지 않습니다.",
+  "sections": [
+    {
+      "title": "표준 라이브러리의 도구 사용하기",
+      "body": [
+        "표준 라이브러리는 Python과 함께 제공되는 도구 묶음입니다. import math는 수학 도구의 모듈을 불러오고 math.sqrt()는 그 안의 제곱근 함수를 사용합니다.",
+        "from math import ceil은 특정 이름만 가져옵니다. as는 가져온 이름의 별칭을 정합니다. 모듈 자체에 별칭을 붙이면 어느 도구의 함수인지 호출에서 계속 확인할 수 있습니다."
+      ],
+      "code": "import math as calculation\nfrom math import ceil\n\nprint(calculation.sqrt(49))\nprint(ceil(2.2))",
+      "output": "7.0\n3",
+      "diagram": {
+        "type": "binding",
+        "nodes": [
+          {
+            "label": "불러온 모듈",
+            "value": "calculation → math"
+          },
+          {
+            "label": "직접 가져온 함수",
+            "value": "ceil → math.ceil"
+          }
+        ],
+        "caption": "불러온 모듈: calculation → math · 직접 가져온 함수: ceil → math.ceil"
+      },
+      "trace": [
+        {
+          "label": "가져오기",
+          "state": "표준 도구를 현재 코드에서 사용할 수 있게 합니다."
+        },
+        {
+          "label": "호출",
+          "state": "제곱근과 올림 함수를 사용합니다."
+        }
+      ]
+    },
+    {
+      "title": "자기 파일에서 함수 가져오기",
+      "body": [
+        ".py 파일 하나도 모듈이 될 수 있습니다. 이 예제는 같은 폴더에 제공된 measures.py를 두고 실행합니다. 모듈을 처음 가져오면 함수·클래스 바깥에 있는 최상위 코드도 실행됩니다. 시연용 출력이나 입력 요청은 if __name__ == \"__main__\": 안에 두세요.",
+        "__name__은 파일을 직접 실행할 때 \"__main__\", 가져올 때는 모듈 이름입니다. measures.py의 if __name__ == \"__main__\"은 직접 실행한 경우에만 시연 출력을 내도록 합니다. 패키지는 보통 여러 모듈을 폴더로 묶어 구성하며 __init__.py로 초기화 코드를 둘 수 있습니다."
+      ],
+      "code": "import measures\n\nprint(measures.double(6))\nprint(measures.__name__)",
+      "output": "12\nmeasures",
+      "diagram": {
+        "type": "pipeline",
+        "nodes": [
+          {
+            "label": "보조 파일",
+            "value": "measures.py의 double 함수"
+          },
+          {
+            "label": "현재 파일",
+            "value": "import measures 후 함수 호출"
+          }
+        ],
+        "caption": "보조 파일: measures.py의 double 함수 · 현재 파일: import measures 후 함수 호출"
+      },
+      "trace": [
+        {
+          "label": "import 시점",
+          "state": "measures의 함수가 정의되며 직접 실행용 출력은 건너뜁니다."
+        },
+        {
+          "label": "함수 호출",
+          "state": "double(6)이 12를 반환합니다."
+        }
+      ],
+      "files": {
+        "measures.py": "def double(count):\n    return count * 2\n\nif __name__ == \"__main__\":\n    print(\"직접 실행 시연\")\n"
+      }
+    },
+    {
+      "title": "리스트와 수치 배열 선택하기",
+      "body": [
+        "array 모듈은 같은 기본 수치 자료형의 항목을 저장하는 배열을 제공합니다. array(\"i\", ...)에서 i는 정수 저장 형식을 고르는 형식 코드입니다. 메모리 표현과 지원 범위는 형식 코드에 따라 다릅니다.",
+        "일반 작업은 리스트로 충분한 경우가 많습니다. 리스트는 다른 종류의 객체도 담고, array는 지정 수치 형식에 맞는 항목을 담습니다. 별도 설치가 필요한 NumPy 배열은 이번 과정의 범위에 포함하지 않습니다."
+      ],
+      "code": "from array import array\n\ncounts = array(\"i\", [2, 4, 6])\ncounts.append(8)\nprint(list(counts))\nprint(counts.typecode)\nprint(counts[1])",
+      "output": "[2, 4, 6, 8]\ni\n4",
+      "diagram": {
+        "type": "collection",
+        "nodes": [
+          {
+            "label": "리스트 선택",
+            "value": "일반 객체 묶음에 사용"
+          },
+          {
+            "label": "array 선택",
+            "value": "정해진 기본 수치 형식으로 저장"
+          }
+        ],
+        "caption": "리스트 선택: 일반 객체 묶음에 사용 · array 선택: 정해진 기본 수치 형식으로 저장"
+      },
+      "trace": [
+        {
+          "label": "배열 생성",
+          "state": "정수 형식 i의 배열을 만듭니다."
+        },
+        {
+          "label": "배열 사용",
+          "state": "같은 형식의 수량을 추가하고 위치로 읽습니다."
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "question": "import measures로 가져올 때 measures.py의 직접 실행용 예제를 막는 조건은 무엇인가요?",
+    "options": [
+      {
+        "text": "if __name__ == \"__main__\":",
+        "correct": true,
+        "feedback": "직접 실행한 파일일 때만 참이 되는 조건입니다."
+      },
+      {
+        "text": "if True:",
+        "correct": false,
+        "feedback": "언제나 참이므로 가져오는 순간에도 실행합니다."
+      },
+      {
+        "text": "if __name__ == \"measures\":",
+        "correct": false,
+        "feedback": "가져올 때 모듈 이름이 measures이므로 오히려 그때 실행됩니다."
+      }
+    ]
+  },
+  "sourceUrls": [
+    "https://docs.python.org/3/tutorial/modules.html",
+    "https://docs.python.org/3/library/array.html"
+  ]
+}

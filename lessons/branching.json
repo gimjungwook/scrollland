@@ -1,0 +1,167 @@
+{
+  "slug": "branching",
+  "courseId": "decisions",
+  "title": "상황에 맞는 실행 경로 고르기",
+  "problem": "관찰 횟수에 따라 서로 다른 안내를 출력해야 합니다.",
+  "goal": "if·elif·else와 match에서 실행되는 분기를 설명합니다.",
+  "prerequisites": [
+    "booleans"
+  ],
+  "topics": [
+    "if",
+    "elif",
+    "else",
+    "들여쓰기",
+    "조건식",
+    "match",
+    "case",
+    "pass"
+  ],
+  "takeaway": "분기에서는 조건을 검사한 순서와 실제 실행한 묶음을 구별합니다.",
+  "sections": [
+    {
+      "title": "if와 들여쓰기로 실행 묶기",
+      "body": [
+        "분기는 조건에 따라 실행 경로를 고르는 일입니다. if 뒤 조건이 참이면 콜론 다음의 들여쓴 지시들을 실행합니다. 들여쓰기는 같은 실행 묶음에 속함을 나타내며 보통 공백 네 칸을 씁니다.",
+        "else는 if 조건이 거짓일 때 실행합니다. 들여쓰기가 끝난 print(\"검사 끝\")는 어느 경로를 택하든 실행됩니다."
+      ],
+      "code": "count = 0\nif count > 0:\n    print(\"기록 있음\")\nelse:\n    print(\"첫 기록을 남겨 주세요\")\nprint(\"검사 끝\")",
+      "output": "첫 기록을 남겨 주세요\n검사 끝",
+      "diagram": {
+        "type": "branch",
+        "nodes": [
+          {
+            "label": "조건",
+            "value": "0 > 0 → False"
+          },
+          {
+            "label": "선택 경로",
+            "value": "else의 안내문"
+          },
+          {
+            "label": "공통 후속 지시",
+            "value": "검사 끝"
+          }
+        ],
+        "caption": "조건: 0 > 0 → False · 선택 경로: else의 안내문 · 공통 후속 지시: 검사 끝"
+      },
+      "trace": [
+        {
+          "label": "조건 검사",
+          "state": "count > 0은 거짓입니다."
+        },
+        {
+          "label": "분기 실행",
+          "state": "else 묶음만 실행합니다."
+        },
+        {
+          "label": "분기 종료",
+          "state": "들여쓰기 바깥 지시로 이어집니다."
+        }
+      ]
+    },
+    {
+      "title": "여러 기준 중 하나 선택하기",
+      "body": [
+        "elif는 앞 조건이 거짓일 때 다음 조건을 검사합니다. if·elif·else 묶음에서는 처음 참인 경로 하나를 실행하고 나머지를 건너뜁니다. 조건 순서가 결과에 영향을 줍니다.",
+        "한 값을 두 후보 중에서 고를 때는 “참일 때 값 if 조건 else 거짓일 때 값”이라는 조건식을 사용할 수 있습니다. 조건 안에 또 if를 두는 중첩 분기도 가능하지만, 우선 서로 겹치지 않는 기준을 드러내세요."
+      ],
+      "code": "count = 6\nif count == 0:\n    label = \"없음\"\nelif count < 5:\n    label = \"조금\"\nelse:\n    label = \"충분\"\nprint(label)\nprint(\"계속\" if count < 10 else \"마침\")",
+      "output": "충분\n계속",
+      "diagram": {
+        "type": "branch",
+        "nodes": [
+          {
+            "label": "첫 검사",
+            "value": "6 == 0 → False"
+          },
+          {
+            "label": "둘째 검사",
+            "value": "6 < 5 → False"
+          },
+          {
+            "label": "선택 결과",
+            "value": "충분"
+          }
+        ],
+        "caption": "첫 검사: 6 == 0 → False · 둘째 검사: 6 < 5 → False · 선택 결과: 충분"
+      },
+      "trace": [
+        {
+          "label": "if 검사",
+          "state": "0개가 아니므로 다음 기준을 확인합니다."
+        },
+        {
+          "label": "elif 검사",
+          "state": "5개 미만이 아니므로 else를 실행합니다."
+        },
+        {
+          "label": "조건식",
+          "state": "6 < 10이 참이라 계속을 선택합니다."
+        }
+      ]
+    },
+    {
+      "title": "정해진 값에 따라 나누기",
+      "body": [
+        "match는 값을 여러 case의 패턴과 비교합니다. 패턴은 일치하는 값의 형태를 적은 것이며, 여기서는 문자열 하나와 비교합니다. case _는 앞의 어떤 경우에도 맞지 않을 때 사용합니다. Python 3.10 이상에서 쓸 수 있습니다.",
+        "pass는 아무 동작도 하지 않는 지시입니다. 비어 있는 분기에 형식상 지시가 필요할 때 쓸 수 있으며, 반복을 건너뛰는 continue와는 다릅니다. 아래 skip 분기는 문법 예시이며 현재 값 west에는 실행되지 않습니다."
+      ],
+      "code": "direction = \"west\"\nmatch direction:\n    case \"west\":\n        print(\"서쪽 길\")\n    case \"skip\":\n        pass\n    case _:\n        print(\"다른 길\")",
+      "output": "서쪽 길",
+      "diagram": {
+        "type": "branch",
+        "nodes": [
+          {
+            "label": "비교할 값",
+            "value": "direction → west"
+          },
+          {
+            "label": "일치한 경우",
+            "value": "case \"west\""
+          },
+          {
+            "label": "출력",
+            "value": "서쪽 길"
+          }
+        ],
+        "caption": "비교할 값: direction → west · 일치한 경우: case \"west\" · 출력: 서쪽 길"
+      },
+      "trace": [
+        {
+          "label": "match 시작",
+          "state": "direction의 값을 확인합니다."
+        },
+        {
+          "label": "case 선택",
+          "state": "west와 일치하는 첫 경우를 실행합니다."
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "question": "if·elif·else 묶음에서 여러 조건이 참이면 무엇을 실행하나요?",
+    "options": [
+      {
+        "text": "참인 조건의 모든 묶음",
+        "correct": false,
+        "feedback": "독립된 여러 if가 아니라 연결된 분기에서는 첫 참 경로 하나를 선택합니다."
+      },
+      {
+        "text": "마지막 참 조건의 묶음",
+        "correct": false,
+        "feedback": "위에서 아래로 검사하므로 첫 참 조건이 우선입니다."
+      },
+      {
+        "text": "처음 참인 조건의 묶음",
+        "correct": true,
+        "feedback": "그 묶음을 실행한 뒤 나머지 elif·else를 건너뜁니다."
+      }
+    ]
+  },
+  "sourceUrls": [
+    "https://docs.python.org/3/tutorial/controlflow.html#if-statements",
+    "https://docs.python.org/3/tutorial/controlflow.html#match-statements",
+    "https://docs.python.org/3/reference/compound_stmts.html#if"
+  ]
+}

@@ -1,0 +1,159 @@
+{
+  "slug": "math",
+  "courseId": "tools",
+  "title": "수학 도구로 결과 확인하기",
+  "problem": "기본 연산만으로는 평균·거리·소수 비교의 의도가 잘 드러나지 않습니다.",
+  "goal": "수학·통계·정확한 십진 계산에 알맞은 도구를 고릅니다.",
+  "prerequisites": [
+    "dates",
+    "numbers"
+  ],
+  "topics": [
+    "math",
+    "statistics",
+    "isclose",
+    "Decimal",
+    "random",
+    "난수"
+  ],
+  "takeaway": "수치 문제의 정확성 요구에 맞춰 비교와 계산 도구를 선택합니다.",
+  "sections": [
+    {
+      "title": "내장 계산과 수학 함수 조합하기",
+      "body": [
+        "min()과 max()는 가장 작은 값과 큰 값을, abs()는 부호를 제외한 크기를 구합니다. math.sqrt()는 제곱근이며 math.ceil()과 floor()는 각각 위쪽과 아래쪽 정수로 맞춥니다.",
+        "반올림과 올림은 다른 작업입니다. 2.1개 분량의 묶음을 담을 용기가 필요하다면 올림한 3개가 적절합니다. 계산 목적을 먼저 문장으로 적으세요."
+      ],
+      "code": "import math\n\ncounts = [4, 2, 7]\nprint(min(counts), max(counts))\nprint(abs(-3))\nprint(math.sqrt(25))\nprint(math.ceil(2.1), math.floor(2.9))",
+      "output": "2 7\n3\n5.0\n3 2",
+      "diagram": {
+        "type": "collection",
+        "nodes": [
+          {
+            "label": "관찰 범위",
+            "value": "최소 2, 최대 7"
+          },
+          {
+            "label": "거리 크기",
+            "value": "abs(-3) → 3"
+          },
+          {
+            "label": "용기 수",
+            "value": "ceil(2.1) → 3"
+          }
+        ],
+        "caption": "관찰 범위: 최소 2, 최대 7 · 거리 크기: abs(-3) → 3 · 용기 수: ceil(2.1) → 3"
+      },
+      "trace": [
+        {
+          "label": "문제 선택",
+          "state": "범위·크기·정수 맞춤이 서로 다른 작업입니다."
+        },
+        {
+          "label": "함수 적용",
+          "state": "각 질문에 맞는 계산 함수를 사용합니다."
+        }
+      ]
+    },
+    {
+      "title": "근사 비교와 정확한 십진수",
+      "body": [
+        "math.isclose()는 허용 오차 안에서 두 값이 가까운지 비교합니다. 실험 측정이나 float 계산에서는 값이 정확히 같은지 묻는 ==와 목적이 다를 수 있습니다.",
+        "Decimal은 십진수를 표현하는 decimal 모듈의 자료형입니다. 문자열 \"0.1\"에서 만들면 float의 근사값을 먼저 거치지 않습니다. 정확한 계산을 요구하는 문제에서는 반올림 규칙도 함께 정해야 합니다."
+      ],
+      "code": "import math\nfrom decimal import Decimal\n\nprint(math.isclose(0.1 + 0.2, 0.3))\nprint(Decimal(\"0.1\") + Decimal(\"0.2\"))",
+      "output": "True\n0.3",
+      "diagram": {
+        "type": "pipeline",
+        "nodes": [
+          {
+            "label": "float 비교",
+            "value": "작은 오차를 허용해 가까운지 확인"
+          },
+          {
+            "label": "Decimal 계산",
+            "value": "십진 문자열로부터 정확한 덧셈"
+          }
+        ],
+        "caption": "float 비교: 작은 오차를 허용해 가까운지 확인 · Decimal 계산: 십진 문자열로부터 정확한 덧셈"
+      },
+      "trace": [
+        {
+          "label": "근사값 비교",
+          "state": "isclose가 작은 차이를 허용합니다."
+        },
+        {
+          "label": "십진수 생성",
+          "state": "문자열에서 직접 Decimal을 만듭니다."
+        }
+      ]
+    },
+    {
+      "title": "자료의 대표값과 재현 가능한 무작위 선택",
+      "body": [
+        "statistics.mean()은 평균을 반환합니다. median()은 정렬한 뒤 항목 수가 홀수면 가운데 값, 짝수면 가운데 두 값의 평균을 반환합니다. 큰 값 하나의 영향이 두 계산에서 다를 수 있으므로 대표값을 고르는 이유를 설명해야 합니다.",
+        "난수는 무작위처럼 생성한 수입니다. random.Random(7)처럼 시드를 고정하면 같은 입력 상태에서 실험을 재현할 수 있습니다. 시드는 생성기의 초기 상태를 정하는 값입니다. 아래 출력은 임의의 수 자체 대신 생성한 값이 범위 안인지 확인합니다."
+      ],
+      "code": "import statistics\nimport random\n\ncounts = [2, 3, 10]\nprint(statistics.mean(counts))\nprint(statistics.median(counts))\ngenerator = random.Random(7)\nvalue = generator.random()\nprint(0 <= value < 1)",
+      "output": "5\n3\nTrue",
+      "diagram": {
+        "type": "collection",
+        "nodes": [
+          {
+            "label": "평균",
+            "value": "(2 + 3 + 10) / 3 → 5"
+          },
+          {
+            "label": "중앙값",
+            "value": "정렬 가운데 3"
+          },
+          {
+            "label": "무작위 생성 범위",
+            "value": "0 이상 1 미만"
+          }
+        ],
+        "caption": "평균: (2 + 3 + 10) / 3 → 5 · 중앙값: 정렬 가운데 3 · 무작위 생성 범위: 0 이상 1 미만"
+      },
+      "trace": [
+        {
+          "label": "대표값 계산",
+          "state": "평균과 중앙값이 다른 이유를 항목에서 찾습니다."
+        },
+        {
+          "label": "생성기 준비",
+          "state": "시드로 초기 상태를 고정합니다."
+        },
+        {
+          "label": "범위 확인",
+          "state": "생성 결과가 약속한 범위에 있는지 검사합니다."
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "question": "Decimal로 정확한 십진수 0.1을 만들려면 무엇을 전달하나요?",
+    "options": [
+      {
+        "text": "문자열 \"0.1\"",
+        "correct": true,
+        "feedback": "십진 문자열에서 직접 만들면 float 근사값을 거치지 않습니다."
+      },
+      {
+        "text": "float 값 0.1만 가능",
+        "correct": false,
+        "feedback": "float에서 만들면 이미 생긴 이진 근사를 함께 가져올 수 있습니다."
+      },
+      {
+        "text": "문자열 \"영점일\"",
+        "correct": false,
+        "feedback": "Decimal은 숫자 형식으로 해석할 수 있는 문자열이 필요합니다."
+      }
+    ]
+  },
+  "sourceUrls": [
+    "https://docs.python.org/3/library/math.html",
+    "https://docs.python.org/3/library/decimal.html",
+    "https://docs.python.org/3/library/statistics.html",
+    "https://docs.python.org/3/library/random.html"
+  ]
+}

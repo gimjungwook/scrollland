@@ -1,0 +1,154 @@
+{
+  "slug": "nested-data",
+  "courseId": "collections",
+  "title": "중첩된 기록 읽기",
+  "problem": "장소마다 날짜와 여러 관찰 수량이 연결된 기록을 다뤄야 합니다.",
+  "goal": "중첩 데이터의 접근 경로와 얕은 복사의 공유 관계를 설명합니다.",
+  "prerequisites": [
+    "dictionaries"
+  ],
+  "topics": [
+    "중첩",
+    "리스트 안 딕셔너리",
+    "중첩 접근",
+    "얕은 복사"
+  ],
+  "takeaway": "바깥 묶음에서 안쪽 값까지 한 단계씩 경로를 읽습니다.",
+  "sections": [
+    {
+      "title": "기록 하나와 기록 묶음 구별하기",
+      "body": [
+        "중첩은 묶음 안에 다른 묶음이 들어 있는 구조입니다. 리스트는 기록의 순서를, 딕셔너리는 한 기록의 항목 이름을 표현할 수 있습니다.",
+        "records[1][\"count\"]는 먼저 두 번째 기록을 고른 뒤 그 기록의 count 값을 읽습니다. [] 한 쌍씩 읽으면 어떤 자료형을 다루는지 놓치지 않습니다."
+      ],
+      "code": "records = [{\"place\": \"숲\", \"count\": 4}, {\"place\": \"강\", \"count\": 2}]\nprint(records[1][\"place\"])\nprint(records[1][\"count\"])",
+      "output": "강\n2",
+      "diagram": {
+        "type": "pipeline",
+        "nodes": [
+          {
+            "label": "바깥 리스트",
+            "value": "두 기록이 순서대로 있음"
+          },
+          {
+            "label": "위치 1의 기록",
+            "value": "place: 강, count: 2"
+          },
+          {
+            "label": "count 키",
+            "value": "2"
+          }
+        ],
+        "caption": "바깥 리스트: 두 기록이 순서대로 있음 · 위치 1의 기록: place: 강, count: 2 · count 키: 2"
+      },
+      "trace": [
+        {
+          "label": "첫 접근",
+          "state": "records[1]로 딕셔너리를 고릅니다."
+        },
+        {
+          "label": "둘째 접근",
+          "state": "그 딕셔너리에서 count를 읽습니다."
+        }
+      ]
+    },
+    {
+      "title": "안쪽의 특정 값만 수정하기",
+      "body": [
+        "관찰 한 건에 여러 수량이 있으면 딕셔너리 안에 리스트를 둘 수 있습니다. record[\"counts\"][0]은 counts 리스트의 첫 숫자를 뜻합니다.",
+        "안쪽 항목만 고치면 다른 키는 그대로입니다. 큰 자료를 한 번에 이해하려고 하기보다 이름을 붙여 중간 묶음을 따로 읽는 방법도 사용할 수 있습니다."
+      ],
+      "code": "record = {\"place\": \"숲\", \"counts\": [4, 2]}\nrecord[\"counts\"][0] = 5\nprint(record[\"place\"])\nprint(record[\"counts\"])",
+      "output": "숲\n[5, 2]",
+      "diagram": {
+        "type": "collection",
+        "nodes": [
+          {
+            "label": "place",
+            "value": "숲 유지"
+          },
+          {
+            "label": "counts의 첫 항목",
+            "value": "4 → 5"
+          },
+          {
+            "label": "counts의 둘째 항목",
+            "value": "2 유지"
+          }
+        ],
+        "caption": "place: 숲 유지 · counts의 첫 항목: 4 → 5 · counts의 둘째 항목: 2 유지"
+      },
+      "trace": [
+        {
+          "label": "경로 선택",
+          "state": "record에서 counts 리스트를 고릅니다."
+        },
+        {
+          "label": "항목 변경",
+          "state": "그 리스트의 위치 0을 5로 바꿉니다."
+        }
+      ]
+    },
+    {
+      "title": "얕은 복사의 안쪽 공유 확인하기",
+      "body": [
+        "딕셔너리 copy()도 바깥 객체만 복사합니다. 그 안의 리스트는 같은 객체일 수 있습니다. 그래서 copied[\"counts\"].append(3)은 원본으로 읽는 리스트에도 보입니다.",
+        "한 단계 안쪽 리스트까지 독립시켜야 하면 그 리스트도 copy()할 수 있습니다. 복잡한 구조 전체를 재귀적으로 복사하는 deepcopy()는 copy 모듈의 기능입니다. 모듈은 「모듈을 불러와 연결하기」 레슨에서 배웁니다."
+      ],
+      "code": "original = {\"counts\": [4, 2]}\ncopied = original.copy()\ncopied[\"counts\"].append(3)\nprint(original[\"counts\"])\nindependent = {\"counts\": original[\"counts\"].copy()}\nindependent[\"counts\"][0] = 9\nprint(original[\"counts\"])\nprint(independent[\"counts\"])",
+      "output": "[4, 2, 3]\n[4, 2, 3]\n[9, 2, 3]",
+      "diagram": {
+        "type": "binding",
+        "nodes": [
+          {
+            "label": "original와 copied",
+            "value": "같은 안쪽 리스트 [4, 2, 3]"
+          },
+          {
+            "label": "independent",
+            "value": "별도 안쪽 리스트 [9, 2, 3]"
+          }
+        ],
+        "caption": "original와 copied: 같은 안쪽 리스트 [4, 2, 3] · independent: 별도 안쪽 리스트 [9, 2, 3]"
+      },
+      "trace": [
+        {
+          "label": "바깥 복사",
+          "state": "안쪽 리스트는 여전히 공유합니다."
+        },
+        {
+          "label": "안쪽 복사",
+          "state": "independent에 별도 리스트를 연결합니다."
+        },
+        {
+          "label": "개별 수정",
+          "state": "독립한 리스트의 첫 값만 9가 됩니다."
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "question": "data가 리스트이고 data[0]이 딕셔너리라면 첫 기록의 name 값을 읽는 식은 무엇인가요?",
+    "options": [
+      {
+        "text": "data[\"name\"][0]",
+        "correct": false,
+        "feedback": "바깥이 리스트이므로 먼저 정수 위치로 기록을 선택해야 합니다."
+      },
+      {
+        "text": "data[0][\"name\"]",
+        "correct": true,
+        "feedback": "리스트에서 첫 기록을 고른 다음 딕셔너리 키를 읽습니다."
+      },
+      {
+        "text": "data.name",
+        "correct": false,
+        "feedback": "이 데이터의 name은 객체 속성이 아니라 딕셔너리 키입니다."
+      }
+    ]
+  },
+  "sourceUrls": [
+    "https://docs.python.org/3/tutorial/datastructures.html",
+    "https://docs.python.org/3/library/copy.html"
+  ]
+}

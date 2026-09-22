@@ -1,0 +1,167 @@
+{
+  "slug": "read-files",
+  "courseId": "persistence",
+  "title": "저장된 파일에서 기록 읽기",
+  "problem": "매번 같은 기록을 다시 입력하지 않고 파일 내용을 읽고 싶습니다.",
+  "goal": "경로·텍스트 인코딩·읽기 범위·자동 닫기를 설명합니다.",
+  "prerequisites": [
+    "exceptions",
+    "modules"
+  ],
+  "topics": [
+    "파일",
+    "경로",
+    "상대 경로",
+    "인코딩",
+    "UTF-8",
+    "with",
+    "open",
+    "read",
+    "readline",
+    "이진"
+  ],
+  "takeaway": "파일의 위치와 인코딩을 명시하고 필요한 범위만 읽습니다.",
+  "sections": [
+    {
+      "title": "파일 위치와 글자 해석 정하기",
+      "body": [
+        "경로는 파일이 어디에 있는지 나타내는 값입니다. 상대 경로 observations.txt는 실행 중인 작업 폴더를 기준으로 찾습니다. 예제에 제공된 같은 이름의 파일을 작업 폴더에 준비하세요.",
+        "인코딩은 글자와 바이트를 바꾸는 규칙입니다. UTF-8은 한글을 표현할 수 있는 인코딩입니다. Path.read_text(encoding=\"utf-8\")는 파일을 읽고 닫은 뒤 문자열을 반환합니다. 파일이 없으면 FileNotFoundError가 발생합니다."
+      ],
+      "code": "from pathlib import Path\n\npath = Path(\"observations.txt\")\ntext = path.read_text(encoding=\"utf-8\")\nprint(text, end=\"\")",
+      "output": "숲:4\n강:2",
+      "diagram": {
+        "type": "pipeline",
+        "nodes": [
+          {
+            "label": "상대 경로",
+            "value": "작업 폴더의 observations.txt"
+          },
+          {
+            "label": "UTF-8 읽기",
+            "value": "파일 바이트 → 문자열"
+          }
+        ],
+        "caption": "상대 경로: 작업 폴더의 observations.txt · UTF-8 읽기: 파일 바이트 → 문자열"
+      },
+      "trace": [
+        {
+          "label": "경로 결정",
+          "state": "현재 작업 폴더에서 제공된 파일을 찾습니다."
+        },
+        {
+          "label": "읽기",
+          "state": "UTF-8로 해석한 문자열을 출력합니다."
+        }
+      ],
+      "files": {
+        "observations.txt": "숲:4\n강:2\n"
+      }
+    },
+    {
+      "title": "한 줄씩 읽고 자동으로 닫기",
+      "body": [
+        "with는 구간을 나갈 때 정리 동작을 보장하는 문법입니다. open()으로 연 파일은 with 구간이 끝날 때 닫히며, 중간에 예외가 나도 닫기 처리를 수행합니다.",
+        "파일 객체를 for로 반복하면 한 줄씩 읽습니다. 줄 끝의 줄바꿈은 포함되므로 rstrip(\"\\n\")으로 줄바꿈만 제거합니다. strip()은 필요한 앞뒤 공백까지 지울 수 있어 의도에 맞게 선택하세요."
+      ],
+      "code": "with open(\"observations.txt\", \"r\", encoding=\"utf-8\") as source:\n    for number, line in enumerate(source, start=1):\n        print(number, line.rstrip(\"\\n\"))\nprint(source.closed)",
+      "output": "1 숲:4\n2 강:2\nTrue",
+      "diagram": {
+        "type": "timeline",
+        "nodes": [
+          {
+            "label": "읽기 방식",
+            "value": "각 줄을 차례로 처리"
+          },
+          {
+            "label": "구간 종료",
+            "value": "파일이 자동으로 닫힘"
+          }
+        ],
+        "caption": "읽기 방식: 각 줄을 차례로 처리 · 구간 종료: 파일이 자동으로 닫힘"
+      },
+      "trace": [
+        {
+          "label": "첫 줄",
+          "state": "번호 1과 숲:4를 출력합니다."
+        },
+        {
+          "label": "둘째 줄",
+          "state": "번호 2와 강:2를 출력합니다."
+        },
+        {
+          "label": "with 바깥",
+          "state": "closed 값이 True입니다."
+        }
+      ],
+      "files": {
+        "observations.txt": "숲:4\n강:2\n"
+      }
+    },
+    {
+      "title": "문자 수와 바이트 수 구별하기",
+      "body": [
+        "바이트는 파일에 저장하는 데이터의 단위입니다. 텍스트 모드는 바이트를 글자로 해석하고, 이진 모드 rb는 해석하지 않은 bytes를 읽습니다. 한글 한 글자가 여러 바이트를 사용할 수 있습니다.",
+        "read(1)은 텍스트 모드에서 문자 하나를, 이진 모드에서 바이트 하나를 읽습니다. readline()은 다음 한 줄을 읽습니다. 아래에서는 같은 파일을 텍스트 모드와 이진 모드로 각각 읽어 길이를 비교합니다."
+      ],
+      "code": "with open(\"place.txt\", \"r\", encoding=\"utf-8\") as source:\n    text = source.read()\nwith open(\"place.txt\", \"rb\") as source:\n    raw = source.read()\nprint(len(text))\nprint(len(raw))\nprint(raw.decode(\"utf-8\"))",
+      "output": "1\n3\n숲",
+      "diagram": {
+        "type": "pipeline",
+        "nodes": [
+          {
+            "label": "텍스트 해석",
+            "value": "숲: 문자 1개"
+          },
+          {
+            "label": "UTF-8 저장",
+            "value": "바이트 3개"
+          }
+        ],
+        "caption": "텍스트 해석: 숲: 문자 1개 · UTF-8 저장: 바이트 3개"
+      },
+      "trace": [
+        {
+          "label": "텍스트 읽기",
+          "state": "저장된 바이트를 한글 한 글자로 해석합니다."
+        },
+        {
+          "label": "이진 읽기",
+          "state": "바이트 3개를 그대로 읽습니다."
+        },
+        {
+          "label": "명시적 해석",
+          "state": "decode로 같은 글자를 복원합니다."
+        }
+      ],
+      "files": {
+        "place.txt": "숲"
+      }
+    }
+  ],
+  "quiz": {
+    "question": "with open(...) as source: 구간을 벗어나면 파일은 어떻게 되나요?",
+    "options": [
+      {
+        "text": "프로그램이 끝날 때까지 반드시 열린 상태입니다.",
+        "correct": false,
+        "feedback": "with 구간 종료 시 파일을 닫는 정리 동작이 실행됩니다."
+      },
+      {
+        "text": "파일 내용이 자동으로 삭제됩니다.",
+        "correct": false,
+        "feedback": "읽기용 파일을 닫는 것과 파일 삭제는 다릅니다."
+      },
+      {
+        "text": "중간에 예외가 나도 닫기 처리가 실행됩니다.",
+        "correct": true,
+        "feedback": "with는 파일 사용이 끝날 때 닫는 작업을 담당합니다."
+      }
+    ]
+  },
+  "sourceUrls": [
+    "https://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files",
+    "https://docs.python.org/3/library/pathlib.html#pathlib.Path.read_text",
+    "https://docs.python.org/3/library/functions.html#open"
+  ]
+}

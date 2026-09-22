@@ -1,0 +1,142 @@
+{
+  "slug": "nested-classes",
+  "courseId": "objects",
+  "title": "관련된 작은 자료형을 안에 두기",
+  "problem": "보고서에서만 쓰는 상태 자료형을 보고서와 함께 찾기 쉽게 묶고 싶습니다.",
+  "goal": "중첩 클래스의 이름 경로와 바깥 인스턴스 연결의 한계를 설명합니다.",
+  "prerequisites": [
+    "special-methods"
+  ],
+  "topics": [
+    "중첩 클래스",
+    "이름 공간",
+    "명시적 참조",
+    "구성"
+  ],
+  "takeaway": "클래스를 안에 정의해도 바깥 인스턴스가 자동으로 전달되지는 않습니다.",
+  "sections": [
+    {
+      "title": "클래스 안에서 다른 클래스 정의하기",
+      "body": [
+        "중첩 클래스는 클래스 본문 안에 정의한 별도 클래스입니다. Report.Status처럼 바깥 클래스의 속성 경로로 찾습니다. 이름 공간은 이름들이 어떤 객체와 연결되는지 관리하는 영역입니다.",
+        "안에 정의했다는 이유만으로 바깥 인스턴스의 속성을 자동으로 읽지는 않습니다. 아래 Status는 독립 인스턴스를 만들고 자신에게 전달한 label을 저장합니다."
+      ],
+      "code": "class Report:\n    class Status:\n        def __init__(self, label):\n            self.label = label\n\nstatus = Report.Status(\"작성 중\")\nprint(status.label)\nprint(isinstance(status, Report.Status))",
+      "output": "작성 중\nTrue",
+      "diagram": {
+        "type": "object",
+        "nodes": [
+          {
+            "label": "이름 경로",
+            "value": "Report.Status"
+          },
+          {
+            "label": "별도 인스턴스",
+            "value": "status.label=작성 중"
+          }
+        ],
+        "caption": "이름 경로: Report.Status · 별도 인스턴스: status.label=작성 중"
+      },
+      "trace": [
+        {
+          "label": "정의",
+          "state": "Report 안에 Status 클래스를 둡니다."
+        },
+        {
+          "label": "생성",
+          "state": "Status를 호출해 독립 객체를 만듭니다."
+        }
+      ]
+    },
+    {
+      "title": "바깥 정보를 쓰려면 직접 전달하기",
+      "body": [
+        "중첩 객체가 바깥 객체를 사용하려면 인자로 전달하는 등 연결을 직접 만들어야 합니다. 아래 Status는 report를 받아 자기 report 속성에 연결합니다.",
+        "서로 가리키는 객체가 많아지면 관계를 이해하기 어려워집니다. 단지 제목 문자열만 필요하다면 객체 전체 대신 제목 값만 전달하는 편이 더 단순할 수 있습니다."
+      ],
+      "code": "class Report:\n    def __init__(self, title):\n        self.title = title\n    class Status:\n        def __init__(self, report):\n            self.report = report\n        def summary(self):\n            return self.report.title + \": 작성 중\"\n\nreport = Report(\"숲 관찰\")\nstatus = Report.Status(report)\nprint(status.summary())",
+      "output": "숲 관찰: 작성 중",
+      "diagram": {
+        "type": "binding",
+        "nodes": [
+          {
+            "label": "바깥 인스턴스",
+            "value": "report.title=숲 관찰"
+          },
+          {
+            "label": "안쪽 인스턴스",
+            "value": "status.report → report"
+          }
+        ],
+        "caption": "바깥 인스턴스: report.title=숲 관찰 · 안쪽 인스턴스: status.report → report"
+      },
+      "trace": [
+        {
+          "label": "명시적 전달",
+          "state": "report를 Status 생성 인자로 넘깁니다."
+        },
+        {
+          "label": "속성 읽기",
+          "state": "status가 저장한 report를 통해 제목을 읽습니다."
+        }
+      ]
+    },
+    {
+      "title": "중첩과 구성을 구별하기",
+      "body": [
+        "구성은 한 객체가 다른 객체를 속성으로 갖고 함께 사용하는 구조입니다. 클래스 정의가 중첩되었는지와 별개입니다. 중첩은 이름을 어디에 둘지, 구성은 객체를 어떻게 연결할지에 관한 선택입니다.",
+        "여러 종류의 보고서에서 같은 상태를 사용할 예정이면 Status를 바깥에 독립 정의하는 편이 찾기 쉬울 수 있습니다. 아래는 중첩 없이도 Report가 Status를 가지는 구성 예제입니다."
+      ],
+      "code": "class Status:\n    def __init__(self, label):\n        self.label = label\n\nclass Report:\n    def __init__(self, title, status):\n        self.title = title\n        self.status = status\n\nreport = Report(\"강 관찰\", Status(\"검토 전\"))\nprint(report.title, report.status.label)",
+      "output": "강 관찰 검토 전",
+      "diagram": {
+        "type": "object",
+        "nodes": [
+          {
+            "label": "독립 자료형",
+            "value": "Status"
+          },
+          {
+            "label": "포함하는 객체",
+            "value": "report.status → Status 인스턴스"
+          }
+        ],
+        "caption": "독립 자료형: Status · 포함하는 객체: report.status → Status 인스턴스"
+      },
+      "trace": [
+        {
+          "label": "상태 생성",
+          "state": "검토 전 상태 객체를 만듭니다."
+        },
+        {
+          "label": "연결",
+          "state": "그 객체를 report.status에 연결합니다."
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "question": "중첩 클래스의 인스턴스가 바깥 인스턴스를 자동으로 받나요?",
+    "options": [
+      {
+        "text": "항상 자동으로 받습니다.",
+        "correct": false,
+        "feedback": "Python의 중첩 클래스는 바깥 인스턴스를 자동 연결하지 않습니다."
+      },
+      {
+        "text": "중첩되어 있으면 self가 바깥 인스턴스입니다.",
+        "correct": false,
+        "feedback": "self는 호출 대상인 현재 인스턴스입니다."
+      },
+      {
+        "text": "필요한 바깥 객체를 직접 전달해야 합니다.",
+        "correct": true,
+        "feedback": "중첩은 이름 배치이며 객체 간 연결은 명시해야 합니다."
+      }
+    ]
+  },
+  "sourceUrls": [
+    "https://docs.python.org/3/tutorial/classes.html#python-scopes-and-namespaces",
+    "https://docs.python.org/3/reference/compound_stmts.html#class-definitions"
+  ]
+}

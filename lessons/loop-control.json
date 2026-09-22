@@ -1,0 +1,158 @@
+{
+  "slug": "loop-control",
+  "courseId": "repetition",
+  "title": "건너뛸 때와 멈출 때 정하기",
+  "problem": "잘못된 기록은 제외하고 찾던 항목을 발견하면 검색을 끝내고 싶습니다.",
+  "goal": "continue·break·반복문의 else가 실행되는 조건을 구별합니다.",
+  "prerequisites": [
+    "while-loops"
+  ],
+  "topics": [
+    "continue",
+    "break",
+    "반복문 else",
+    "검색"
+  ],
+  "takeaway": "continue는 현재 반복의 나머지를 건너뛰고, break는 가장 안쪽 반복을 끝냅니다.",
+  "sections": [
+    {
+      "title": "이번 항목만 건너뛰기",
+      "body": [
+        "continue는 현재 반복의 남은 지시를 건너뛰고 다음 반복으로 이동합니다. 아래에서는 음수인 기록을 제외하고 0 이상의 수만 더합니다.",
+        "for에서는 다음 항목을 받지만 while에서는 조건 검사로 돌아갑니다. while의 값 갱신이 continue 아래에 있으면 갱신을 건너뛰어 끝나지 않을 수 있습니다."
+      ],
+      "code": "total = 0\nfor count in [3, -1, 2]:\n    if count < 0:\n        continue\n    total += count\nprint(total)",
+      "output": "5",
+      "diagram": {
+        "type": "timeline",
+        "nodes": [
+          {
+            "label": "3",
+            "value": "누적 → 3"
+          },
+          {
+            "label": "-1",
+            "value": "건너뜀"
+          },
+          {
+            "label": "2",
+            "value": "누적 → 5"
+          }
+        ],
+        "caption": "3: 누적 → 3 · -1: 건너뜀 · 2: 누적 → 5"
+      },
+      "trace": [
+        {
+          "label": "정상 항목",
+          "state": "3을 더합니다."
+        },
+        {
+          "label": "잘못된 항목",
+          "state": "-1은 continue로 누적하지 않습니다."
+        },
+        {
+          "label": "다음 항목",
+          "state": "2를 더해 5가 됩니다."
+        }
+      ]
+    },
+    {
+      "title": "발견한 순간 검색 끝내기",
+      "body": [
+        "break는 현재 속한 가장 안쪽 반복을 즉시 끝냅니다. 다음 항목을 읽지 않고 반복 바깥의 다음 지시로 이동합니다.",
+        "아래에서는 첫 번째로 5 이상인 수 7을 찾습니다. 그 뒤의 9는 확인하지 않습니다. 따라서 “첫 번째 일치”를 구하는 문제에 맞는 흐름입니다."
+      ],
+      "code": "found = None\nfor count in [2, 7, 9]:\n    if count >= 5:\n        found = count\n        break\nprint(found)",
+      "output": "7",
+      "diagram": {
+        "type": "branch",
+        "nodes": [
+          {
+            "label": "첫 검사",
+            "value": "2는 기준 미달"
+          },
+          {
+            "label": "다음 검사",
+            "value": "7이 일치"
+          },
+          {
+            "label": "남은 항목",
+            "value": "9는 검사하지 않음"
+          }
+        ],
+        "caption": "첫 검사: 2는 기준 미달 · 다음 검사: 7이 일치 · 남은 항목: 9는 검사하지 않음"
+      },
+      "trace": [
+        {
+          "label": "2 확인",
+          "state": "계속 검색합니다."
+        },
+        {
+          "label": "7 확인",
+          "state": "found=7로 대입하고 반복을 종료합니다."
+        }
+      ]
+    },
+    {
+      "title": "끝까지 못 찾은 경우 처리하기",
+      "body": [
+        "반복문의 else는 break 없이 반복이 정상적으로 끝났을 때 실행됩니다. if의 else와 들여쓰기 위치가 다르다는 점에 주의하세요.",
+        "검색 대상이 처음부터 비어 있어도 break가 없으므로 else는 실행됩니다. 아래처럼 찾은 값이 없을 때만 안내를 남길 수 있습니다."
+      ],
+      "code": "for place in [\"숲\", \"강\"]:\n    if place == \"못\":\n        print(\"찾음\")\n        break\nelse:\n    print(\"못 기록 없음\")",
+      "output": "못 기록 없음",
+      "diagram": {
+        "type": "branch",
+        "nodes": [
+          {
+            "label": "검색 대상",
+            "value": "숲, 강"
+          },
+          {
+            "label": "break 발생",
+            "value": "없음"
+          },
+          {
+            "label": "else 실행",
+            "value": "못 기록 없음"
+          }
+        ],
+        "caption": "검색 대상: 숲, 강 · break 발생: 없음 · else 실행: 못 기록 없음"
+      },
+      "trace": [
+        {
+          "label": "전체 검사",
+          "state": "두 장소 모두 못과 다릅니다."
+        },
+        {
+          "label": "정상 종료",
+          "state": "항목을 끝까지 읽었으므로 else를 실행합니다."
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "question": "반복 도중 break가 실행되면 반복문에 붙은 else는 실행되나요?",
+    "options": [
+      {
+        "text": "실행됩니다.",
+        "correct": false,
+        "feedback": "반복문의 else는 break 없이 끝난 경우에 실행됩니다."
+      },
+      {
+        "text": "실행되지 않습니다.",
+        "correct": true,
+        "feedback": "break는 반복문 else까지 건너뛰고 반복 바깥으로 이동합니다."
+      },
+      {
+        "text": "마지막 항목일 때만 실행됩니다.",
+        "correct": false,
+        "feedback": "어느 항목에서든 break가 실행되면 else는 실행되지 않습니다."
+      }
+    ]
+  },
+  "sourceUrls": [
+    "https://docs.python.org/3/tutorial/controlflow.html#break-and-continue-statements",
+    "https://docs.python.org/3/tutorial/controlflow.html#else-clauses-on-loops"
+  ]
+}

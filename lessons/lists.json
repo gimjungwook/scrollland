@@ -1,0 +1,161 @@
+{
+  "slug": "lists",
+  "courseId": "collections",
+  "title": "리스트의 순서와 항목 바꾸기",
+  "problem": "관찰 장소를 순서대로 기록하고 잘못 적은 항목을 고쳐야 합니다.",
+  "goal": "리스트의 항목을 읽고 추가·수정·삭제한 결과를 설명합니다.",
+  "prerequisites": [
+    "operators"
+  ],
+  "topics": [
+    "리스트",
+    "인덱스",
+    "append",
+    "insert",
+    "pop",
+    "remove",
+    "배열"
+  ],
+  "takeaway": "리스트는 순서가 있으며 항목을 바꿀 수 있는 객체입니다.",
+  "sections": [
+    {
+      "title": "순서가 있는 묶음 만들기",
+      "body": [
+        "리스트는 여러 값을 순서대로 담는 변경 가능한 객체입니다. 대괄호로 만들고, 문자열과 마찬가지로 인덱스 0부터 항목을 읽습니다. len()은 항목 수를 구합니다.",
+        "다른 언어에서 배열이라고 부르는 순서 있는 묶음과 비교할 수 있지만 Python 리스트는 서로 다른 자료형도 담을 수 있습니다. 같은 자료형의 수치를 저장하는 표준 array 도구와의 차이는 「모듈을 불러와 연결하기」 레슨에서 확인합니다."
+      ],
+      "code": "places = [\"숲\", \"강\", \"공원\"]\nprint(places[1])\nprint(places[-1])\nprint(len(places))",
+      "output": "강\n공원\n3",
+      "diagram": {
+        "type": "collection",
+        "nodes": [
+          {
+            "label": "위치 0",
+            "value": "숲"
+          },
+          {
+            "label": "위치 1",
+            "value": "강"
+          },
+          {
+            "label": "위치 2",
+            "value": "공원"
+          }
+        ],
+        "caption": "위치 0: 숲 · 위치 1: 강 · 위치 2: 공원"
+      },
+      "trace": [
+        {
+          "label": "생성",
+          "state": "세 항목이 순서대로 들어 있는 리스트를 만듭니다."
+        },
+        {
+          "label": "읽기",
+          "state": "1은 두 번째, -1은 마지막 항목입니다."
+        }
+      ]
+    },
+    {
+      "title": "추가하고 한 항목 수정하기",
+      "body": [
+        "append()는 마지막에 항목 하나를 추가하고 insert()는 지정 위치에 항목을 끼워 넣습니다. places[0] = \"정원\"은 리스트 자체의 첫 항목을 바꿉니다.",
+        "재대입과 달리 이 작업은 기존 리스트 객체의 내용 변경입니다. append()의 반환값은 None이므로 places = places.append(...)로 결과를 다시 대입하면 이름이 리스트가 아닌 None을 가리키게 됩니다."
+      ],
+      "code": "places = [\"숲\", \"강\"]\nplaces.append(\"공원\")\nplaces[0] = \"정원\"\nplaces.insert(1, \"못\")\nprint(places)",
+      "output": "['정원', '못', '강', '공원']",
+      "diagram": {
+        "type": "collection",
+        "nodes": [
+          {
+            "label": "변경 전",
+            "value": "숲, 강"
+          },
+          {
+            "label": "변경 후",
+            "value": "정원, 못, 강, 공원"
+          }
+        ],
+        "caption": "변경 전: 숲, 강 · 변경 후: 정원, 못, 강, 공원"
+      },
+      "trace": [
+        {
+          "label": "끝에 추가",
+          "state": "숲, 강, 공원"
+        },
+        {
+          "label": "첫 항목 수정",
+          "state": "정원, 강, 공원"
+        },
+        {
+          "label": "위치 1에 삽입",
+          "state": "정원, 못, 강, 공원"
+        }
+      ]
+    },
+    {
+      "title": "위치와 값으로 삭제하기",
+      "body": [
+        "pop()은 위치의 항목을 제거하고 그 값을 반환합니다. 위치를 생략하면 마지막 항목입니다. remove()는 같은 값이 처음 나타난 항목 하나를 제거합니다.",
+        "del places[0]은 그 위치의 항목을 삭제하는 지시입니다. 없는 위치나 값을 제거하려 하면 오류가 나므로 어떤 항목을 지우는지 먼저 확인하세요. clear()는 해당 리스트의 모든 항목을 비웁니다."
+      ],
+      "code": "places = [\"숲\", \"강\", \"못\", \"강\"]\nremoved = places.pop(2)\nplaces.remove(\"강\")\nprint(removed)\nprint(places)\ndel places[0]\nprint(places)",
+      "output": "못\n['숲', '강']\n['강']",
+      "diagram": {
+        "type": "collection",
+        "nodes": [
+          {
+            "label": "pop(2)",
+            "value": "위치 2의 못 제거"
+          },
+          {
+            "label": "remove(\"강\")",
+            "value": "처음 나오는 강 하나 제거"
+          },
+          {
+            "label": "del [0]",
+            "value": "남은 첫 항목 숲 제거"
+          }
+        ],
+        "caption": "pop(2): 위치 2의 못 제거 · remove(\"강\"): 처음 나오는 강 하나 제거 · del [0]: 남은 첫 항목 숲 제거"
+      },
+      "trace": [
+        {
+          "label": "최초 목록",
+          "state": "숲, 강, 못, 강"
+        },
+        {
+          "label": "pop과 remove 이후",
+          "state": "숲, 강"
+        },
+        {
+          "label": "del 이후",
+          "state": "강"
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "question": "items = [1, 2]에 items.append(3)을 실행하면 무엇이 바뀌나요?",
+    "options": [
+      {
+        "text": "새 리스트만 생기고 items는 그대로입니다.",
+        "correct": false,
+        "feedback": "append()는 기존 리스트 객체의 내용을 바꿉니다."
+      },
+      {
+        "text": "items가 가리키는 리스트 끝에 3이 추가됩니다.",
+        "correct": true,
+        "feedback": "리스트는 변경 가능한 객체이며 결과는 [1, 2, 3]입니다."
+      },
+      {
+        "text": "items가 자동으로 None을 가리킵니다.",
+        "correct": false,
+        "feedback": "append()의 반환값은 None이지만 대입하지 않았다면 items의 연결은 유지됩니다."
+      }
+    ]
+  },
+  "sourceUrls": [
+    "https://docs.python.org/3/tutorial/datastructures.html#more-on-lists",
+    "https://docs.python.org/3/library/stdtypes.html#mutable-sequence-types"
+  ]
+}

@@ -1,0 +1,188 @@
+{
+  "slug": "variables",
+  "courseId": "values",
+  "title": "값에 이름을 연결하기",
+  "problem": "같은 수를 여러 계산에 쓰고 나중에 바꾸고 싶습니다.",
+  "goal": "대입과 재대입을 이름과 객체의 연결로 설명합니다.",
+  "prerequisites": [
+    "run-python"
+  ],
+  "topics": [
+    "변수",
+    "이름",
+    "객체",
+    "대입",
+    "재대입"
+  ],
+  "takeaway": "대입은 오른쪽 값을 먼저 구한 뒤 왼쪽 이름을 그 객체에 연결합니다.",
+  "sections": [
+    {
+      "title": "이름과 값 구분하기",
+      "body": [
+        "값은 7이나 \"산책\"처럼 프로그램이 다루는 내용입니다. Python에서 값은 객체로 표현됩니다. 객체는 자료형과 값을 갖는 프로그램 안의 대상입니다. 변수는 그 객체에 연결한 이름입니다.",
+        "birds = 7은 birds라는 이름을 값 7인 객체에 연결합니다. 빈 상자를 먼저 만들고 숫자를 집어넣는 과정으로 생각하지 마세요. 이름을 읽으면 현재 연결된 객체를 사용합니다."
+      ],
+      "code": "birds = 7\nprint(birds)",
+      "output": "7",
+      "diagram": {
+        "type": "binding",
+        "nodes": [
+          {
+            "label": "이름",
+            "value": "birds"
+          },
+          {
+            "label": "연결된 객체",
+            "value": "정수 7"
+          }
+        ],
+        "caption": "이름: birds · 연결된 객체: 정수 7"
+      },
+      "trace": [
+        {
+          "label": "대입 전",
+          "state": "이 예제에서 birds는 아직 정의되지 않았습니다."
+        },
+        {
+          "label": "대입 후",
+          "state": "birds가 정수 7에 연결됩니다."
+        },
+        {
+          "label": "사용",
+          "state": "print(birds)가 7을 출력합니다."
+        }
+      ]
+    },
+    {
+      "title": "오른쪽을 먼저 계산하기",
+      "body": [
+        "=는 같다는 질문이 아니라 대입을 하는 기호입니다. 오른쪽의 4 + 3을 먼저 계산하고, 그 결과 7에 total이라는 이름을 연결합니다.",
+        "이름에는 공백을 넣지 않고 숫자로 시작하지 않습니다. 단어를 이을 때 total_birds처럼 밑줄을 사용할 수 있습니다. 대문자와 소문자는 구별되므로 total과 Total은 다른 이름입니다."
+      ],
+      "code": "total = 4 + 3\nprint(total)",
+      "output": "7",
+      "diagram": {
+        "type": "binding",
+        "nodes": [
+          {
+            "label": "오른쪽 식",
+            "value": "4 + 3 → 7"
+          },
+          {
+            "label": "왼쪽 이름",
+            "value": "total → 7"
+          }
+        ],
+        "caption": "오른쪽 식: 4 + 3 → 7 · 왼쪽 이름: total → 7"
+      },
+      "trace": [
+        {
+          "label": "계산",
+          "state": "오른쪽의 덧셈 결과를 구합니다."
+        },
+        {
+          "label": "대입",
+          "state": "total을 결과 7에 연결합니다."
+        }
+      ]
+    },
+    {
+      "title": "이름으로 값을 사용하기",
+      "body": [
+        "기존 이름을 식에서 사용하면 그 이름이 현재 가리키는 값을 계산에 넣습니다. 계산에 썼다는 이유만으로 원래 이름의 연결이 바뀌지는 않습니다.",
+        "doubled = birds * 2에서는 birds의 값 7을 두 배로 만들어 doubled에 연결합니다. birds를 다시 출력하면 여전히 7입니다."
+      ],
+      "code": "birds = 7\ndoubled = birds * 2\nprint(birds)\nprint(doubled)",
+      "output": "7\n14",
+      "diagram": {
+        "type": "binding",
+        "nodes": [
+          {
+            "label": "birds",
+            "value": "정수 7"
+          },
+          {
+            "label": "doubled",
+            "value": "정수 14"
+          }
+        ],
+        "caption": "birds: 정수 7 · doubled: 정수 14"
+      },
+      "trace": [
+        {
+          "label": "기존 연결",
+          "state": "birds → 7"
+        },
+        {
+          "label": "계산 결과",
+          "state": "7 × 2 = 14"
+        },
+        {
+          "label": "새 연결",
+          "state": "doubled → 14, birds → 7 유지"
+        }
+      ]
+    },
+    {
+      "title": "재대입으로 연결 바꾸기",
+      "body": [
+        "재대입은 이미 있는 이름을 다른 객체에 다시 연결하는 일입니다. birds = birds + 1은 오른쪽에서 이전 값 7을 사용한 뒤 birds의 연결을 8로 바꿉니다.",
+        "saved = birds는 그때 birds가 가리킨 객체에 saved도 연결합니다. 이후 birds를 재대입해도 saved의 연결은 바뀌지 않습니다. 여러 이름이 변경 가능한 객체를 함께 가리키는 경우는 「리스트를 복사하고 정렬하기」 레슨에서 비교합니다."
+      ],
+      "code": "birds = 7\nsaved = birds\nbirds = birds + 1\nprint(birds)\nprint(saved)",
+      "output": "8\n7",
+      "diagram": {
+        "type": "binding",
+        "nodes": [
+          {
+            "label": "birds의 현재 연결",
+            "value": "정수 8"
+          },
+          {
+            "label": "saved의 현재 연결",
+            "value": "정수 7"
+          }
+        ],
+        "caption": "birds의 현재 연결: 정수 8 · saved의 현재 연결: 정수 7"
+      },
+      "trace": [
+        {
+          "label": "최초 대입",
+          "state": "birds → 7"
+        },
+        {
+          "label": "같은 객체 사용",
+          "state": "saved → 7, birds → 7"
+        },
+        {
+          "label": "재대입 이후",
+          "state": "birds → 8, saved → 7"
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "question": "count = 3; old = count; count = 5를 순서대로 실행한 뒤 old는 무엇인가요?",
+    "options": [
+      {
+        "text": "5",
+        "correct": false,
+        "feedback": "count의 재대입이 old의 연결까지 바꾸지는 않습니다."
+      },
+      {
+        "text": "3",
+        "correct": true,
+        "feedback": "old는 대입 당시의 정수 3에 계속 연결되어 있습니다."
+      },
+      {
+        "text": "정의되지 않음",
+        "correct": false,
+        "feedback": "old = count에서 old도 이미 정의되었습니다."
+      }
+    ]
+  },
+  "sourceUrls": [
+    "https://docs.python.org/3/reference/simple_stmts.html#assignment-statements",
+    "https://docs.python.org/3/reference/datamodel.html"
+  ]
+}

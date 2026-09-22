@@ -1,0 +1,150 @@
+{
+  "slug": "data-types",
+  "courseId": "values",
+  "title": "같아 보이는 값 구별하기",
+  "problem": "화면에는 둘 다 12인데 하나는 계산되고 하나는 글처럼 이어집니다.",
+  "goal": "자료형에 따라 가능한 연산이 달라짐을 설명하고 필요한 변환을 선택합니다.",
+  "prerequisites": [
+    "variables"
+  ],
+  "topics": [
+    "자료형",
+    "int",
+    "float",
+    "str",
+    "bool",
+    "None",
+    "형 변환"
+  ],
+  "takeaway": "겉모습 대신 자료형을 확인하고 목적에 맞게 값을 변환합니다.",
+  "sections": [
+    {
+      "title": "자료형으로 역할 확인하기",
+      "body": [
+        "자료형은 객체의 종류이며 어떤 연산을 할 수 있는지 정합니다. int는 정수, float는 소수 계산에 쓰는 부동소수점 수, str은 문자열입니다. type()으로 자료형을 확인할 수 있습니다.",
+        "12와 \"12\"는 출력 모양이 비슷해도 다릅니다. 정수끼리 +를 쓰면 더하고, 문자열끼리 +를 쓰면 글을 잇습니다. 정수와 문자열을 바로 더하면 오류가 납니다."
+      ],
+      "code": "print(type(12))\nprint(type(\"12\"))\nprint(12 + 3)\nprint(\"12\" + \"3\")",
+      "output": "<class 'int'>\n<class 'str'>\n15\n123",
+      "diagram": {
+        "type": "flow",
+        "nodes": [
+          {
+            "label": "정수 계산",
+            "value": "12 + 3 → 15"
+          },
+          {
+            "label": "문자열 연결",
+            "value": "\"12\" + \"3\" → \"123\""
+          }
+        ],
+        "caption": "정수 계산: 12 + 3 → 15 · 문자열 연결: \"12\" + \"3\" → \"123\""
+      },
+      "trace": [
+        {
+          "label": "자료형 확인",
+          "state": "숫자 12는 int, 따옴표 안 12는 str입니다."
+        },
+        {
+          "label": "연산 선택",
+          "state": "같은 +라도 객체의 종류에 따라 동작이 다릅니다."
+        }
+      ]
+    },
+    {
+      "title": "계산할 값으로 변환하기",
+      "body": [
+        "형 변환은 한 종류의 값에서 다른 종류의 값을 만드는 작업입니다. int(\"12\")는 정수 12를 만들고, float(\"2.5\")는 소수 계산용 값을 만듭니다.",
+        "str()은 값을 문자열로 만듭니다. 변환해도 원래 이름의 연결은 자동으로 바뀌지 않습니다. 숫자로 읽을 수 없는 \"열둘\"은 int()로 바꿀 수 없으며, 그런 입력은 「예외를 구별해 처리하기」 레슨에서 처리합니다."
+      ],
+      "code": "text = \"12\"\namount = int(text)\nprint(amount + 3)\nprint(type(text))\nprint(str(2.5))",
+      "output": "15\n<class 'str'>\n2.5",
+      "diagram": {
+        "type": "binding",
+        "nodes": [
+          {
+            "label": "입력 객체",
+            "value": "text → 문자열 \"12\""
+          },
+          {
+            "label": "변환 결과",
+            "value": "amount → 정수 12"
+          }
+        ],
+        "caption": "입력 객체: text → 문자열 \"12\" · 변환 결과: amount → 정수 12"
+      },
+      "trace": [
+        {
+          "label": "변환 전",
+          "state": "text는 문자열입니다."
+        },
+        {
+          "label": "변환 후",
+          "state": "amount는 계산할 수 있는 정수입니다."
+        },
+        {
+          "label": "원본 확인",
+          "state": "text의 자료형은 str로 유지됩니다."
+        }
+      ]
+    },
+    {
+      "title": "참·거짓과 값 없음 구별하기",
+      "body": [
+        "bool은 참을 뜻하는 True와 거짓을 뜻하는 False의 자료형입니다. None은 아직 값이 없거나 결과가 없음을 나타내는 별도의 객체입니다.",
+        "숫자 0, 빈 문자열 \"\", None은 서로 같은 값이 아닙니다. 예약한 좌석이 0개인 상태와 좌석 수를 아직 확인하지 않은 상태를 구별하려면 None을 사용할 수 있습니다."
+      ],
+      "code": "confirmed = True\nseat_count = 0\nunknown_count = None\nprint(type(confirmed))\nprint(seat_count)\nprint(unknown_count)",
+      "output": "<class 'bool'>\n0\nNone",
+      "diagram": {
+        "type": "binding",
+        "nodes": [
+          {
+            "label": "확인한 수량",
+            "value": "seat_count → 0"
+          },
+          {
+            "label": "미확인 수량",
+            "value": "unknown_count → None"
+          }
+        ],
+        "caption": "확인한 수량: seat_count → 0 · 미확인 수량: unknown_count → None"
+      },
+      "trace": [
+        {
+          "label": "확인 여부",
+          "state": "confirmed는 bool의 참 값입니다."
+        },
+        {
+          "label": "수량 비교",
+          "state": "0은 확인한 숫자이고 None은 수량이 없다는 표시입니다."
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "question": "text = \"8\"을 정수로 계산하려면 어떤 식을 사용하나요?",
+    "options": [
+      {
+        "text": "int(text) + 2",
+        "correct": true,
+        "feedback": "숫자를 나타내는 문자열을 정수로 바꾼 뒤 더합니다."
+      },
+      {
+        "text": "text + 2",
+        "correct": false,
+        "feedback": "문자열과 정수는 +로 바로 더할 수 없습니다."
+      },
+      {
+        "text": "text + \"2\"",
+        "correct": false,
+        "feedback": "이 식은 계산 결과 10이 아니라 문자열 \"82\"를 만듭니다."
+      }
+    ]
+  },
+  "sourceUrls": [
+    "https://docs.python.org/3/library/stdtypes.html",
+    "https://docs.python.org/3/library/functions.html#type",
+    "https://docs.python.org/3/library/constants.html#None"
+  ]
+}

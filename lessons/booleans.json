@@ -1,0 +1,153 @@
+{
+  "slug": "booleans",
+  "courseId": "decisions",
+  "title": "조건을 참과 거짓으로 읽기",
+  "problem": "수량이 기준을 넘었는지와 기록이 비어 있는지 판단해야 합니다.",
+  "goal": "비교 결과와 논리 연산을 bool 값으로 설명합니다.",
+  "prerequisites": [
+    "input-output"
+  ],
+  "topics": [
+    "불리언",
+    "비교",
+    "and",
+    "or",
+    "not",
+    "참값 판정",
+    "None"
+  ],
+  "takeaway": "조건의 결과를 먼저 읽고, 여러 조건을 연결한 이유를 말로 설명합니다.",
+  "sections": [
+    {
+      "title": "비교로 질문 만들기",
+      "body": [
+        "비교는 두 값의 관계를 묻고 True 또는 False를 만듭니다. ==는 값이 같은지, !=는 다른지, >=는 크거나 같은지 묻습니다. =의 대입과 구별하세요.",
+        "아래 질문은 각각 “관찰 수가 5 이상인가?”와 “관찰 수가 정확히 0인가?”입니다. 조건을 질문으로 읽으면 결과를 예측하기 쉽습니다."
+      ],
+      "code": "count = 6\nprint(count >= 5)\nprint(count == 0)\nprint(count != 0)",
+      "output": "True\nFalse\nTrue",
+      "diagram": {
+        "type": "branch",
+        "nodes": [
+          {
+            "label": "질문 1",
+            "value": "6은 5 이상인가? → 참"
+          },
+          {
+            "label": "질문 2",
+            "value": "6은 0인가? → 거짓"
+          }
+        ],
+        "caption": "질문 1: 6은 5 이상인가? → 참 · 질문 2: 6은 0인가? → 거짓"
+      },
+      "trace": [
+        {
+          "label": "값 준비",
+          "state": "count는 정수 6입니다."
+        },
+        {
+          "label": "비교 후",
+          "state": "각 비교는 bool 값을 만듭니다."
+        }
+      ]
+    },
+    {
+      "title": "여러 조건을 연결하기",
+      "body": [
+        "and는 두 조건이 모두 참인지, or는 적어도 하나가 참인지, not은 참·거짓을 뒤집어 묻습니다. 이 예제처럼 비교식끼리 연결하면 결과는 bool입니다.",
+        "Python의 and와 or는 일반적으로 피연산자 중 하나를 반환하고 결과가 정해지면 나머지 식을 계산하지 않습니다. 피연산자는 연산자의 대상인 값이나 식입니다. 이 성질을 이용한 안전한 조건은 「연산의 뜻과 우선순위 확인하기」 레슨에서 다룹니다."
+      ],
+      "code": "count = 6\nraining = False\nprint(count >= 5 and not raining)\nprint(count == 0 or raining)",
+      "output": "True\nFalse",
+      "diagram": {
+        "type": "branch",
+        "nodes": [
+          {
+            "label": "충분한 수량",
+            "value": "6 >= 5 → True"
+          },
+          {
+            "label": "비가 오지 않음",
+            "value": "not False → True"
+          },
+          {
+            "label": "함께 충족",
+            "value": "True and True → True"
+          }
+        ],
+        "caption": "충분한 수량: 6 >= 5 → True · 비가 오지 않음: not False → True · 함께 충족: True and True → True"
+      },
+      "trace": [
+        {
+          "label": "첫 조건",
+          "state": "수량 조건이 참입니다."
+        },
+        {
+          "label": "둘째 조건",
+          "state": "비가 오지 않는 조건도 참이라 전체가 참입니다."
+        }
+      ]
+    },
+    {
+      "title": "비어 있음과 값 없음 구별하기",
+      "body": [
+        "bool()로 참값 판정을 확인할 수 있습니다. 0, 빈 문자열, 빈 묶음, None은 거짓으로 판정됩니다. 값이 없음을 확인하려면 is None을 사용합니다.",
+        "\"0\"은 글자 하나가 있는 문자열이라 참으로 판정됩니다. bool(value)가 False라는 이유만으로 그 값이 None이라고 결론 내리면 안 됩니다."
+      ],
+      "code": "print(bool(0))\nprint(bool(\"0\"))\nprint(bool(\"\"))\nvalue = None\nprint(value is None)",
+      "output": "False\nTrue\nFalse\nTrue",
+      "diagram": {
+        "type": "collection",
+        "nodes": [
+          {
+            "label": "숫자 0",
+            "value": "거짓으로 판정"
+          },
+          {
+            "label": "문자열 \"0\"",
+            "value": "비어 있지 않아 참으로 판정"
+          },
+          {
+            "label": "None",
+            "value": "값 없음"
+          }
+        ],
+        "caption": "숫자 0: 거짓으로 판정 · 문자열 \"0\": 비어 있지 않아 참으로 판정 · None: 값 없음"
+      },
+      "trace": [
+        {
+          "label": "참값 검사",
+          "state": "같아 보이는 0도 자료형에 따라 판정이 다릅니다."
+        },
+        {
+          "label": "None 검사",
+          "state": "is None으로 값 없음 자체를 확인합니다."
+        }
+      ]
+    }
+  ],
+  "quiz": {
+    "question": "count가 0일 때 count > 0 and count < 10은 어떤 값인가요?",
+    "options": [
+      {
+        "text": "True",
+        "correct": false,
+        "feedback": "첫 조건 count > 0이 거짓이므로 두 조건을 모두 만족하지 못합니다."
+      },
+      {
+        "text": "False",
+        "correct": true,
+        "feedback": "and는 두 조건이 모두 참이어야 합니다."
+      },
+      {
+        "text": "None",
+        "correct": false,
+        "feedback": "두 비교식을 연결한 결과는 여기서 bool입니다."
+      }
+    ]
+  },
+  "sourceUrls": [
+    "https://docs.python.org/3/library/stdtypes.html#truth-value-testing",
+    "https://docs.python.org/3/library/stdtypes.html#boolean-operations-and-or-not"
+  ]
+}
