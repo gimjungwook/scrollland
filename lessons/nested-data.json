@@ -28,8 +28,9 @@
     {
       "title": "기록 하나와 기록 묶음 구별하기",
       "body": [
-        "중첩은 묶음 안에 다른 묶음이 들어 있는 구조입니다. 리스트는 기록의 순서를, 딕셔너리는 한 기록의 항목 이름을 표현할 수 있습니다.",
-        "records[1][\"count\"]는 먼저 두 번째 기록을 고른 뒤 그 기록의 count 값을 읽습니다. [] 한 쌍씩 읽으면 어떤 자료형을 다루는지 놓치지 않습니다."
+        "한 관찰 기록에는 장소와 수량이 함께 필요합니다. 딕셔너리 하나로 {\"place\": \"숲\", \"count\": 4}를 표현하고, 이런 기록 여러 개를 리스트에 넣을 수 있습니다. 묶음 안에 다른 묶음을 넣은 구조를 중첩이라고 합니다.",
+        "records[1][\"place\"]를 한 번에 읽기 어렵다면 왼쪽부터 나누세요. records[1]이 바깥 리스트의 두 번째 딕셔너리를 고르고, 그 뒤의 [\"place\"]가 그 딕셔너리에서 강을 읽습니다.",
+        "records[1][\"count\"]도 같은 기록을 먼저 고른 뒤 수량 2를 읽습니다. 첫 대괄호에는 리스트 위치인 정수를, 둘째 대괄호에는 딕셔너리 키인 문자열을 쓰는 이유가 여기에 있습니다."
       ],
       "code": "records = [{\"place\": \"숲\", \"count\": 4}, {\"place\": \"강\", \"count\": 2}]\nprint(records[1][\"place\"])\nprint(records[1][\"count\"])",
       "output": "강\n2",
@@ -68,8 +69,9 @@
     {
       "title": "얕은 복사의 안쪽 공유 확인하기",
       "body": [
-        "딕셔너리 copy()도 바깥 객체만 복사합니다. 그 안의 리스트는 같은 객체일 수 있습니다. 그래서 copied[\"counts\"].append(3)은 원본으로 읽는 리스트에도 보입니다.",
-        "한 단계 안쪽 리스트까지 독립시켜야 하면 그 리스트도 copy()할 수 있습니다. 복잡한 구조 전체를 재귀적으로 복사하는 deepcopy()는 copy 모듈의 기능입니다. 모듈은 「모듈을 불러와 연결하기」 레슨에서 배웁니다."
+        "original에는 counts 키가 가리키는 리스트 [4, 2]가 있습니다. original.copy()는 바깥 딕셔너리만 새로 만듭니다. 새 딕셔너리의 counts도 기존 리스트에 연결되므로 두 딕셔너리는 안쪽 리스트 하나를 공유합니다.",
+        "copied[\"counts\"].append(3)은 공유한 그 리스트의 끝에 3을 추가합니다. 그래서 original[\"counts\"]로 읽어도 [4, 2, 3]이 나옵니다. 바깥 딕셔너리가 달라졌다고 안쪽 객체까지 자동으로 복사되는 것은 아닙니다.",
+        "independent를 만들 때에는 original[\"counts\"].copy()로 안쪽 리스트도 새로 만듭니다. 이 새 리스트의 첫 항목을 9로 바꾸어도 공유한 원래 리스트의 첫 항목 4는 유지됩니다. 그림의 선은 바깥 딕셔너리 자체가 아니라 각 counts가 가리키는 리스트를 비교합니다."
       ],
       "code": "original = {\"counts\": [4, 2]}\ncopied = original.copy()\ncopied[\"counts\"].append(3)\nprint(original[\"counts\"])\nindependent = {\"counts\": original[\"counts\"].copy()}\nindependent[\"counts\"][0] = 9\nprint(original[\"counts\"])\nprint(independent[\"counts\"])",
       "output": "[4, 2, 3]\n[4, 2, 3]\n[9, 2, 3]",
@@ -77,46 +79,63 @@
         "type": "binding",
         "nodes": [
           {
-            "label": "original와 copied",
-            "value": "같은 안쪽 리스트 [4, 2, 3]"
+            "label": "original[\"counts\"]",
+            "value": "[4, 2, 3]",
+            "objectId": "shared-counts-list"
           },
           {
-            "label": "independent",
-            "value": "별도 안쪽 리스트 [9, 2, 3]"
+            "label": "copied[\"counts\"]",
+            "value": "[4, 2, 3]",
+            "objectId": "shared-counts-list"
+          },
+          {
+            "label": "independent[\"counts\"]",
+            "value": "[9, 2, 3]",
+            "objectId": "independent-counts-list"
           }
         ],
-        "caption": "original와 copied: 같은 안쪽 리스트 [4, 2, 3] · independent: 별도 안쪽 리스트 [9, 2, 3]"
+        "caption": "original과 copied의 counts는 [4, 2, 3] 리스트 하나를 공유합니다. independent의 counts만 별도 [9, 2, 3] 리스트에 연결됩니다."
       },
       "trace": [
         {
-          "label": "바깥 복사",
-          "state": "안쪽 리스트는 여전히 공유합니다."
+          "label": "바깥만 복사한 상태",
+          "state": "original과 copied는 별도 딕셔너리지만 두 counts는 같은 [4, 2] 리스트를 가리킵니다. 그림의 두 선이 한 리스트에 연결됩니다."
         },
         {
-          "label": "안쪽 복사",
-          "state": "independent에 별도 리스트를 연결합니다."
+          "label": "공유한 안쪽 리스트 변경",
+          "state": "copied의 counts로 append(3)을 실행합니다. 같은 리스트를 original로 읽어 [4, 2, 3]을 출력합니다."
         },
         {
-          "label": "개별 수정",
-          "state": "독립한 리스트의 첫 값만 9가 됩니다."
+          "label": "안쪽 리스트도 별도로 복사",
+          "state": "5번 줄은 현재 안쪽 리스트 [4, 2, 3]을 새로 복사합니다. independent의 counts는 내용은 같지만 별도인 리스트를 가리킵니다."
+        },
+        {
+          "label": "독립한 리스트만 수정",
+          "state": "independent의 첫 항목을 9로 바꿉니다. original과 copied가 공유한 리스트는 [4, 2, 3] 그대로입니다."
+        },
+        {
+          "label": "두 경로의 결과 대조",
+          "state": "original의 counts를 출력하면 [4, 2, 3], independent의 counts를 출력하면 [9, 2, 3]입니다. 공유 여부에 따라 변경이 보이는 경로가 달라집니다."
         }
       ],
       "id": "nested-data-scene-3",
       "kind": "visualization",
-      "question": "바깥 딕셔너리를 복사하면 안쪽 리스트도 독립해질까요?",
-      "rationale": "바깥 복사와 안쪽 복사를 서로 다른 시점에 수행합니다. copied와 original이 계속 공유하는 안쪽 리스트와 independent의 새 리스트를 나란히 유지해야 변경이 전해지는 경계를 따라갈 수 있습니다.",
+      "question": "copied에만 append(3)을 했는데 original에도 3이 보이고, independent의 9는 왜 보이지 않을까요?",
+      "rationale": "이전 설명에서 생략했던 공유 리스트의 append와 첫 출력을 별도 단계로 보여 줍니다. 바깥 딕셔너리 복사와 안쪽 리스트 복사를 구별하며 각 리스트의 objectId를 유지합니다.",
       "interpretation": [
-        "original과 copied의 바깥 딕셔너리는 달라도 counts로 읽는 리스트는 하나입니다. append(3)의 결과가 양쪽에서 보이는 이유입니다.",
-        "independent에는 안쪽 리스트를 한 번 더 복사해 연결했습니다. 그 리스트의 첫 항목을 9로 바꿔도 공유 리스트의 첫 항목 4는 유지됩니다."
+        "복사했다고 말할 때는 어느 층을 복사했는지 확인해야 합니다. original.copy()는 바깥 딕셔너리를, original[\"counts\"].copy()는 안쪽 리스트를 새로 만듭니다.",
+        "이 예제의 안쪽 항목은 정수라 리스트 복사로 필요한 독립성을 얻습니다. 더 안에 변경 가능한 묶음이 또 있으면 공유가 남을 수 있습니다. 구조를 따라 재귀적으로 복사하는 deepcopy()는 copy 모듈의 기능이며, 모듈 사용은 「모듈을 불러와 연결하기」 레슨에서 배웁니다."
       ],
       "visualization": {
         "ref": "nested-data-scene-3",
         "pin": true,
-        "scrollDistance": 245,
+        "scrollDistance": 275,
         "stops": [
           0,
-          0.28,
-          0.7,
+          0.18,
+          0.4,
+          0.61,
+          0.8,
           1
         ]
       }

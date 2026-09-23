@@ -91,11 +91,11 @@ test('all selected published visualizations resolve by ID, preserve outputs and 
     selected++; const scene = motion.scenes[source.visualization.ref];
     scene.steps.forEach((step, i) => {
       const frame = sampleScene(source, scene, source.visualization.stops[i]);
-      assert.equal(frame.index, i); assert.deepEqual(frame.nodes, step.nodes); assert.deepEqual(frame.lines, step.lines); assert.equal(frame.output, step.output);
-      assert(source.output.startsWith(step.output), `${source.id}: intermediate output differs from verified final output`);
+      assert.equal(frame.index, i); assert.deepEqual(frame.nodes, step.nodes); assert.deepEqual(frame.lines, step.lines || []); assert.equal(frame.output, step.output || '');
+      assert((source.output || '').startsWith(step.output || ''), `${source.id}: intermediate output differs from verified final output`);
     });
     const initial = sampleScene(source, scene, 0), final = sampleScene(source, scene, 1);
-    assert.deepEqual(final.nodes, scene.finalNodes); assert.equal(final.output, source.output); assert.deepEqual(sampleScene(source, scene, 0), initial);
+    assert.deepEqual(final.nodes, scene.finalNodes); assert.equal(final.output, source.output || ''); assert.deepEqual(sampleScene(source, scene, 0), initial);
   }
   assert(reading > 0 && selected > 0, 'the published reading path must distinguish normal reading from chosen visualizations');
   assert.equal(Object.keys(motion.scenes).length, selected);

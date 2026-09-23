@@ -10,12 +10,16 @@
           ],
           "nodes": [
             {
-              "label": "Observation.unit",
-              "value": "\"마리\""
+              "label": "first.unit",
+              "value": "클래스에서 \"마리\" 조회"
             },
             {
-              "label": "first · second",
-              "value": "클래스의 unit 조회 가능"
+              "label": "second.unit",
+              "value": "클래스에서 \"마리\" 조회"
+            },
+            {
+              "label": "Observation.unit",
+              "value": "\"마리\""
             }
           ],
           "output": ""
@@ -27,24 +31,65 @@
           "nodes": [
             {
               "label": "first.unit",
-              "value": "\"개체\" · 개별 속성"
+              "value": "개별 속성 \"개체\""
             },
             {
               "label": "second.unit",
-              "value": "\"마리\" · 클래스 값"
+              "value": "클래스에서 \"마리\" 조회"
             },
             {
               "label": "Observation.unit",
-              "value": "\"마리\""
+              "value": "\"마리\" · 유지"
             }
           ],
           "output": ""
+        },
+        {
+          "lines": [
+            9
+          ],
+          "nodes": [
+            {
+              "label": "first.unit",
+              "value": "개별 속성 \"개체\""
+            },
+            {
+              "label": "second.unit",
+              "value": "클래스에서 \"마리\" 조회"
+            },
+            {
+              "label": "Observation.unit",
+              "value": "\"마리\" · 유지"
+            }
+          ],
+          "output": "개체"
+        },
+        {
+          "lines": [
+            10,
+            11
+          ],
+          "nodes": [
+            {
+              "label": "first.unit",
+              "value": "개별 속성 \"개체\""
+            },
+            {
+              "label": "second.unit",
+              "value": "클래스에서 \"마리\" 조회"
+            },
+            {
+              "label": "Observation.unit",
+              "value": "\"마리\" · 유지"
+            }
+          ],
+          "output": "개체\n마리\n마리"
         }
       ],
       "finalNodes": [
         {
           "label": "first.unit",
-          "value": "\"개체\" · 개별 속성"
+          "value": "\"개체\" · 개별 값"
         },
         {
           "label": "second.unit",
@@ -52,7 +97,7 @@
         },
         {
           "label": "Observation.unit",
-          "value": "\"마리\""
+          "value": "\"마리\" · 바뀌지 않음"
         }
       ]
     },
@@ -60,7 +105,7 @@
       "steps": [
         {
           "lines": [
-            2
+            1
           ],
           "nodes": [
             {
@@ -68,8 +113,28 @@
               "value": "0"
             },
             {
+              "label": "조건 검사",
+              "value": "아직 전"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            2
+          ],
+          "nodes": [
+            {
               "label": "count > 0",
               "value": "False"
+            },
+            {
+              "label": "if 경로",
+              "value": "건너뜀"
+            },
+            {
+              "label": "else 경로",
+              "value": "선택"
             }
           ],
           "output": ""
@@ -81,8 +146,16 @@
           ],
           "nodes": [
             {
-              "label": "선택한 분기",
-              "value": "else"
+              "label": "count > 0",
+              "value": "False"
+            },
+            {
+              "label": "if 경로",
+              "value": "실행 안 함"
+            },
+            {
+              "label": "else 경로",
+              "value": "안내 출력"
             }
           ],
           "output": "첫 기록을 남겨 주세요"
@@ -93,8 +166,16 @@
           ],
           "nodes": [
             {
-              "label": "실행 위치",
-              "value": "분기 바깥"
+              "label": "count > 0",
+              "value": "False"
+            },
+            {
+              "label": "선택 경로",
+              "value": "else 완료"
+            },
+            {
+              "label": "분기 바깥",
+              "value": "검사 끝 출력"
             }
           ],
           "output": "첫 기록을 남겨 주세요\n검사 끝"
@@ -102,19 +183,15 @@
       ],
       "finalNodes": [
         {
-          "label": "count",
-          "value": "0"
+          "label": "조건",
+          "value": "0 > 0 → False"
         },
         {
-          "label": "선택한 분기",
-          "value": "else"
+          "label": "분기 출력",
+          "value": "첫 기록 안내"
         },
         {
-          "label": "분기에서 출력한 내용",
-          "value": "첫 기록을 남겨 주세요"
-        },
-        {
-          "label": "분기 뒤 출력",
+          "label": "그다음 출력",
           "value": "검사 끝"
         }
       ]
@@ -123,8 +200,8 @@
       "steps": [
         {
           "lines": [
-            7,
-            12
+            12,
+            7
           ],
           "nodes": [
             {
@@ -136,8 +213,8 @@
               "value": "wrapped 함수"
             },
             {
-              "label": "result",
-              "value": "아직 대입 전"
+              "label": "반환할 값",
+              "value": "아직 없음"
             }
           ],
           "output": ""
@@ -157,8 +234,8 @@
               "value": "wrapped 함수"
             },
             {
-              "label": "result",
-              "value": "아직 대입 전"
+              "label": "반환할 값",
+              "value": "아직 없음"
             }
           ],
           "output": "시작"
@@ -178,7 +255,7 @@
               "value": "wrapped 함수"
             },
             {
-              "label": "result",
+              "label": "반환할 값",
               "value": "6"
             }
           ],
@@ -199,11 +276,31 @@
               "value": "wrapped 함수"
             },
             {
-              "label": "result",
+              "label": "반환할 값",
               "value": "6"
             }
           ],
           "output": "시작\n끝"
+        },
+        {
+          "lines": [
+            13
+          ],
+          "nodes": [
+            {
+              "label": "original",
+              "value": "total 함수"
+            },
+            {
+              "label": "tracked",
+              "value": "wrapped 함수"
+            },
+            {
+              "label": "반환할 값",
+              "value": "6"
+            }
+          ],
+          "output": "시작\n끝\n6"
         }
       ],
       "finalNodes": [
@@ -216,8 +313,8 @@
           "value": "wrapped 함수"
         },
         {
-          "label": "반환값",
-          "value": "6 · 바깥 print()가 출력"
+          "label": "반환할 값",
+          "value": "6"
         }
       ]
     },
@@ -225,7 +322,7 @@
       "steps": [
         {
           "lines": [
-            3
+            1
           ],
           "nodes": [
             {
@@ -233,8 +330,32 @@
               "value": "\"여섯\""
             },
             {
-              "label": "int(text)",
-              "value": "변환 시도"
+              "label": "count",
+              "value": "아직 없음"
+            },
+            {
+              "label": "실행 위치",
+              "value": "정수 변환 전"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            3
+          ],
+          "nodes": [
+            {
+              "label": "text",
+              "value": "\"여섯\" · 그대로"
+            },
+            {
+              "label": "count",
+              "value": "대입 실패 · 이름 없음"
+            },
+            {
+              "label": "실행 위치",
+              "value": "ValueError 발생"
             }
           ],
           "output": ""
@@ -246,12 +367,16 @@
           ],
           "nodes": [
             {
-              "label": "예외",
-              "value": "ValueError"
+              "label": "text",
+              "value": "\"여섯\" · 그대로"
             },
             {
-              "label": "처리",
-              "value": "정수 입력 안내"
+              "label": "count",
+              "value": "이름 없음"
+            },
+            {
+              "label": "실행 위치",
+              "value": "except의 안내 출력"
             }
           ],
           "output": "정수로 입력해 주세요"
@@ -262,8 +387,16 @@
           ],
           "nodes": [
             {
+              "label": "text",
+              "value": "\"여섯\" · 그대로"
+            },
+            {
+              "label": "count",
+              "value": "이름 없음"
+            },
+            {
               "label": "실행 위치",
-              "value": "예외 처리 바깥"
+              "value": "try·except 바깥"
             }
           ],
           "output": "정수로 입력해 주세요\n다음 기록을 받을 수 있습니다"
@@ -271,20 +404,16 @@
       ],
       "finalNodes": [
         {
-          "label": "text",
-          "value": "\"여섯\""
-        },
-        {
-          "label": "정수 변환",
-          "value": "실패 · ValueError 처리"
+          "label": "변환 결과",
+          "value": "정수 값을 얻지 못함"
         },
         {
           "label": "count",
           "value": "대입되지 않음"
         },
         {
-          "label": "예외 처리 뒤 실행",
-          "value": "다음 기록 안내 출력"
+          "label": "처리 뒤 경로",
+          "value": "바깥 안내문 실행"
         }
       ]
     },
@@ -375,12 +504,16 @@
           ],
           "nodes": [
             {
-              "label": "stream",
-              "value": "제너레이터 객체"
+              "label": "stream 상태",
+              "value": "실행 전"
             },
             {
-              "label": "yield",
-              "value": "아직 실행 전"
+              "label": "다음 실행 위치",
+              "value": "yield 2"
+            },
+            {
+              "label": "list가 모은 값",
+              "value": "아직 없음"
             }
           ],
           "output": ""
@@ -392,12 +525,16 @@
           ],
           "nodes": [
             {
-              "label": "내보낸 값",
-              "value": "2"
+              "label": "stream 상태",
+              "value": "일시 정지"
             },
             {
-              "label": "다음 위치",
+              "label": "다음 실행 위치",
               "value": "yield 5"
+            },
+            {
+              "label": "list가 모은 값",
+              "value": "아직 없음"
             }
           ],
           "output": "2"
@@ -405,17 +542,61 @@
         {
           "lines": [
             8,
-            3,
+            3
+          ],
+          "nodes": [
+            {
+              "label": "stream 상태",
+              "value": "일시 정지"
+            },
+            {
+              "label": "다음 실행 위치",
+              "value": "yield 9"
+            },
+            {
+              "label": "list가 모은 값",
+              "value": "만드는 중 [5]"
+            }
+          ],
+          "output": "2"
+        },
+        {
+          "lines": [
+            8,
             4
           ],
           "nodes": [
             {
-              "label": "남은 값",
-              "value": "5 · 9 소비"
+              "label": "stream 상태",
+              "value": "일시 정지"
             },
             {
-              "label": "stream",
+              "label": "다음 실행 위치",
+              "value": "본문 끝"
+            },
+            {
+              "label": "list가 모은 값",
+              "value": "만드는 중 [5, 9]"
+            }
+          ],
+          "output": "2"
+        },
+        {
+          "lines": [
+            8
+          ],
+          "nodes": [
+            {
+              "label": "stream 상태",
               "value": "소진됨"
+            },
+            {
+              "label": "다음 실행 위치",
+              "value": "본문 끝"
+            },
+            {
+              "label": "list가 모은 값",
+              "value": "[5, 9]"
             }
           ],
           "output": "2\n[5, 9]"
@@ -423,15 +604,15 @@
       ],
       "finalNodes": [
         {
-          "label": "stream",
-          "value": "모든 yield를 소비한 상태"
+          "label": "stream 상태",
+          "value": "소진됨"
         },
         {
-          "label": "첫 next 결과",
-          "value": "2"
+          "label": "다음 실행 위치",
+          "value": "본문 끝"
         },
         {
-          "label": "남은 값을 모은 list 결과",
+          "label": "list가 모은 값",
           "value": "[5, 9]"
         }
       ]
@@ -440,11 +621,17 @@
       "steps": [
         {
           "lines": [
+            1,
             2
           ],
           "nodes": [
             {
-              "label": "original · backup",
+              "label": "original",
+              "value": "[4, 2]",
+              "objectId": "shared-list"
+            },
+            {
+              "label": "backup",
               "value": "[4, 2]",
               "objectId": "shared-list"
             }
@@ -457,17 +644,63 @@
           ],
           "nodes": [
             {
-              "label": "original · backup",
+              "label": "original",
+              "value": "[9, 2]",
+              "objectId": "shared-list"
+            },
+            {
+              "label": "backup",
               "value": "[9, 2]",
               "objectId": "shared-list"
             }
           ],
           "output": ""
+        },
+        {
+          "lines": [
+            4
+          ],
+          "nodes": [
+            {
+              "label": "original",
+              "value": "[9, 2]",
+              "objectId": "shared-list"
+            },
+            {
+              "label": "backup",
+              "value": "[9, 2]",
+              "objectId": "shared-list"
+            }
+          ],
+          "output": "[9, 2]"
+        },
+        {
+          "lines": [
+            5
+          ],
+          "nodes": [
+            {
+              "label": "original",
+              "value": "[9, 2]",
+              "objectId": "shared-list"
+            },
+            {
+              "label": "backup",
+              "value": "[9, 2]",
+              "objectId": "shared-list"
+            }
+          ],
+          "output": "[9, 2]\nTrue"
         }
       ],
       "finalNodes": [
         {
-          "label": "original · backup",
+          "label": "original",
+          "value": "[9, 2]",
+          "objectId": "shared-list"
+        },
+        {
+          "label": "backup",
           "value": "[9, 2]",
           "objectId": "shared-list"
         }
@@ -477,16 +710,42 @@
       "steps": [
         {
           "lines": [
+            1
+          ],
+          "nodes": [
+            {
+              "label": "이번 count",
+              "value": "선택 전"
+            },
+            {
+              "label": "total",
+              "value": "0"
+            },
+            {
+              "label": "실행한 지시",
+              "value": "합계 준비"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            2,
+            3,
             5
           ],
           "nodes": [
             {
-              "label": "count",
+              "label": "이번 count",
               "value": "3"
             },
             {
               "label": "total",
               "value": "3"
+            },
+            {
+              "label": "실행한 지시",
+              "value": "total += count"
             }
           ],
           "output": ""
@@ -498,7 +757,7 @@
           ],
           "nodes": [
             {
-              "label": "count",
+              "label": "이번 count",
               "value": "-1"
             },
             {
@@ -506,32 +765,58 @@
               "value": "3"
             },
             {
-              "label": "continue",
-              "value": "다음 항목으로 이동"
+              "label": "실행한 지시",
+              "value": "continue"
             }
           ],
           "output": ""
         },
         {
           "lines": [
+            2,
+            3,
             5
           ],
           "nodes": [
             {
-              "label": "count",
+              "label": "이번 count",
               "value": "2"
             },
             {
               "label": "total",
               "value": "5"
+            },
+            {
+              "label": "실행한 지시",
+              "value": "total += count"
             }
           ],
           "output": ""
+        },
+        {
+          "lines": [
+            6
+          ],
+          "nodes": [
+            {
+              "label": "이번 count",
+              "value": "2"
+            },
+            {
+              "label": "total",
+              "value": "5"
+            },
+            {
+              "label": "실행한 지시",
+              "value": "print(total)"
+            }
+          ],
+          "output": "5"
         }
       ],
       "finalNodes": [
         {
-          "label": "count",
+          "label": "이번 count",
           "value": "2"
         },
         {
@@ -539,8 +824,8 @@
           "value": "5"
         },
         {
-          "label": "누적에서 제외한 값",
-          "value": "-1"
+          "label": "실행한 지시",
+          "value": "print(total)"
         }
       ]
     },
@@ -548,6 +833,7 @@
       "steps": [
         {
           "lines": [
+            1,
             2
           ],
           "nodes": [
@@ -563,6 +849,25 @@
             }
           ],
           "output": ""
+        },
+        {
+          "lines": [
+            3,
+            4
+          ],
+          "nodes": [
+            {
+              "label": "original[\"counts\"]",
+              "value": "[4, 2, 3]",
+              "objectId": "shared-counts-list"
+            },
+            {
+              "label": "copied[\"counts\"]",
+              "value": "[4, 2, 3]",
+              "objectId": "shared-counts-list"
+            }
+          ],
+          "output": "[4, 2, 3]"
         },
         {
           "lines": [
@@ -609,6 +914,30 @@
             }
           ],
           "output": "[4, 2, 3]"
+        },
+        {
+          "lines": [
+            7,
+            8
+          ],
+          "nodes": [
+            {
+              "label": "original[\"counts\"]",
+              "value": "[4, 2, 3]",
+              "objectId": "shared-counts-list"
+            },
+            {
+              "label": "copied[\"counts\"]",
+              "value": "[4, 2, 3]",
+              "objectId": "shared-counts-list"
+            },
+            {
+              "label": "independent[\"counts\"]",
+              "value": "[9, 2, 3]",
+              "objectId": "independent-counts-list"
+            }
+          ],
+          "output": "[4, 2, 3]\n[4, 2, 3]\n[9, 2, 3]"
         }
       ],
       "finalNodes": [
@@ -633,6 +962,26 @@
       "steps": [
         {
           "lines": [
+            1
+          ],
+          "nodes": [
+            {
+              "label": "number",
+              "value": "아직 없음"
+            },
+            {
+              "label": "line",
+              "value": "아직 읽기 전"
+            },
+            {
+              "label": "source.closed",
+              "value": "False"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
             2,
             3
           ],
@@ -643,7 +992,7 @@
             },
             {
               "label": "line",
-              "value": "숲:4 ⏎"
+              "value": "\"숲:4\\n\""
             },
             {
               "label": "source.closed",
@@ -664,7 +1013,7 @@
             },
             {
               "label": "line",
-              "value": "강:2 ⏎"
+              "value": "\"강:2\\n\""
             },
             {
               "label": "source.closed",
@@ -680,11 +1029,11 @@
           "nodes": [
             {
               "label": "number",
-              "value": "2"
+              "value": "2 · 마지막 번호 유지"
             },
             {
               "label": "line",
-              "value": "강:2 ⏎"
+              "value": "\"강:2\\n\" · 유지"
             },
             {
               "label": "source.closed",
@@ -696,16 +1045,16 @@
       ],
       "finalNodes": [
         {
-          "label": "number",
-          "value": "2"
+          "label": "마지막으로 읽은 줄",
+          "value": "2번: 강:2"
         },
         {
-          "label": "line",
-          "value": "강:2 ⏎"
+          "label": "파일 객체 상태",
+          "value": "source.closed → True"
         },
         {
-          "label": "source.closed",
-          "value": "True"
+          "label": "디스크의 파일",
+          "value": "삭제하지 않음"
         }
       ]
     },
@@ -719,7 +1068,7 @@
           "nodes": [
             {
               "label": "total_to(3)",
-              "value": "3 + 다음 답 대기"
+              "value": "3 + ? 대기"
             }
           ],
           "output": "진입 3"
@@ -732,11 +1081,11 @@
           "nodes": [
             {
               "label": "total_to(3)",
-              "value": "3 + 다음 답 대기"
+              "value": "3 + ? 대기"
             },
             {
               "label": "total_to(2)",
-              "value": "2 + 다음 답 대기"
+              "value": "2 + ? 대기"
             }
           ],
           "output": "진입 3\n진입 2"
@@ -749,15 +1098,15 @@
           "nodes": [
             {
               "label": "total_to(3)",
-              "value": "3 + 다음 답 대기"
+              "value": "3 + ? 대기"
             },
             {
               "label": "total_to(2)",
-              "value": "2 + 다음 답 대기"
+              "value": "2 + ? 대기"
             },
             {
               "label": "total_to(1)",
-              "value": "1 + 다음 답 대기"
+              "value": "1 + ? 대기"
             }
           ],
           "output": "진입 3\n진입 2\n진입 1"
@@ -770,15 +1119,15 @@
           "nodes": [
             {
               "label": "total_to(3)",
-              "value": "3 + 다음 답 대기"
+              "value": "3 + ? 대기"
             },
             {
               "label": "total_to(2)",
-              "value": "2 + 다음 답 대기"
+              "value": "2 + ? 대기"
             },
             {
               "label": "total_to(1)",
-              "value": "1 + 다음 답 대기"
+              "value": "1 + ? 대기"
             },
             {
               "label": "total_to(0)",
@@ -796,15 +1145,15 @@
           "nodes": [
             {
               "label": "total_to(3)",
-              "value": "3 + 다음 답 대기"
+              "value": "3 + ? 대기"
             },
             {
               "label": "total_to(2)",
-              "value": "2 + 다음 답 대기"
+              "value": "2 + ? 대기"
             },
             {
               "label": "total_to(1)",
-              "value": "1 + 0 = 1 반환"
+              "value": "1 + 0 = 1"
             }
           ],
           "output": "진입 3\n진입 2\n진입 1\n진입 0\n반환 1"
@@ -818,11 +1167,11 @@
           "nodes": [
             {
               "label": "total_to(3)",
-              "value": "3 + 다음 답 대기"
+              "value": "3 + ? 대기"
             },
             {
               "label": "total_to(2)",
-              "value": "2 + 1 = 3 반환"
+              "value": "2 + 1 = 3"
             }
           ],
           "output": "진입 3\n진입 2\n진입 1\n진입 0\n반환 1\n반환 3"
@@ -836,7 +1185,7 @@
           "nodes": [
             {
               "label": "total_to(3)",
-              "value": "3 + 3 = 6 반환"
+              "value": "3 + 3 = 6"
             }
           ],
           "output": "진입 3\n진입 2\n진입 1\n진입 0\n반환 1\n반환 3\n반환 6"
@@ -844,8 +1193,12 @@
       ],
       "finalNodes": [
         {
-          "label": "total_to(3)",
-          "value": "6 반환 · 모든 호출 종료"
+          "label": "바깥에 반환한 값",
+          "value": "6"
+        },
+        {
+          "label": "아직 기다리는 호출",
+          "value": "없음"
         }
       ]
     },
@@ -853,8 +1206,9 @@
       "steps": [
         {
           "lines": [
+            9,
             2,
-            9
+            7
           ],
           "nodes": [
             {
@@ -863,15 +1217,20 @@
             },
             {
               "label": "second의 count",
-              "value": "정의되지 않음"
+              "value": "아직 없음"
+            },
+            {
+              "label": "print에 넘길 값",
+              "value": "호출 전"
             }
           ],
           "output": ""
         },
         {
           "lines": [
+            10,
             2,
-            10
+            7
           ],
           "nodes": [
             {
@@ -881,6 +1240,10 @@
             {
               "label": "second의 count",
               "value": "0"
+            },
+            {
+              "label": "print에 넘길 값",
+              "value": "호출 전"
             }
           ],
           "output": ""
@@ -899,6 +1262,10 @@
             {
               "label": "second의 count",
               "value": "0"
+            },
+            {
+              "label": "print에 넘길 값",
+              "value": "1"
             }
           ],
           "output": ""
@@ -917,15 +1284,19 @@
             {
               "label": "second의 count",
               "value": "0"
+            },
+            {
+              "label": "print에 넘길 값",
+              "value": "1, 2"
             }
           ],
           "output": ""
         },
         {
           "lines": [
+            11,
             5,
-            6,
-            11
+            6
           ],
           "nodes": [
             {
@@ -935,6 +1306,10 @@
             {
               "label": "second의 count",
               "value": "1"
+            },
+            {
+              "label": "print에 넘길 값",
+              "value": "1, 2, 1"
             }
           ],
           "output": "1 2 1"
@@ -948,6 +1323,10 @@
         {
           "label": "second의 count",
           "value": "1"
+        },
+        {
+          "label": "print에 넘길 값",
+          "value": "1, 2, 1"
         }
       ]
     },
@@ -992,6 +1371,38 @@
             }
           ],
           "output": ""
+        },
+        {
+          "lines": [
+            4
+          ],
+          "nodes": [
+            {
+              "label": "birds",
+              "value": "정수 8"
+            },
+            {
+              "label": "saved",
+              "value": "정수 7"
+            }
+          ],
+          "output": "8"
+        },
+        {
+          "lines": [
+            5
+          ],
+          "nodes": [
+            {
+              "label": "birds",
+              "value": "정수 8"
+            },
+            {
+              "label": "saved",
+              "value": "정수 7"
+            }
+          ],
+          "output": "8\n7"
         }
       ],
       "finalNodes": [
@@ -1009,6 +1420,7 @@
       "steps": [
         {
           "lines": [
+            1,
             2
           ],
           "nodes": [
@@ -1017,8 +1429,12 @@
               "value": "0"
             },
             {
-              "label": "collected < 6",
-              "value": "True"
+              "label": "직전 조건 검사",
+              "value": "0 < 6 → 참"
+            },
+            {
+              "label": "실행 위치",
+              "value": "본문 진입 전"
             }
           ],
           "output": ""
@@ -1034,14 +1450,19 @@
               "value": "2"
             },
             {
-              "label": "완료한 본문",
-              "value": "1회"
+              "label": "직전 조건 검사",
+              "value": "0 < 6 → 참"
+            },
+            {
+              "label": "실행 위치",
+              "value": "본문 완료"
             }
           ],
           "output": "2"
         },
         {
           "lines": [
+            2,
             3,
             4
           ],
@@ -1051,14 +1472,19 @@
               "value": "4"
             },
             {
-              "label": "완료한 본문",
-              "value": "2회"
+              "label": "직전 조건 검사",
+              "value": "2 < 6 → 참"
+            },
+            {
+              "label": "실행 위치",
+              "value": "본문 완료"
             }
           ],
           "output": "2\n4"
         },
         {
           "lines": [
+            2,
             3,
             4
           ],
@@ -1068,8 +1494,12 @@
               "value": "6"
             },
             {
-              "label": "완료한 본문",
-              "value": "3회"
+              "label": "직전 조건 검사",
+              "value": "4 < 6 → 참"
+            },
+            {
+              "label": "실행 위치",
+              "value": "본문 완료"
             }
           ],
           "output": "2\n4\n6"
@@ -1084,8 +1514,12 @@
               "value": "6"
             },
             {
-              "label": "collected < 6",
-              "value": "False · 반복 종료"
+              "label": "직전 조건 검사",
+              "value": "6 < 6 → 거짓"
+            },
+            {
+              "label": "실행 위치",
+              "value": "반복 종료"
             }
           ],
           "output": "2\n4\n6"
@@ -1097,8 +1531,3160 @@
           "value": "6"
         },
         {
-          "label": "collected < 6",
-          "value": "False · 반복 종료"
+          "label": "직전 조건 검사",
+          "value": "6 < 6 → 거짓"
+        },
+        {
+          "label": "실행 위치",
+          "value": "반복 종료"
+        }
+      ]
+    },
+    "run-python-scene-2": {
+      "steps": [
+        {
+          "lines": [
+            1
+          ],
+          "nodes": [
+            {
+              "label": "읽는 부분",
+              "value": "# 관찰한 새의 수를 더합니다"
+            },
+            {
+              "label": "처리",
+              "value": "메모이므로 건너뜀"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            2
+          ],
+          "nodes": [
+            {
+              "label": "괄호 안",
+              "value": "4 + 3"
+            },
+            {
+              "label": "계산한 값",
+              "value": "7"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            2
+          ],
+          "nodes": [
+            {
+              "label": "print에 건넨 값",
+              "value": "7"
+            },
+            {
+              "label": "출력 첫 줄",
+              "value": "7"
+            }
+          ],
+          "output": "7"
+        },
+        {
+          "lines": [
+            3
+          ],
+          "nodes": [
+            {
+              "label": "코드의 문자열",
+              "value": "\"기록 #1\""
+            },
+            {
+              "label": "출력 둘째 줄",
+              "value": "기록 #1"
+            }
+          ],
+          "output": "7\n기록 #1"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "첫 출력",
+          "value": "7"
+        },
+        {
+          "label": "다음 출력",
+          "value": "기록 #1"
+        }
+      ]
+    },
+    "data-types-scene-1": {
+      "steps": [
+        {
+          "lines": [
+            1
+          ],
+          "nodes": [
+            {
+              "label": "코드의 값",
+              "value": "12"
+            },
+            {
+              "label": "자료형",
+              "value": "int · 정수"
+            }
+          ],
+          "output": "<class 'int'>"
+        },
+        {
+          "lines": [
+            2
+          ],
+          "nodes": [
+            {
+              "label": "코드의 값",
+              "value": "\"12\""
+            },
+            {
+              "label": "자료형",
+              "value": "str · 문자열"
+            }
+          ],
+          "output": "<class 'int'>\n<class 'str'>"
+        },
+        {
+          "lines": [
+            3
+          ],
+          "nodes": [
+            {
+              "label": "왼쪽 값",
+              "value": "12 · int"
+            },
+            {
+              "label": "오른쪽 값",
+              "value": "3 · int"
+            },
+            {
+              "label": "+의 결과",
+              "value": "15 · int"
+            }
+          ],
+          "output": "<class 'int'>\n<class 'str'>\n15"
+        },
+        {
+          "lines": [
+            4
+          ],
+          "nodes": [
+            {
+              "label": "왼쪽 값",
+              "value": "\"12\" · str"
+            },
+            {
+              "label": "오른쪽 값",
+              "value": "\"3\" · str"
+            },
+            {
+              "label": "+의 결과",
+              "value": "\"123\" · str"
+            }
+          ],
+          "output": "<class 'int'>\n<class 'str'>\n15\n123"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "정수의 +",
+          "value": "12 + 3 = 15"
+        },
+        {
+          "label": "문자열의 +",
+          "value": "\"12\" + \"3\" = \"123\""
+        }
+      ]
+    },
+    "numbers-scene-1": {
+      "steps": [
+        {
+          "lines": [
+            1
+          ],
+          "nodes": [
+            {
+              "label": "전체 물건",
+              "value": "17개"
+            },
+            {
+              "label": "한 상자",
+              "value": "4개"
+            },
+            {
+              "label": "/의 결과",
+              "value": "4.25"
+            }
+          ],
+          "output": "4.25"
+        },
+        {
+          "lines": [
+            2
+          ],
+          "nodes": [
+            {
+              "label": "가득 찬 상자",
+              "value": "4개"
+            },
+            {
+              "label": "담긴 물건",
+              "value": "4 × 4 = 16개"
+            },
+            {
+              "label": "//의 결과",
+              "value": "4"
+            }
+          ],
+          "output": "4.25\n4"
+        },
+        {
+          "lines": [
+            3
+          ],
+          "nodes": [
+            {
+              "label": "전체 물건",
+              "value": "17개"
+            },
+            {
+              "label": "담긴 물건",
+              "value": "16개"
+            },
+            {
+              "label": "%의 결과",
+              "value": "1개"
+            }
+          ],
+          "output": "4.25\n4\n1"
+        },
+        {
+          "lines": [
+            4
+          ],
+          "nodes": [
+            {
+              "label": "나눈 값",
+              "value": "약 -2.33"
+            },
+            {
+              "label": "아래쪽 정수",
+              "value": "-3"
+            },
+            {
+              "label": "//의 결과",
+              "value": "-3"
+            }
+          ],
+          "output": "4.25\n4\n1\n-3"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "나눈 값 /",
+          "value": "4.25"
+        },
+        {
+          "label": "몫 //",
+          "value": "4"
+        },
+        {
+          "label": "나머지 %",
+          "value": "1"
+        }
+      ]
+    },
+    "strings-scene-2": {
+      "steps": [
+        {
+          "lines": [
+            1
+          ],
+          "nodes": [
+            {
+              "label": "0",
+              "value": "O",
+              "active": false
+            },
+            {
+              "label": "1",
+              "value": "B",
+              "active": false
+            },
+            {
+              "label": "2",
+              "value": "S",
+              "active": false
+            },
+            {
+              "label": "3",
+              "value": "-",
+              "active": false
+            },
+            {
+              "label": "4",
+              "value": "2",
+              "active": false
+            },
+            {
+              "label": "5",
+              "value": "7",
+              "active": false
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            2
+          ],
+          "nodes": [
+            {
+              "label": "0",
+              "value": "O",
+              "active": true
+            },
+            {
+              "label": "1",
+              "value": "B",
+              "active": true
+            },
+            {
+              "label": "2",
+              "value": "S",
+              "active": true
+            },
+            {
+              "label": "3",
+              "value": "-",
+              "active": false
+            },
+            {
+              "label": "4",
+              "value": "2",
+              "active": false
+            },
+            {
+              "label": "5",
+              "value": "7",
+              "active": false
+            }
+          ],
+          "output": "OBS"
+        },
+        {
+          "lines": [
+            3
+          ],
+          "nodes": [
+            {
+              "label": "0",
+              "value": "O",
+              "active": false
+            },
+            {
+              "label": "1",
+              "value": "B",
+              "active": false
+            },
+            {
+              "label": "2",
+              "value": "S",
+              "active": false
+            },
+            {
+              "label": "3",
+              "value": "-",
+              "active": false
+            },
+            {
+              "label": "4",
+              "value": "2",
+              "active": true
+            },
+            {
+              "label": "5",
+              "value": "7",
+              "active": true
+            }
+          ],
+          "output": "OBS\n27"
+        },
+        {
+          "lines": [
+            4
+          ],
+          "nodes": [
+            {
+              "label": "0",
+              "value": "O",
+              "active": true
+            },
+            {
+              "label": "1",
+              "value": "B",
+              "active": true
+            },
+            {
+              "label": "2",
+              "value": "S",
+              "active": true
+            },
+            {
+              "label": "3",
+              "value": "-",
+              "active": true
+            },
+            {
+              "label": "4",
+              "value": "2",
+              "active": true
+            },
+            {
+              "label": "5",
+              "value": "7",
+              "active": true
+            }
+          ],
+          "output": "OBS\n27\nOBS-27"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "0",
+          "value": "O",
+          "active": false
+        },
+        {
+          "label": "1",
+          "value": "B",
+          "active": false
+        },
+        {
+          "label": "2",
+          "value": "S",
+          "active": false
+        },
+        {
+          "label": "3",
+          "value": "-",
+          "active": false
+        },
+        {
+          "label": "4",
+          "value": "2",
+          "active": false
+        },
+        {
+          "label": "5",
+          "value": "7",
+          "active": false
+        }
+      ]
+    },
+    "text-tools-scene-1": {
+      "steps": [
+        {
+          "lines": [
+            1
+          ],
+          "nodes": [
+            {
+              "label": "원본 raw",
+              "value": "\"  PARK  \""
+            },
+            {
+              "label": "진행",
+              "value": "정리 전"
+            },
+            {
+              "label": "현재 결과",
+              "value": "아직 없음"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            2
+          ],
+          "nodes": [
+            {
+              "label": "원본 raw",
+              "value": "\"  PARK  \""
+            },
+            {
+              "label": "진행",
+              "value": "strip()"
+            },
+            {
+              "label": "현재 결과",
+              "value": "\"PARK\""
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            2
+          ],
+          "nodes": [
+            {
+              "label": "원본 raw",
+              "value": "\"  PARK  \""
+            },
+            {
+              "label": "진행",
+              "value": "lower() 후 대입"
+            },
+            {
+              "label": "현재 결과",
+              "value": "place: \"park\""
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            3,
+            4
+          ],
+          "nodes": [
+            {
+              "label": "원본 raw",
+              "value": "\"  PARK  \""
+            },
+            {
+              "label": "진행",
+              "value": "원본 길이: 8"
+            },
+            {
+              "label": "현재 결과",
+              "value": "place: \"park\""
+            }
+          ],
+          "output": "park\n8"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "원본 raw",
+          "value": "\"  PARK  \""
+        },
+        {
+          "label": "원본 길이",
+          "value": "8"
+        },
+        {
+          "label": "정리한 place",
+          "value": "\"park\""
+        }
+      ]
+    },
+    "input-output-scene-2": {
+      "steps": [
+        {
+          "lines": [
+            1
+          ],
+          "nodes": [
+            {
+              "label": "text",
+              "value": "\"6\" · str"
+            },
+            {
+              "label": "count",
+              "value": "아직 없음"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            2
+          ],
+          "nodes": [
+            {
+              "label": "text",
+              "value": "\"6\" · str"
+            },
+            {
+              "label": "count",
+              "value": "6 · int"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            3
+          ],
+          "nodes": [
+            {
+              "label": "text",
+              "value": "\"6\" · str"
+            },
+            {
+              "label": "count",
+              "value": "6 · int"
+            },
+            {
+              "label": "덧셈 결과",
+              "value": "8"
+            }
+          ],
+          "output": "8"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "text",
+          "value": "\"6\" · str"
+        },
+        {
+          "label": "count",
+          "value": "6 · int"
+        },
+        {
+          "label": "출력한 결과",
+          "value": "8"
+        }
+      ]
+    },
+    "booleans-scene-1": {
+      "steps": [
+        {
+          "lines": [
+            1
+          ],
+          "nodes": [
+            {
+              "label": "count",
+              "value": "6"
+            },
+            {
+              "label": "질문",
+              "value": "아직 비교 전"
+            },
+            {
+              "label": "답",
+              "value": "아직 없음"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            2
+          ],
+          "nodes": [
+            {
+              "label": "count",
+              "value": "6"
+            },
+            {
+              "label": "질문",
+              "value": "6 >= 5"
+            },
+            {
+              "label": "답",
+              "value": "True"
+            }
+          ],
+          "output": "True"
+        },
+        {
+          "lines": [
+            3
+          ],
+          "nodes": [
+            {
+              "label": "count",
+              "value": "6"
+            },
+            {
+              "label": "질문",
+              "value": "6 == 0"
+            },
+            {
+              "label": "답",
+              "value": "False"
+            }
+          ],
+          "output": "True\nFalse"
+        },
+        {
+          "lines": [
+            4
+          ],
+          "nodes": [
+            {
+              "label": "count",
+              "value": "6"
+            },
+            {
+              "label": "질문",
+              "value": "6 != 0"
+            },
+            {
+              "label": "답",
+              "value": "True"
+            }
+          ],
+          "output": "True\nFalse\nTrue"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "count",
+          "value": "6 그대로"
+        },
+        {
+          "label": "세 질문",
+          "value": ">= 5 · == 0 · != 0"
+        },
+        {
+          "label": "각 답",
+          "value": "True · False · True"
+        }
+      ]
+    },
+    "operators-scene-1": {
+      "steps": [
+        {
+          "lines": [
+            1,
+            2
+          ],
+          "nodes": [
+            {
+              "label": "first",
+              "value": "[2, 4]",
+              "objectId": "first-list"
+            },
+            {
+              "label": "second",
+              "value": "[2, 4]",
+              "objectId": "second-list"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            3
+          ],
+          "nodes": [
+            {
+              "label": "first",
+              "value": "[2, 4]",
+              "objectId": "first-list"
+            },
+            {
+              "label": "second",
+              "value": "[2, 4]",
+              "objectId": "second-list"
+            },
+            {
+              "label": "alias",
+              "value": "[2, 4]",
+              "objectId": "first-list"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            4,
+            5
+          ],
+          "nodes": [
+            {
+              "label": "first",
+              "value": "[2, 4]",
+              "objectId": "first-list"
+            },
+            {
+              "label": "second",
+              "value": "[2, 4]",
+              "objectId": "second-list"
+            },
+            {
+              "label": "alias",
+              "value": "[2, 4]",
+              "objectId": "first-list"
+            }
+          ],
+          "output": "True\nFalse"
+        },
+        {
+          "lines": [
+            6,
+            7
+          ],
+          "nodes": [
+            {
+              "label": "first",
+              "value": "[2, 4]",
+              "objectId": "first-list"
+            },
+            {
+              "label": "second",
+              "value": "[2, 4]",
+              "objectId": "second-list"
+            },
+            {
+              "label": "alias",
+              "value": "[2, 4]",
+              "objectId": "first-list"
+            }
+          ],
+          "output": "True\nFalse\nTrue\nTrue"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "first",
+          "value": "[2, 4]",
+          "objectId": "first-list"
+        },
+        {
+          "label": "second",
+          "value": "[2, 4]",
+          "objectId": "second-list"
+        },
+        {
+          "label": "alias",
+          "value": "[2, 4]",
+          "objectId": "first-list"
+        }
+      ]
+    },
+    "lists-scene-2": {
+      "steps": [
+        {
+          "lines": [
+            1
+          ],
+          "nodes": [
+            {
+              "label": "위치 0",
+              "value": "숲"
+            },
+            {
+              "label": "위치 1",
+              "value": "강"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            2
+          ],
+          "nodes": [
+            {
+              "label": "위치 0",
+              "value": "숲"
+            },
+            {
+              "label": "위치 1",
+              "value": "강"
+            },
+            {
+              "label": "위치 2",
+              "value": "공원"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            3
+          ],
+          "nodes": [
+            {
+              "label": "위치 0",
+              "value": "정원"
+            },
+            {
+              "label": "위치 1",
+              "value": "강"
+            },
+            {
+              "label": "위치 2",
+              "value": "공원"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            4
+          ],
+          "nodes": [
+            {
+              "label": "위치 0",
+              "value": "정원"
+            },
+            {
+              "label": "위치 1",
+              "value": "못"
+            },
+            {
+              "label": "위치 2",
+              "value": "강"
+            },
+            {
+              "label": "위치 3",
+              "value": "공원"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            5
+          ],
+          "nodes": [
+            {
+              "label": "위치 0",
+              "value": "정원"
+            },
+            {
+              "label": "위치 1",
+              "value": "못"
+            },
+            {
+              "label": "위치 2",
+              "value": "강"
+            },
+            {
+              "label": "위치 3",
+              "value": "공원"
+            }
+          ],
+          "output": "['정원', '못', '강', '공원']"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "위치 0",
+          "value": "정원"
+        },
+        {
+          "label": "위치 1",
+          "value": "못"
+        },
+        {
+          "label": "위치 2",
+          "value": "강"
+        },
+        {
+          "label": "위치 3",
+          "value": "공원"
+        }
+      ]
+    },
+    "tuples-scene-3": {
+      "steps": [
+        {
+          "lines": [
+            1,
+            2
+          ],
+          "nodes": [
+            {
+              "label": "point",
+              "value": "(3, 8)",
+              "objectId": "original-point"
+            },
+            {
+              "label": "editable",
+              "value": "[3, 8]",
+              "objectId": "editable-list"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            3
+          ],
+          "nodes": [
+            {
+              "label": "point",
+              "value": "(3, 8)",
+              "objectId": "original-point"
+            },
+            {
+              "label": "editable",
+              "value": "[5, 8]",
+              "objectId": "editable-list"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            4
+          ],
+          "nodes": [
+            {
+              "label": "point",
+              "value": "(3, 8)",
+              "objectId": "original-point"
+            },
+            {
+              "label": "editable",
+              "value": "[5, 8]",
+              "objectId": "editable-list"
+            },
+            {
+              "label": "updated",
+              "value": "(5, 8)",
+              "objectId": "updated-point"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            5,
+            6
+          ],
+          "nodes": [
+            {
+              "label": "point",
+              "value": "(3, 8)",
+              "objectId": "original-point"
+            },
+            {
+              "label": "editable",
+              "value": "[5, 8]",
+              "objectId": "editable-list"
+            },
+            {
+              "label": "updated",
+              "value": "(5, 8)",
+              "objectId": "updated-point"
+            }
+          ],
+          "output": "(3, 8)\n(5, 8)"
+        },
+        {
+          "lines": [
+            7
+          ],
+          "nodes": [
+            {
+              "label": "point",
+              "value": "(3, 8)",
+              "objectId": "original-point"
+            },
+            {
+              "label": "editable",
+              "value": "[5, 8]",
+              "objectId": "editable-list"
+            },
+            {
+              "label": "updated",
+              "value": "(5, 8)",
+              "objectId": "updated-point"
+            }
+          ],
+          "output": "(3, 8)\n(5, 8)\n(5, 8, 1)"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "point",
+          "value": "(3, 8)",
+          "objectId": "original-point"
+        },
+        {
+          "label": "editable",
+          "value": "[5, 8]",
+          "objectId": "editable-list"
+        },
+        {
+          "label": "updated",
+          "value": "(5, 8)",
+          "objectId": "updated-point"
+        }
+      ]
+    },
+    "sets-scene-1": {
+      "steps": [
+        {
+          "lines": [
+            1
+          ],
+          "nodes": [
+            {
+              "label": "살펴본 항목",
+              "value": "첫 숲"
+            },
+            {
+              "label": "모은 장소",
+              "value": "숲"
+            },
+            {
+              "label": "서로 다른 수",
+              "value": "1"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            1
+          ],
+          "nodes": [
+            {
+              "label": "살펴본 항목",
+              "value": "강"
+            },
+            {
+              "label": "모은 장소",
+              "value": "숲 · 강"
+            },
+            {
+              "label": "서로 다른 수",
+              "value": "2"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            1
+          ],
+          "nodes": [
+            {
+              "label": "살펴본 항목",
+              "value": "다시 숲"
+            },
+            {
+              "label": "모은 장소",
+              "value": "숲 · 강"
+            },
+            {
+              "label": "서로 다른 수",
+              "value": "2 그대로"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            2,
+            3,
+            4
+          ],
+          "nodes": [
+            {
+              "label": "집합의 장소",
+              "value": "숲 · 강"
+            },
+            {
+              "label": "항목 수",
+              "value": "2"
+            },
+            {
+              "label": "정렬한 리스트",
+              "value": "[강, 숲]"
+            }
+          ],
+          "output": "2\n['강', '숲']\nTrue"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "입력 항목 수",
+          "value": "3"
+        },
+        {
+          "label": "집합 항목 수",
+          "value": "2"
+        },
+        {
+          "label": "포함된 장소",
+          "value": "숲 · 강"
+        }
+      ]
+    },
+    "dictionaries-scene-2": {
+      "steps": [
+        {
+          "lines": [
+            1
+          ],
+          "nodes": [
+            {
+              "label": "저장된 항목",
+              "value": "숲: 4"
+            },
+            {
+              "label": "못 키",
+              "value": "없음"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            2
+          ],
+          "nodes": [
+            {
+              "label": "저장된 항목",
+              "value": "숲: 4"
+            },
+            {
+              "label": "조회",
+              "value": "get(\"못\", 0)"
+            },
+            {
+              "label": "조회 결과",
+              "value": "0"
+            }
+          ],
+          "output": "0"
+        },
+        {
+          "lines": [
+            3
+          ],
+          "nodes": [
+            {
+              "label": "저장된 항목",
+              "value": "숲: 4"
+            },
+            {
+              "label": "조회",
+              "value": "\"못\" in counts"
+            },
+            {
+              "label": "조회 결과",
+              "value": "False"
+            }
+          ],
+          "output": "0\nFalse"
+        },
+        {
+          "lines": [
+            4
+          ],
+          "nodes": [
+            {
+              "label": "저장된 항목",
+              "value": "숲: 4"
+            },
+            {
+              "label": "조회",
+              "value": "get(\"숲\", 0)"
+            },
+            {
+              "label": "조회 결과",
+              "value": "4"
+            }
+          ],
+          "output": "0\nFalse\n4"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "저장된 항목",
+          "value": "숲: 4 그대로"
+        },
+        {
+          "label": "없는 못 조회",
+          "value": "기본값 0"
+        },
+        {
+          "label": "있는 숲 조회",
+          "value": "저장값 4"
+        }
+      ]
+    },
+    "for-range-scene-1": {
+      "steps": [
+        {
+          "lines": [
+            1
+          ],
+          "nodes": [
+            {
+              "label": "places",
+              "value": "[숲, 강, 못]"
+            },
+            {
+              "label": "place",
+              "value": "아직 연결 전"
+            },
+            {
+              "label": "실행 위치",
+              "value": "for 실행 전"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            2,
+            3
+          ],
+          "nodes": [
+            {
+              "label": "places",
+              "value": "[숲, 강, 못]"
+            },
+            {
+              "label": "place",
+              "value": "숲"
+            },
+            {
+              "label": "실행 위치",
+              "value": "반복 안"
+            }
+          ],
+          "output": "관찰: 숲"
+        },
+        {
+          "lines": [
+            2,
+            3
+          ],
+          "nodes": [
+            {
+              "label": "places",
+              "value": "[숲, 강, 못]"
+            },
+            {
+              "label": "place",
+              "value": "강"
+            },
+            {
+              "label": "실행 위치",
+              "value": "반복 안"
+            }
+          ],
+          "output": "관찰: 숲\n관찰: 강"
+        },
+        {
+          "lines": [
+            2,
+            3
+          ],
+          "nodes": [
+            {
+              "label": "places",
+              "value": "[숲, 강, 못]"
+            },
+            {
+              "label": "place",
+              "value": "못"
+            },
+            {
+              "label": "실행 위치",
+              "value": "반복 안"
+            }
+          ],
+          "output": "관찰: 숲\n관찰: 강\n관찰: 못"
+        },
+        {
+          "lines": [
+            4
+          ],
+          "nodes": [
+            {
+              "label": "places",
+              "value": "[숲, 강, 못]"
+            },
+            {
+              "label": "place",
+              "value": "못"
+            },
+            {
+              "label": "실행 위치",
+              "value": "반복 밖"
+            }
+          ],
+          "output": "관찰: 숲\n관찰: 강\n관찰: 못\n목록 끝"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "places",
+          "value": "[숲, 강, 못]"
+        },
+        {
+          "label": "place",
+          "value": "못"
+        },
+        {
+          "label": "실행 위치",
+          "value": "반복 밖"
+        }
+      ]
+    },
+    "comprehensions-scene-1": {
+      "steps": [
+        {
+          "lines": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "nodes": [
+            {
+              "label": "counts",
+              "value": "[2, 4, 3]"
+            },
+            {
+              "label": "loop_result",
+              "value": "[4, 8, 6]"
+            },
+            {
+              "label": "현재 계산",
+              "value": "시작 전"
+            },
+            {
+              "label": "만드는 리스트",
+              "value": "[]"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            5
+          ],
+          "nodes": [
+            {
+              "label": "counts",
+              "value": "[2, 4, 3]"
+            },
+            {
+              "label": "loop_result",
+              "value": "[4, 8, 6]"
+            },
+            {
+              "label": "현재 계산",
+              "value": "2 * 2 = 4"
+            },
+            {
+              "label": "만드는 리스트",
+              "value": "[4]"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            5
+          ],
+          "nodes": [
+            {
+              "label": "counts",
+              "value": "[2, 4, 3]"
+            },
+            {
+              "label": "loop_result",
+              "value": "[4, 8, 6]"
+            },
+            {
+              "label": "현재 계산",
+              "value": "4 * 2 = 8"
+            },
+            {
+              "label": "만드는 리스트",
+              "value": "[4, 8]"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            5
+          ],
+          "nodes": [
+            {
+              "label": "counts",
+              "value": "[2, 4, 3]"
+            },
+            {
+              "label": "loop_result",
+              "value": "[4, 8, 6]"
+            },
+            {
+              "label": "현재 계산",
+              "value": "3 * 2 = 6"
+            },
+            {
+              "label": "만드는 리스트",
+              "value": "[4, 8, 6]"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            6,
+            7,
+            8
+          ],
+          "nodes": [
+            {
+              "label": "counts",
+              "value": "[2, 4, 3]"
+            },
+            {
+              "label": "loop_result",
+              "value": "[4, 8, 6]"
+            },
+            {
+              "label": "doubled",
+              "value": "[4, 8, 6]"
+            }
+          ],
+          "output": "[2, 4, 3]\n[4, 8, 6]\n[4, 8, 6]"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "counts",
+          "value": "[2, 4, 3]"
+        },
+        {
+          "label": "loop_result",
+          "value": "[4, 8, 6]"
+        },
+        {
+          "label": "doubled",
+          "value": "[4, 8, 6]"
+        }
+      ]
+    },
+    "arguments-scene-1": {
+      "steps": [
+        {
+          "lines": [
+            1
+          ],
+          "nodes": [
+            {
+              "label": "count",
+              "value": "호출 전"
+            },
+            {
+              "label": "unit",
+              "value": "기본값 마리"
+            },
+            {
+              "label": "반환값",
+              "value": "아직 없음"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            4,
+            1
+          ],
+          "nodes": [
+            {
+              "label": "count",
+              "value": "3"
+            },
+            {
+              "label": "unit",
+              "value": "마리"
+            },
+            {
+              "label": "반환값",
+              "value": "계산 전"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            2,
+            4
+          ],
+          "nodes": [
+            {
+              "label": "count",
+              "value": "3"
+            },
+            {
+              "label": "unit",
+              "value": "마리"
+            },
+            {
+              "label": "반환값",
+              "value": "3마리"
+            }
+          ],
+          "output": "3마리"
+        },
+        {
+          "lines": [
+            5,
+            2
+          ],
+          "nodes": [
+            {
+              "label": "count",
+              "value": "2"
+            },
+            {
+              "label": "unit",
+              "value": "곳"
+            },
+            {
+              "label": "반환값",
+              "value": "2곳"
+            }
+          ],
+          "output": "3마리\n2곳"
+        },
+        {
+          "lines": [
+            6,
+            2
+          ],
+          "nodes": [
+            {
+              "label": "count",
+              "value": "4"
+            },
+            {
+              "label": "unit",
+              "value": "회"
+            },
+            {
+              "label": "반환값",
+              "value": "4회"
+            }
+          ],
+          "output": "3마리\n2곳\n4회"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "count",
+          "value": "4"
+        },
+        {
+          "label": "unit",
+          "value": "회"
+        },
+        {
+          "label": "반환값",
+          "value": "4회"
+        }
+      ]
+    },
+    "lambda-scene-1": {
+      "steps": [
+        {
+          "lines": [
+            1
+          ],
+          "nodes": [
+            {
+              "label": "입력",
+              "value": "호출 전"
+            },
+            {
+              "label": "사용할 함수",
+              "value": "double"
+            },
+            {
+              "label": "반환값",
+              "value": "아직 없음"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            2,
+            1
+          ],
+          "nodes": [
+            {
+              "label": "입력",
+              "value": "n = 3"
+            },
+            {
+              "label": "사용할 함수",
+              "value": "double"
+            },
+            {
+              "label": "반환값",
+              "value": "6"
+            }
+          ],
+          "output": "6"
+        },
+        {
+          "lines": [
+            4
+          ],
+          "nodes": [
+            {
+              "label": "입력",
+              "value": "호출 전"
+            },
+            {
+              "label": "사용할 함수",
+              "value": "apply 정의"
+            },
+            {
+              "label": "반환값",
+              "value": "아직 없음"
+            }
+          ],
+          "output": "6"
+        },
+        {
+          "lines": [
+            7,
+            5,
+            1
+          ],
+          "nodes": [
+            {
+              "label": "입력",
+              "value": "value = 4"
+            },
+            {
+              "label": "사용할 함수",
+              "value": "operation → double"
+            },
+            {
+              "label": "반환값",
+              "value": "8"
+            }
+          ],
+          "output": "6"
+        },
+        {
+          "lines": [
+            7
+          ],
+          "nodes": [
+            {
+              "label": "입력",
+              "value": "value = 4"
+            },
+            {
+              "label": "사용할 함수",
+              "value": "operation → double"
+            },
+            {
+              "label": "반환값",
+              "value": "8"
+            }
+          ],
+          "output": "6\n8"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "입력",
+          "value": "value = 4"
+        },
+        {
+          "label": "사용할 함수",
+          "value": "operation → double"
+        },
+        {
+          "label": "반환값",
+          "value": "8"
+        }
+      ]
+    },
+    "modules-scene-2": {
+      "steps": [
+        {
+          "lines": [
+            1
+          ],
+          "nodes": [
+            {
+              "label": "현재 파일에서 쓸 이름",
+              "value": "measures → 보조 모듈"
+            },
+            {
+              "label": "double 함수",
+              "value": "정의됨 · 아직 호출 전"
+            },
+            {
+              "label": "__name__",
+              "value": "\"measures\""
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            3
+          ],
+          "nodes": [
+            {
+              "label": "현재 파일에서 쓸 이름",
+              "value": "measures → 같은 모듈"
+            },
+            {
+              "label": "double(6)",
+              "value": "6 * 2 → 12"
+            },
+            {
+              "label": "__name__",
+              "value": "\"measures\""
+            }
+          ],
+          "output": "12"
+        },
+        {
+          "lines": [
+            4
+          ],
+          "nodes": [
+            {
+              "label": "현재 파일에서 쓸 이름",
+              "value": "measures → 같은 모듈"
+            },
+            {
+              "label": "double(6)",
+              "value": "반환과 출력 완료"
+            },
+            {
+              "label": "__name__",
+              "value": "\"measures\""
+            }
+          ],
+          "output": "12\nmeasures"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "가져온 모듈",
+          "value": "measures"
+        },
+        {
+          "label": "호출 결과",
+          "value": "double(6) → 12"
+        },
+        {
+          "label": "직접 실행용 출력",
+          "value": "조건이 거짓이라 생략"
+        }
+      ]
+    },
+    "dates-scene-2": {
+      "steps": [
+        {
+          "lines": [
+            3
+          ],
+          "nodes": [
+            {
+              "label": "start",
+              "value": "2026-09-29"
+            },
+            {
+              "label": "end",
+              "value": "아직 없음"
+            },
+            {
+              "label": "기간",
+              "value": "아직 계산 전"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            4,
+            5
+          ],
+          "nodes": [
+            {
+              "label": "start",
+              "value": "2026-09-29"
+            },
+            {
+              "label": "end",
+              "value": "2026-10-02"
+            },
+            {
+              "label": "기간",
+              "value": "더한 기간: 3일"
+            }
+          ],
+          "output": "2026-10-02"
+        },
+        {
+          "lines": [
+            6
+          ],
+          "nodes": [
+            {
+              "label": "start",
+              "value": "2026-09-29"
+            },
+            {
+              "label": "end",
+              "value": "2026-10-02"
+            },
+            {
+              "label": "기간",
+              "value": "end - start → 3일"
+            }
+          ],
+          "output": "2026-10-02\n3"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "start",
+          "value": "2026-09-29 · 유지"
+        },
+        {
+          "label": "end",
+          "value": "2026-10-02 · 새 날짜"
+        },
+        {
+          "label": "날짜 차이",
+          "value": "3일"
+        }
+      ]
+    },
+    "math-scene-2": {
+      "steps": [
+        {
+          "lines": [
+            4
+          ],
+          "nodes": [
+            {
+              "label": "float 합",
+              "value": "0.30000000000000004"
+            },
+            {
+              "label": "비교 대상",
+              "value": "0.3"
+            },
+            {
+              "label": "현재 작업",
+              "value": "아직 isclose 판정 전"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            4
+          ],
+          "nodes": [
+            {
+              "label": "float 합",
+              "value": "0.30000000000000004 · 유지"
+            },
+            {
+              "label": "비교 대상",
+              "value": "0.3"
+            },
+            {
+              "label": "현재 작업",
+              "value": "isclose → True"
+            }
+          ],
+          "output": "True"
+        },
+        {
+          "lines": [
+            5
+          ],
+          "nodes": [
+            {
+              "label": "Decimal 입력",
+              "value": "\"0.1\"과 \"0.2\""
+            },
+            {
+              "label": "Decimal 합",
+              "value": "0.3"
+            },
+            {
+              "label": "현재 작업",
+              "value": "합계 자체를 출력"
+            }
+          ],
+          "output": "True\n0.3"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "float 계산",
+          "value": "아주 가까운 값을 isclose로 비교"
+        },
+        {
+          "label": "첫 출력",
+          "value": "True · 비교 결과"
+        },
+        {
+          "label": "Decimal 계산",
+          "value": "문자열에서 시작한 합 0.3"
+        }
+      ]
+    },
+    "regex-scene-1": {
+      "steps": [
+        {
+          "lines": [
+            3
+          ],
+          "nodes": [
+            {
+              "label": "패턴",
+              "value": "OBS- + 숫자 3자리"
+            },
+            {
+              "label": "검사 문자열",
+              "value": "아직 없음"
+            },
+            {
+              "label": "판정",
+              "value": "아직 검사 전"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            4
+          ],
+          "nodes": [
+            {
+              "label": "패턴",
+              "value": "OBS- + 숫자 3자리"
+            },
+            {
+              "label": "검사 문자열",
+              "value": "코드 [OBS-027] 확인"
+            },
+            {
+              "label": "판정",
+              "value": "부분 일치 → True"
+            }
+          ],
+          "output": "True"
+        },
+        {
+          "lines": [
+            5
+          ],
+          "nodes": [
+            {
+              "label": "패턴",
+              "value": "OBS- + 숫자 3자리"
+            },
+            {
+              "label": "검사 문자열",
+              "value": "[OBS-027]"
+            },
+            {
+              "label": "판정",
+              "value": "전체 일치 → True"
+            }
+          ],
+          "output": "True\nTrue"
+        },
+        {
+          "lines": [
+            6
+          ],
+          "nodes": [
+            {
+              "label": "패턴",
+              "value": "OBS- + 숫자 3자리"
+            },
+            {
+              "label": "검사 문자열",
+              "value": "앞 [OBS-027]"
+            },
+            {
+              "label": "판정",
+              "value": "전체 불일치 → False"
+            }
+          ],
+          "output": "True\nTrue\nFalse"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "search",
+          "value": "주변 글이 있어도 부분 일치 가능"
+        },
+        {
+          "label": "fullmatch",
+          "value": "문자열 전체가 맞아야 성공"
+        },
+        {
+          "label": "원래 문자열",
+          "value": "검색으로 바뀌지 않음"
+        }
+      ]
+    },
+    "json-data-scene-1": {
+      "steps": [
+        {
+          "lines": [
+            3
+          ],
+          "nodes": [
+            {
+              "label": "record의 종류",
+              "value": "dict"
+            },
+            {
+              "label": "record의 내용",
+              "value": "place: 숲 · count: 4"
+            },
+            {
+              "label": "text",
+              "value": "아직 없음"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            4
+          ],
+          "nodes": [
+            {
+              "label": "record의 종류",
+              "value": "dict · 유지"
+            },
+            {
+              "label": "text의 종류",
+              "value": "str"
+            },
+            {
+              "label": "text의 내용",
+              "value": "{\"place\": \"숲\", \"count\": 4}"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            5,
+            6
+          ],
+          "nodes": [
+            {
+              "label": "record의 종류",
+              "value": "dict · 유지"
+            },
+            {
+              "label": "text의 종류",
+              "value": "str"
+            },
+            {
+              "label": "키로 읽을 준비",
+              "value": "loads()로 객체를 만들어야 함"
+            }
+          ],
+          "output": "{\"place\": \"숲\", \"count\": 4}\n<class 'str'>"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "record",
+          "value": "원래 Python 딕셔너리"
+        },
+        {
+          "label": "text",
+          "value": "새 JSON 문자열"
+        },
+        {
+          "label": "파일 저장·전송",
+          "value": "이 예제에서는 하지 않음"
+        }
+      ]
+    },
+    "objects-scene-2": {
+      "steps": [
+        {
+          "lines": [
+            6,
+            2
+          ],
+          "nodes": [
+            {
+              "label": "self",
+              "value": "새 인스턴스"
+            },
+            {
+              "label": "입력 매개변수",
+              "value": "place=\"숲\", count=4"
+            },
+            {
+              "label": "객체 속성",
+              "value": "아직 대입 전"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            3
+          ],
+          "nodes": [
+            {
+              "label": "self",
+              "value": "같은 새 인스턴스"
+            },
+            {
+              "label": "입력 매개변수",
+              "value": "place=\"숲\", count=4"
+            },
+            {
+              "label": "객체 속성",
+              "value": "place=\"숲\""
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            4,
+            6
+          ],
+          "nodes": [
+            {
+              "label": "record",
+              "value": "초기화한 인스턴스"
+            },
+            {
+              "label": "place 속성",
+              "value": "\"숲\""
+            },
+            {
+              "label": "count 속성",
+              "value": "4"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            7,
+            8
+          ],
+          "nodes": [
+            {
+              "label": "record",
+              "value": "같은 인스턴스"
+            },
+            {
+              "label": "place 속성",
+              "value": "\"숲\""
+            },
+            {
+              "label": "count 속성",
+              "value": "4"
+            }
+          ],
+          "output": "숲\n4"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "record",
+          "value": "초기화가 끝난 인스턴스"
+        },
+        {
+          "label": "record.place",
+          "value": "\"숲\""
+        },
+        {
+          "label": "record.count",
+          "value": "4"
+        }
+      ]
+    },
+    "methods-scene-1": {
+      "steps": [
+        {
+          "lines": [
+            8
+          ],
+          "nodes": [
+            {
+              "label": "record.count",
+              "value": "4"
+            },
+            {
+              "label": "amount",
+              "value": "아직 호출 전"
+            },
+            {
+              "label": "반환값",
+              "value": "아직 없음"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            9,
+            4
+          ],
+          "nodes": [
+            {
+              "label": "record.count",
+              "value": "4"
+            },
+            {
+              "label": "amount",
+              "value": "2"
+            },
+            {
+              "label": "self",
+              "value": "record와 같은 객체"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            5
+          ],
+          "nodes": [
+            {
+              "label": "record.count",
+              "value": "6"
+            },
+            {
+              "label": "amount",
+              "value": "2"
+            },
+            {
+              "label": "반환값",
+              "value": "아직 반환 전"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            6,
+            9
+          ],
+          "nodes": [
+            {
+              "label": "record.count",
+              "value": "6 · 변경 유지"
+            },
+            {
+              "label": "반환값",
+              "value": "6"
+            },
+            {
+              "label": "호출",
+              "value": "add(2) 완료"
+            }
+          ],
+          "output": "6"
+        },
+        {
+          "lines": [
+            10
+          ],
+          "nodes": [
+            {
+              "label": "record.count",
+              "value": "6 · 변경 유지"
+            },
+            {
+              "label": "이번 동작",
+              "value": "속성 읽기만 수행"
+            },
+            {
+              "label": "추가 증가",
+              "value": "없음"
+            }
+          ],
+          "output": "6\n6"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "record.count",
+          "value": "4 → 6으로 변경됨"
+        },
+        {
+          "label": "add(2)의 반환",
+          "value": "6"
+        },
+        {
+          "label": "다음 속성 조회",
+          "value": "6 · 재호출 없음"
+        }
+      ]
+    },
+    "inheritance-scene-2": {
+      "steps": [
+        {
+          "lines": [
+            10,
+            6
+          ],
+          "nodes": [
+            {
+              "label": "self",
+              "value": "새 BirdObservation 객체"
+            },
+            {
+              "label": "count 속성",
+              "value": "아직 없음"
+            },
+            {
+              "label": "species 속성",
+              "value": "아직 없음"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            7,
+            2,
+            3
+          ],
+          "nodes": [
+            {
+              "label": "self",
+              "value": "같은 BirdObservation 객체"
+            },
+            {
+              "label": "count 속성",
+              "value": "4"
+            },
+            {
+              "label": "species 속성",
+              "value": "아직 없음"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            8
+          ],
+          "nodes": [
+            {
+              "label": "self",
+              "value": "같은 BirdObservation 객체"
+            },
+            {
+              "label": "count 속성",
+              "value": "4"
+            },
+            {
+              "label": "species 속성",
+              "value": "\"참새\""
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            11
+          ],
+          "nodes": [
+            {
+              "label": "record",
+              "value": "준비된 BirdObservation 객체"
+            },
+            {
+              "label": "record.count",
+              "value": "4"
+            },
+            {
+              "label": "record.species",
+              "value": "\"참새\""
+            }
+          ],
+          "output": "4 참새"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "record",
+          "value": "조류 관찰 객체 하나"
+        },
+        {
+          "label": "부모가 준비한 속성",
+          "value": "count=4"
+        },
+        {
+          "label": "자식이 준비한 속성",
+          "value": "species=\"참새\""
+        }
+      ]
+    },
+    "polymorphism-scene-2": {
+      "steps": [
+        {
+          "lines": [
+            9
+          ],
+          "nodes": [
+            {
+              "label": "record의 종류",
+              "value": "BirdRecord"
+            },
+            {
+              "label": "같은 요청",
+              "value": "record.summary()"
+            },
+            {
+              "label": "반환값",
+              "value": "아직 호출 전"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            10,
+            2,
+            3
+          ],
+          "nodes": [
+            {
+              "label": "record의 종류",
+              "value": "BirdRecord"
+            },
+            {
+              "label": "실행 메서드",
+              "value": "BirdRecord.summary"
+            },
+            {
+              "label": "반환값",
+              "value": "\"조류 4마리\""
+            }
+          ],
+          "output": "조류 4마리"
+        },
+        {
+          "lines": [
+            9
+          ],
+          "nodes": [
+            {
+              "label": "record의 종류",
+              "value": "WeatherRecord"
+            },
+            {
+              "label": "같은 요청",
+              "value": "record.summary()"
+            },
+            {
+              "label": "반환값",
+              "value": "새 호출 전"
+            }
+          ],
+          "output": "조류 4마리"
+        },
+        {
+          "lines": [
+            10,
+            6,
+            7
+          ],
+          "nodes": [
+            {
+              "label": "record의 종류",
+              "value": "WeatherRecord"
+            },
+            {
+              "label": "실행 메서드",
+              "value": "WeatherRecord.summary"
+            },
+            {
+              "label": "반환값",
+              "value": "\"날씨 맑음\""
+            }
+          ],
+          "output": "조류 4마리\n날씨 맑음"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "같은 호출",
+          "value": "record.summary()"
+        },
+        {
+          "label": "조류 객체의 응답",
+          "value": "\"조류 4마리\""
+        },
+        {
+          "label": "날씨 객체의 응답",
+          "value": "\"날씨 맑음\""
+        }
+      ]
+    },
+    "special-methods-scene-1": {
+      "steps": [
+        {
+          "lines": [
+            9
+          ],
+          "nodes": [
+            {
+              "label": "record.count",
+              "value": "4"
+            },
+            {
+              "label": "표시 요청",
+              "value": "아직 없음"
+            },
+            {
+              "label": "반환 문자열",
+              "value": "아직 없음"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            10,
+            4,
+            5
+          ],
+          "nodes": [
+            {
+              "label": "record.count",
+              "value": "4 · 유지"
+            },
+            {
+              "label": "선택한 메서드",
+              "value": "__str__"
+            },
+            {
+              "label": "반환 문자열",
+              "value": "\"관찰 4개\""
+            }
+          ],
+          "output": "관찰 4개"
+        },
+        {
+          "lines": [
+            11,
+            6,
+            7
+          ],
+          "nodes": [
+            {
+              "label": "record.count",
+              "value": "4 · 유지"
+            },
+            {
+              "label": "선택한 메서드",
+              "value": "__repr__"
+            },
+            {
+              "label": "반환 문자열",
+              "value": "\"Observation(count=4)\""
+            }
+          ],
+          "output": "관찰 4개\nObservation(count=4)"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "같은 객체",
+          "value": "record.count=4"
+        },
+        {
+          "label": "print(record)",
+          "value": "__str__의 읽기 쉬운 표현"
+        },
+        {
+          "label": "repr(record)",
+          "value": "__repr__의 개발 확인 표현"
+        }
+      ]
+    },
+    "nested-classes-scene-2": {
+      "steps": [
+        {
+          "lines": [
+            10,
+            2,
+            3
+          ],
+          "nodes": [
+            {
+              "label": "report.title",
+              "value": "\"숲 관찰\""
+            },
+            {
+              "label": "status.report",
+              "value": "아직 status 생성 전"
+            },
+            {
+              "label": "현재 작업",
+              "value": "보고서만 준비"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            11,
+            5,
+            6
+          ],
+          "nodes": [
+            {
+              "label": "report.title",
+              "value": "\"숲 관찰\""
+            },
+            {
+              "label": "status.report",
+              "value": "전달한 report 객체"
+            },
+            {
+              "label": "현재 작업",
+              "value": "상태 객체에 연결 저장"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            12,
+            7,
+            8
+          ],
+          "nodes": [
+            {
+              "label": "report.title",
+              "value": "\"숲 관찰\""
+            },
+            {
+              "label": "status.report",
+              "value": "같은 report 객체"
+            },
+            {
+              "label": "현재 작업",
+              "value": "제목 읽고 문구 붙이기"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            12
+          ],
+          "nodes": [
+            {
+              "label": "report.title",
+              "value": "\"숲 관찰\""
+            },
+            {
+              "label": "status.report",
+              "value": "같은 report 객체"
+            },
+            {
+              "label": "현재 작업",
+              "value": "반환 문자열 출력"
+            }
+          ],
+          "output": "숲 관찰: 작성 중"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "report.title",
+          "value": "\"숲 관찰\""
+        },
+        {
+          "label": "status.report",
+          "value": "직접 전달한 report 객체"
+        },
+        {
+          "label": "현재 작업",
+          "value": "설명 문자열 출력 완료"
+        }
+      ]
+    },
+    "write-files-scene-1": {
+      "steps": [
+        {
+          "lines": [
+            4,
+            5
+          ],
+          "nodes": [
+            {
+              "label": "예제 파일",
+              "value": "아직 없음"
+            },
+            {
+              "label": "이번 작업",
+              "value": "경로 준비"
+            },
+            {
+              "label": "표준 출력",
+              "value": "아직 없음"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            6,
+            7
+          ],
+          "nodes": [
+            {
+              "label": "예제 파일 내용",
+              "value": "숲:4\\n"
+            },
+            {
+              "label": "이번 작업",
+              "value": "x · 없을 때 새로 생성"
+            },
+            {
+              "label": "표준 출력",
+              "value": "아직 없음"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            8,
+            9
+          ],
+          "nodes": [
+            {
+              "label": "예제 파일 내용",
+              "value": "숲:4\\n강:2\\n"
+            },
+            {
+              "label": "이번 작업",
+              "value": "a · 기존 내용 뒤에 추가"
+            },
+            {
+              "label": "표준 출력",
+              "value": "아직 없음"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            10
+          ],
+          "nodes": [
+            {
+              "label": "예제 파일 내용",
+              "value": "숲:4\\n강:2\\n"
+            },
+            {
+              "label": "이번 작업",
+              "value": "읽은 문자열을 print"
+            },
+            {
+              "label": "표준 출력",
+              "value": "두 줄이 표시됨"
+            }
+          ],
+          "output": "숲:4\n강:2"
+        },
+        {
+          "lines": [],
+          "nodes": [
+            {
+              "label": "예제 파일",
+              "value": "임시 폴더와 함께 정리됨"
+            },
+            {
+              "label": "이번 작업",
+              "value": "예제 종료"
+            },
+            {
+              "label": "표준 출력",
+              "value": "두 줄 유지"
+            }
+          ],
+          "output": "숲:4\n강:2"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "사용한 쓰기 방식",
+          "value": "x로 생성 → a로 추가"
+        },
+        {
+          "label": "출력한 내용",
+          "value": "숲:4 다음 줄 강:2"
+        },
+        {
+          "label": "예제 종료 뒤 파일",
+          "value": "임시 폴더와 함께 정리됨"
+        }
+      ]
+    },
+    "final-project-scene-2": {
+      "steps": [
+        {
+          "lines": [
+            12,
+            14,
+            18
+          ],
+          "nodes": [
+            {
+              "label": "현재 입력",
+              "value": "1행: 숲:4"
+            },
+            {
+              "label": "totals",
+              "value": "숲: 4"
+            },
+            {
+              "label": "errors",
+              "value": "0개"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            12,
+            14,
+            18
+          ],
+          "nodes": [
+            {
+              "label": "현재 입력",
+              "value": "2행: 강:2"
+            },
+            {
+              "label": "totals",
+              "value": "숲: 4 · 강: 2"
+            },
+            {
+              "label": "errors",
+              "value": "0개"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            12,
+            14,
+            18
+          ],
+          "nodes": [
+            {
+              "label": "현재 입력",
+              "value": "3행: 숲:3"
+            },
+            {
+              "label": "totals",
+              "value": "숲: 7 · 강: 2"
+            },
+            {
+              "label": "errors",
+              "value": "0개"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            14,
+            6,
+            7,
+            15,
+            16,
+            17
+          ],
+          "nodes": [
+            {
+              "label": "현재 입력",
+              "value": "4행: 못:-1 · 거절"
+            },
+            {
+              "label": "totals",
+              "value": "숲: 7 · 강: 2 · 유지"
+            },
+            {
+              "label": "errors",
+              "value": "1개 · 4행 수량 오류"
+            }
+          ],
+          "output": ""
+        },
+        {
+          "lines": [
+            19,
+            20
+          ],
+          "nodes": [
+            {
+              "label": "처리한 입력",
+              "value": "4줄 중 3줄을 집계"
+            },
+            {
+              "label": "totals",
+              "value": "숲: 7 · 강: 2"
+            },
+            {
+              "label": "errors",
+              "value": "1개 · 4행 수량 오류"
+            }
+          ],
+          "output": "{'숲': 7, '강': 2}\n4행: 수량은 0 이상이어야 합니다"
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "정상 집계",
+          "value": "숲: 7 · 강: 2"
+        },
+        {
+          "label": "거절한 줄",
+          "value": "4행 못:-1"
+        },
+        {
+          "label": "오류 건수",
+          "value": "1 · 합계와 별도 보관"
+        }
+      ]
+    },
+    "environments-environment-selection": {
+      "steps": [
+        {
+          "nodes": [
+            {
+              "label": "A의 환경",
+              "value": "Python A · 도구 없음"
+            },
+            {
+              "label": "B의 환경",
+              "value": "Python B · 도구 없음"
+            },
+            {
+              "label": "다음 명령",
+              "value": "아직 실행 파일 선택 전"
+            }
+          ]
+        },
+        {
+          "nodes": [
+            {
+              "label": "A의 환경",
+              "value": "Python A · 도구 없음"
+            },
+            {
+              "label": "B의 환경",
+              "value": "Python B · 도구 없음"
+            },
+            {
+              "label": "다음 명령",
+              "value": "Python A로 새 명령 시작"
+            }
+          ]
+        },
+        {
+          "nodes": [
+            {
+              "label": "A의 환경",
+              "value": "Python A · 예시 도구 v1"
+            },
+            {
+              "label": "B의 환경",
+              "value": "Python B · 도구 없음"
+            },
+            {
+              "label": "설치에 사용한 Python",
+              "value": "A 환경의 Python"
+            }
+          ]
+        },
+        {
+          "nodes": [
+            {
+              "label": "A의 환경",
+              "value": "Python A · 예시 도구 v1"
+            },
+            {
+              "label": "B의 환경",
+              "value": "Python B · 예시 도구 v2"
+            },
+            {
+              "label": "설치에 사용한 Python",
+              "value": "B 환경의 Python"
+            }
+          ]
+        },
+        {
+          "nodes": [
+            {
+              "label": "A 프로그램의 실행",
+              "value": "Python A → 예시 도구 v1"
+            },
+            {
+              "label": "B 프로그램의 실행",
+              "value": "Python B → 예시 도구 v2"
+            },
+            {
+              "label": "실행 방식",
+              "value": "각 환경의 Python으로 별도 시작"
+            }
+          ]
+        }
+      ],
+      "finalNodes": [
+        {
+          "label": "프로젝트 A",
+          "value": "A의 Python · 예시 도구 v1"
+        },
+        {
+          "label": "프로젝트 B",
+          "value": "B의 Python · 예시 도구 v2"
+        },
+        {
+          "label": "맞춰야 할 선택",
+          "value": "설치와 실행에 사용할 Python"
         }
       ]
     }

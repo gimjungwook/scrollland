@@ -31,7 +31,7 @@ function element() {
   };
 }
 function makeScene(section, sceneMotion) {
-  const parts = Object.fromEntries(['[data-scene-data]', '.scene-stage', '[data-visualization-track]', '.visualization-fallback', '[data-state-canvas]', '.stage-code', '[data-output]', '[data-output-empty]', '[data-scene-progress]', '[data-position]', '[data-step-label]', '[data-step-state]', '[data-state-caption]'].map(selector => [selector, element()]));
+  const parts = Object.fromEntries(['[data-scene-data]', '.scene-stage', '[data-visualization-track]', '.visualization-fallback', '[data-state-canvas]', '.stage-code', '[data-output]', '[data-output-empty]', '[data-scene-progress]', '[data-position]', '[data-step-label]', '[data-step-state]', '[data-state-caption]', '.narration', '.scene-bottom'].map(selector => [selector, element()]));
   parts['[data-scene-data]'].textContent = JSON.stringify({ section, motion: sceneMotion });
   parts['.scene-stage'].hidden = true; parts['[data-visualization-track]'].offsetHeight = 900;
   const canvas = parts['[data-state-canvas]'];
@@ -260,11 +260,13 @@ for (const slug of curriculum.courses.flatMap(course => course.lessons)) {
       const trigger = ui.active()[0], scene = ui.scenes[0];
       let settled = null;
       for (const [index, p] of section.visualization.stops.entries()) {
-        trigger.seek(p);
+        trigger.seek(Math.min(1, p * .9 + 1e-12));
         const state = sampleScene(section, sceneMotion, p), actual = snapshot(scene), expected = layoutGraph(state.nodes, section.diagram.type);
         assert.equal(actual.state, state.state); assert.equal(actual.output, state.output); assert.deepEqual(actual.activeLines, [...state.lines].sort((a, b) => a - b));
         assert.deepEqual(actual.graph.map(node => node.id).sort(), expected.items.map(node => node.id).sort());
         assert.deepEqual(actual.edges.sort(), expected.edges.map(edge => [edge.from, edge.to]).sort());
+        const positions = actual.graph.filter(node => !node.id.startsWith('frame:')).map(node => `${node.left},${node.top}`);
+        assert.equal(new Set(positions).size, positions.length, `${section.id} has overlapping node positions`);
         for (const item of expected.items) {
           const node = actual.graph.find(node => node.id === item.id);
           assert.equal(node.value, item.role === 'name' ? item.label : item.value);
@@ -272,13 +274,173 @@ for (const slug of curriculum.courses.flatMap(course => course.lessons)) {
           if (prior) { assert.equal(node.left, prior.left, `${item.id} moved horizontally`); assert.equal(node.top, prior.top, `${item.id} moved vertically`); }
         }
         if (index < section.visualization.stops.length - 1) {
-          trigger.seek(p + (section.visualization.stops[index + 1] - p) * .5);
+          trigger.seek((p + (section.visualization.stops[index + 1] - p) * .5) * .9);
           settled = snapshot(scene);
+          const positions = settled.graph.filter(node => !node.id.startsWith('frame:')).map(node => `${node.left},${node.top}`);
+          assert.equal(new Set(positions).size, positions.length, `${section.id} has overlapping node positions`);
         }
       }
     });
   }
 }
+
+function comparisonFixture(kind, frames) {
+  const section = structuredClone(source);
+  delete section.code; delete section.output;
+  section.diagram = { type: kind, nodes: frames.at(-1), caption: '관계 확인' };
+  section.trace = frames.slice(0, -1).map((_, i) => ({ label: `상태 ${i + 1}`, state: `현재 상태 ${i + 1}` }));
+  section.visualization.stops = frames.map((_, i) => i / (frames.length - 1));
+  return { section, sceneMotion: { steps: frames.slice(0, -1).map(nodes => ({ nodes })), finalNodes: frames.at(-1) } };
+}
+
+test('co-occurrence across nonadjacent states reserves three stable slots even when only two comparison nodes are visible', async t => {
+  const nodes = Object.fromEntries(['A', 'B', 'C'].map(label => [label, { label, value: label }]));
+  const fixture = comparisonFixture('collection', [[nodes.A, nodes.B], [nodes.B, nodes.C], [nodes.C, nodes.A]]);
+  const ui = await setup(t, fixture), scene = ui.scenes[0], positions = new Map();
+  for (const p of [.2, .7, 1, .7, .2]) {
+    ui.active()[0].seek(p * .9);
+    const graph = snapshot(scene).graph;
+    assert.equal(scene.parts['[data-state-canvas]'].style.getPropertyValue('--node-count'), '3');
+    assert.equal(new Set(graph.map(node => node.left)).size, graph.length);
+    for (const node of graph) {
+      if (positions.has(node.id)) assert.deepEqual([node.left, node.top], positions.get(node.id));
+      positions.set(node.id, [node.left, node.top]);
+    }
+  }
+  assert.equal(new Set([...positions.values()].map(position => position[0])).size, 3);
+});
+
+test('the JSON text retains its slot and the final storage note receives a distinct later slot', async t => {
+  const lesson = JSON.parse(await readFile(new URL('../lessons/json-data.json', import.meta.url), 'utf8'));
+  const section = lesson.sections.find(section => section.kind === 'visualization');
+  const ui = await setup(t, { section, sceneMotion: publishedMotion.scenes[section.visualization.ref] }), scene = ui.scenes[0];
+  const role = section.diagram.type;
+  const initialText = snapshot(scene).graph.find(node => node.id === `${role}:text`);
+  for (const p of [.96, 1, .98, 1]) {
+    ui.active()[0].seek(p); const graph = snapshot(scene).graph;
+    assert.equal(graph.find(node => node.id === `${role}:text`).left, initialText.left);
+    assert.equal(new Set(graph.map(node => node.left)).size, graph.length);
+    const ordered = section.diagram.nodes.map(item => parseFloat(graph.find(node => node.id === `${role}:${item.label}`).left));
+    assert(ordered.every((x, i) => i === 0 || x > ordered[i - 1]));
+    assert.equal(scene.parts['[data-state-canvas]'].style.getPropertyValue('--node-count'), '4');
+  }
+});
+
+test('a branch condition keeps its top position when choices appear and reverse scrolling removes them', async t => {
+  const condition = { label: '조건', value: 'True' }, yes = { label: '참', value: '선택' }, no = { label: '거짓', value: '건너뜀' };
+  const ui = await setup(t, comparisonFixture('branch', [[condition], [condition, yes], [condition, yes, no]]));
+  const scene = ui.scenes[0], initial = snapshot(scene).graph[0];
+  assert.equal(initial.left, '50%'); assert.equal(initial.top, '22%');
+  for (const p of [.5, .7, 1, .7, .1, 0]) {
+    ui.active()[0].seek(p * .9);
+    const node = snapshot(scene).graph.find(node => node.id === 'condition:조건');
+    assert.equal(node.left, initial.left); assert.equal(node.top, initial.top);
+  }
+});
+
+test('a new pipeline card enters within its reserved column instead of crossing an existing card', async t => {
+  const first = { label: '입력', value: '2' }, second = { label: '변환', value: '4' }, third = { label: '결과', value: '4' };
+  const fixture = comparisonFixture('pipeline', [[first, second], [first, second, third], [first, second, third]]);
+  const ui = await setup(t, fixture), scene = ui.scenes[0];
+  for (const p of [.5, .51, .55, .6, 1]) {
+    ui.active()[0].seek(p * .9);
+    const xs = snapshot(scene).graph.map(node => parseFloat(node.left)).sort((a, b) => a - b);
+    assert(xs.every((x, i) => i === 0 || x - xs[i - 1] >= 28));
+  }
+});
+
+test('the real variable objects enter at their fixed positions inside a 220px mobile canvas', async t => {
+  const lesson = JSON.parse(await readFile(new URL('../lessons/variables.json', import.meta.url), 'utf8'));
+  const section = lesson.sections.find(section => section.kind === 'visualization');
+  const ui = await setup(t, { section, sceneMotion: publishedMotion.scenes[section.visualization.ref] });
+  const canvas = ui.scenes[0].parts['[data-state-canvas]'], positions = new Map();
+  for (const p of [...Array.from({ length: 201 }, (_, i) => i / 200), .38, .18, 0]) {
+    ui.active()[0].seek(p * .9);
+    for (const node of canvas.querySelectorAll('[data-graph-id]').filter(node => !node.hidden && node.dataset.graphId.startsWith('object:'))) {
+      const scale = Number(node.style.transform.match(/scale\(([^)]+)\)/)[1]);
+      const x = parseFloat(node.style.left) / 100 * 288, y = parseFloat(node.style.top) / 100 * 220;
+      const radius = 80 * scale / 2;
+      assert(x - radius >= 0 && x + radius <= 288 && y - radius >= 0 && y + radius <= 220, `${node.dataset.graphId} left the mobile canvas at ${p}`);
+      if (positions.has(node.dataset.graphId)) assert.deepEqual([node.style.left, node.style.top], positions.get(node.dataset.graphId));
+      positions.set(node.dataset.graphId, [node.style.left, node.style.top]);
+    }
+  }
+  assert.equal(positions.size, 2);
+});
+
+test('diagram-only stages use a compact observation height and retain static fallback when that height cannot fit', async t => {
+  const section = structuredClone(source), sceneMotion = structuredClone(motion);
+  delete section.code; delete section.output;
+  sceneMotion.steps.forEach(step => { delete step.lines; delete step.output; });
+  const ui = await setup(t, { section, sceneMotion }), scene = ui.scenes[0];
+  assert.equal(scene.parts['[data-visualization-track]'].style.getPropertyValue('--stage-height'), '560px');
+  assert.equal(scene.parts['[data-visualization-track]'].dataset.pin, 'true');
+  window.innerWidth = 360; window.innerHeight = 640; ui.plugin.refresh();
+  assert.equal(scene.parts['[data-visualization-track]'].style.getPropertyValue('--stage-height'), '536px');
+  assert.equal(scene.parts['[data-visualization-track]'].dataset.pin, 'true');
+  window.innerHeight = 520; ui.plugin.refresh();
+  // The fixture needs 500px of content, so overflow is preserved above the 480px minimum.
+  assert.equal(scene.parts['[data-visualization-track]'].style.getPropertyValue('--stage-height'), '500px');
+  assert(scene.parts['.scene-stage'].hidden); assert(!scene.parts['.visualization-fallback'].hidden);
+});
+
+test('diagram-only geometry reserves the tallest narration and footer even while a shorter state is displayed', async t => {
+  const section = structuredClone(source), sceneMotion = structuredClone(motion);
+  delete section.code; delete section.output;
+  sceneMotion.steps.forEach(step => { delete step.lines; delete step.output; });
+  const ui = await setup(t, { section, sceneMotion }), scene = ui.scenes[0], stage = scene.parts['.scene-stage'];
+  const track = scene.parts['[data-visualization-track]'];
+  // A later explanation wraps onto more lines. Its intrinsic flow includes the
+  // footer below it; that content must determine height before it is displayed.
+  Object.defineProperty(stage, 'scrollHeight', { get: () => Number(scene.dataset.currentStep) === 2 ? 650 : 560 });
+  window.innerWidth = 599; window.innerHeight = 921;
+  ui.plugin.refresh();
+  assert.equal(track.style.getPropertyValue('--stage-height'), '650px');
+  assert.equal(track.dataset.pin, 'true'); assert.equal(scene.dataset.currentStep, '0');
+  ui.active()[0].seek(.72);
+  assert.equal(scene.dataset.currentStep, '2'); assert(!stage.hidden);
+  window.innerHeight = 700; ui.plugin.refresh();
+  assert.equal(track.dataset.pin, 'false'); assert(stage.hidden);
+  assert(!scene.parts['.visualization-fallback'].hidden);
+});
+
+test('internal fit preserves bottom padding and later narration even when scrollHeight reports no overflow', async t => {
+  const section = structuredClone(source), sceneMotion = structuredClone(motion);
+  delete section.code; delete section.output;
+  sceneMotion.steps.forEach(step => { delete step.lines; delete step.output; });
+  const ui = await setup(t, { section, sceneMotion }), scene = ui.scenes[0], parts = scene.parts;
+  const height = () => parseFloat(parts['[data-visualization-track]'].style.getPropertyValue('--stage-height'));
+  const explanationBottom = () => Number(scene.dataset.currentStep) === 2 ? 590 : 300;
+  parts['.scene-stage'].getBoundingClientRect = () => ({ top: 0, bottom: height() });
+  parts['[data-state-caption]'].getBoundingClientRect = () => ({ bottom: 200 });
+  parts['.narration'].getBoundingClientRect = () => ({ top: 220 });
+  parts['[data-step-state]'].getBoundingClientRect = () => ({ bottom: explanationBottom() });
+  parts['.scene-bottom'].getBoundingClientRect = () => {
+    const top = Math.max(height() - 50, explanationBottom() + 10);
+    return { top, bottom: top + 26 };
+  };
+  window.getComputedStyle = () => ({ paddingBottom: '24px', getPropertyValue: () => '72px' });
+  ui.plugin.refresh();
+  assert.equal(height(), 650); assert.equal(parts['[data-visualization-track]'].dataset.pin, 'true');
+  for (const p of [.72, 1, .3]) {
+    ui.active()[0].seek(p);
+    assert(parts['[data-step-state]'].getBoundingClientRect().bottom <= parts['.scene-bottom'].getBoundingClientRect().top);
+    assert(parts['.scene-bottom'].getBoundingClientRect().bottom <= height() - 24);
+  }
+});
+
+test('an unresolved caption or narration overlap selects static states even when the outer stage fits', async t => {
+  const ui = await setup(t), scene = ui.scenes[0], parts = scene.parts;
+  const height = () => parseFloat(parts['[data-visualization-track]'].style.getPropertyValue('--stage-height'));
+  parts['.scene-stage'].getBoundingClientRect = () => ({ top: 0, bottom: height() });
+  parts['[data-state-caption]'].getBoundingClientRect = () => ({ bottom: 420 });
+  parts['.narration'].getBoundingClientRect = () => ({ top: 400 });
+  parts['[data-step-state]'].getBoundingClientRect = () => ({ bottom: 570 });
+  parts['.scene-bottom'].getBoundingClientRect = () => ({ top: 550, bottom: 580 });
+  ui.plugin.refresh();
+  assert.equal(parts['[data-visualization-track]'].dataset.pin, 'false');
+  assert(parts['.scene-stage'].hidden); assert(!parts['.visualization-fallback'].hidden);
+});
 
 
 test('long code follows the first authored active line, including a call before its earlier function body', async t => {

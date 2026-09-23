@@ -112,7 +112,13 @@ test('all 44 lesson pages preserve the complete ordered prose, 135 examples and 
     for (const value of [lesson.intro.hook, lesson.intro.connection, lesson.intro.payoff, lesson.goal, lesson.quiz.question, lesson.takeaway, ...lesson.quiz.options.flatMap(option => [option.text, option.feedback])]) assert(lessonText.includes(value), `${slug}: ${value}`);
     lesson.sourceUrls.forEach(url => assert(links(html).some(link => link.href === url), `${slug}: official source`));
   }
-  assert.deepEqual({ examples, reading, visualization, effects }, { examples: 135, reading: 127, visualization: 14, effects: 6 });
+  const sourceSections = content.order.flatMap(slug => content.lessons[slug].sections);
+  assert.deepEqual({ examples, reading, visualization, effects }, {
+    examples: 135,
+    reading: sourceSections.filter(section => section.kind === 'reading').length,
+    visualization: sourceSections.filter(section => section.kind === 'visualization').length,
+    effects: 6,
+  });
 });
 
 test('all lesson prerequisite and sequential links reach direct pages and crossing-course links name both destinations', () => {

@@ -29,7 +29,8 @@
       "title": "클래스 안에서 다른 클래스 정의하기",
       "body": [
         "중첩 클래스는 클래스 본문 안에 정의한 별도 클래스입니다. Report.Status처럼 바깥 클래스의 속성 경로로 찾습니다. 이름 공간은 이름들이 어떤 객체와 연결되는지 관리하는 영역입니다.",
-        "안에 정의했다는 이유만으로 바깥 인스턴스의 속성을 자동으로 읽지는 않습니다. 아래 Status는 독립 인스턴스를 만들고 자신에게 전달한 label을 저장합니다."
+        "안에 정의했다는 이유만으로 바깥 인스턴스의 속성을 자동으로 읽지는 않습니다. 아래 Status는 독립 인스턴스를 만들고 자신에게 전달한 label을 저장합니다.",
+        "6행은 Report 객체를 먼저 만들지 않고 Report.Status라는 클래스를 찾아 바로 Status 객체를 만듭니다. status.label이 \"작성 중\"인 이유는 바깥 보고서를 읽어서가 아니라 생성할 때 그 문자열을 직접 전달했기 때문입니다."
       ],
       "code": "class Report:\n    class Status:\n        def __init__(self, label):\n            self.label = label\n\nstatus = Report.Status(\"작성 중\")\nprint(status.label)\nprint(isinstance(status, Report.Status))",
       "output": "작성 중\nTrue",
@@ -39,33 +40,75 @@
     {
       "title": "바깥 정보를 쓰려면 직접 전달하기",
       "body": [
-        "중첩 객체가 바깥 객체를 사용하려면 인자로 전달하는 등 연결을 직접 만들어야 합니다. 아래 Status는 report를 받아 자기 report 속성에 연결합니다.",
-        "서로 가리키는 객체가 많아지면 관계를 이해하기 어려워집니다. 단지 제목 문자열만 필요하다면 객체 전체 대신 제목 값만 전달하는 편이 더 단순할 수 있습니다."
+        "Report 안에 Status 클래스를 적었다고 해서 Status 객체가 어떤 보고서에 속하는지 저절로 정해지지는 않습니다. 보고서가 여러 개라면 사용할 보고서를 직접 골라 전달해야 합니다.",
+        "아래에서 Report(\"숲 관찰\")로 보고서 객체를 먼저 만듭니다. 그다음 Report.Status(report)로 상태 객체를 만들며 방금 만든 보고서를 인자로 넘깁니다. Status의 self.report는 그 보고서를 가리키는 속성입니다. 보고서의 사본을 만드는 것이 아닙니다.",
+        "status.summary() 안의 self.report.title은 상태 객체에서 연결된 보고서로 이동한 뒤 제목을 읽는 경로입니다. 제목만 필요하다면 보고서 전체 대신 제목 문자열을 전달하는 방법도 있습니다. 필요한 정보에 맞춰 연결 범위를 고릅니다."
       ],
       "code": "class Report:\n    def __init__(self, title):\n        self.title = title\n    class Status:\n        def __init__(self, report):\n            self.report = report\n        def summary(self):\n            return self.report.title + \": 작성 중\"\n\nreport = Report(\"숲 관찰\")\nstatus = Report.Status(report)\nprint(status.summary())",
       "output": "숲 관찰: 작성 중",
       "diagram": {
-        "type": "binding",
+        "type": "collection",
         "nodes": [
           {
-            "label": "바깥 인스턴스",
-            "value": "report.title=숲 관찰"
+            "label": "report.title",
+            "value": "\"숲 관찰\""
           },
           {
-            "label": "안쪽 인스턴스",
-            "value": "status.report → report"
+            "label": "status.report",
+            "value": "직접 전달한 report 객체"
+          },
+          {
+            "label": "현재 작업",
+            "value": "설명 문자열 출력 완료"
           }
         ],
-        "caption": "바깥 인스턴스: report.title=숲 관찰 · 안쪽 인스턴스: status.report → report"
+        "caption": "중첩은 클래스 이름의 위치를 정하고, 인자 전달은 사용할 보고서 객체와의 연결을 만듭니다."
       },
       "id": "nested-classes-scene-2",
-      "kind": "reading"
+      "kind": "visualization",
+      "question": "Status를 Report 안에 적는 것만으로 status가 사용할 보고서도 정해질까요?",
+      "rationale": "클래스의 이름 경로와 실제 두 인스턴스 사이의 참조를 구분하고, 인자로 전달한 시점에 연결이 생기는 모습을 보여 줍니다.",
+      "interpretation": [
+        "Report.Status는 클래스를 찾는 이름 경로입니다. status.report는 Status 인스턴스에서 실제 보고서를 찾는 속성 경로입니다. 두 경로의 역할이 다릅니다.",
+        "11행에서 report를 전달했기 때문에 status가 \"숲 관찰\"을 읽을 수 있습니다. 중첩 정의가 바깥 인스턴스를 자동으로 전달하지는 않습니다."
+      ],
+      "trace": [
+        {
+          "label": "보고서 먼저 만들기",
+          "state": "10행이 제목 \"숲 관찰\"을 가진 보고서를 만들고 report에 연결합니다."
+        },
+        {
+          "label": "보고서를 직접 전달",
+          "state": "11행에서 report를 Status에 넘깁니다. 6행의 self.report가 같은 보고서를 가리킵니다."
+        },
+        {
+          "label": "연결을 따라 제목 읽기",
+          "state": "12행의 summary가 8행에서 self.report.title을 읽고 상태 문구를 붙여 반환합니다."
+        },
+        {
+          "label": "설명 문자열 출력",
+          "state": "반환한 문자열을 12행의 바깥 print가 출력합니다. 객체 사이 연결은 그대로입니다."
+        }
+      ],
+      "visualization": {
+        "ref": "nested-classes-scene-2",
+        "pin": true,
+        "scrollDistance": 250,
+        "stops": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ]
+      }
     },
     {
       "title": "중첩과 구성을 구별하기",
       "body": [
         "구성은 한 객체가 다른 객체를 속성으로 갖고 함께 사용하는 구조입니다. 클래스 정의가 중첩되었는지와 별개입니다. 중첩은 이름을 어디에 둘지, 구성은 객체를 어떻게 연결할지에 관한 선택입니다.",
-        "여러 종류의 보고서에서 같은 상태를 사용할 예정이면 Status를 바깥에 독립 정의하는 편이 찾기 쉬울 수 있습니다. 아래는 중첩 없이도 Report가 Status를 가지는 구성 예제입니다."
+        "여러 종류의 보고서에서 같은 상태를 사용할 예정이면 Status를 바깥에 독립 정의하는 편이 찾기 쉬울 수 있습니다. 아래는 중첩 없이도 Report가 Status를 가지는 구성 예제입니다.",
+        "마지막 예제는 반대 방향의 연결입니다. Report를 만들 때 Status(\"검토 전\") 객체를 넣어 report.status로 보관합니다. Status 클래스가 바깥에 있어도 이 연결을 만들 수 있으므로 중첩과 구성은 같은 뜻이 아닙니다."
       ],
       "code": "class Status:\n    def __init__(self, label):\n        self.label = label\n\nclass Report:\n    def __init__(self, title, status):\n        self.title = title\n        self.status = status\n\nreport = Report(\"강 관찰\", Status(\"검토 전\"))\nprint(report.title, report.status.label)",
       "output": "강 관찰 검토 전",

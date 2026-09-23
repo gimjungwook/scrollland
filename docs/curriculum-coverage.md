@@ -1,12 +1,12 @@
 # 학습 범위와 레슨 대응
 
-확인일: 2026-09-23. 첫 산출물의 교육 범위는 8개 코스·44개 레슨·135개 코드 예제입니다. 현재 원고는 읽기 구간 127개와 시각화 구간 14개, 총 141개 구간으로 구성합니다. 읽기 구간 중 6개는 글만으로 설명합니다. 이 수치는 원고를 검토해 선택한 결과이며 레슨마다 맞춰야 하는 개수나 비율이 아닙니다.
+확인일: 2026-09-23. 첫 산출물의 교육 범위는 8개 코스·44개 레슨·135개 코드 예제입니다. 현재 원고는 읽기 구간 98개와 시각화 구간 44개, 총 142개 구간으로 구성합니다. 읽기 구간 중 6개는 글만으로 설명합니다. 이 수치는 원고를 검토해 선택한 결과이며 레슨마다 맞춰야 하는 개수나 비율이 아닙니다.
 
 [W3Schools Python 목차](https://www.w3schools.com/python/default.asp)의 Python Tutorial, Python Classes, File Handling은 주제 누락 확인에만 사용했습니다. 코스 경계·구간 구성·문장·관찰 기록 예제는 이 프로젝트에서 작성했습니다. Python의 의미와 동작은 각 레슨의 `sourceUrls`에 있는 공식 문서로 확인합니다.
 
 코스는 값 이해 → 입력과 판단 → 여러 기록 → 반복 → 계산 재사용 → 도구 연결 → 데이터와 행동 → 안전한 저장 순서입니다. 뒤 코스는 앞에서 만든 읽기·계산 방법을 재사용합니다. 모든 레슨은 문제·학습 목표·선행 레슨·본문·예제·요약·확인 문항을 갖습니다. 도식과 단계 자료는 설명에 필요한 구간에만 둡니다. 한 레슨의 본문은 스크롤로 계속 읽을 수 있고, 문항의 정답과 모든 선택지의 근거도 질문 뒤에 이어집니다. 코스·레슨 사이는 목적지 제목이 있는 링크로 이동하며 자동으로 다음 레슨을 열지 않습니다. 페이지별 구성은 [페이지 경계](page-structure.md)를 따릅니다.
 
-읽기 구간의 글·코드·출력·정적 도식은 계속 남겨 비교할 수 있게 합니다. 시각화 구간에서는 관찰 질문과 본문을 먼저 읽고, 스크롤 위치에 따라 코드의 현재 줄·값·도식·출력·짧은 상태 설명이 함께 갱신되는 과정을 본 뒤 해석 본문으로 이어집니다. 14개 시각화 모두 관찰 중 화면 고정을 지정했습니다. 무대 전체가 화면에 들어가지 않으면 순서 있는 정적 자료로 대체합니다. 본문 글자 효과는 제작자가 지정한 6개 문구에만 적용합니다. 선택 근거와 각 효과의 재생 규칙은 [본문과 연출의 콘텐츠 선택 기록](content-presentation.md)에서 확인할 수 있습니다.
+읽기 구간의 글·코드·출력·정적 도식은 계속 남겨 비교할 수 있게 합니다. 시각화 구간에서는 관찰 질문과 본문을 먼저 읽고, 스크롤 위치에 따라 코드의 현재 줄·값·도식·출력·짧은 상태 설명이 함께 갱신되는 과정을 본 뒤 해석 본문으로 이어집니다. 44개 시각화 모두 관찰 중 화면 고정을 지정했습니다. 무대 전체가 화면에 들어가지 않으면 순서 있는 정적 자료로 대체합니다. 본문 글자 효과는 제작자가 지정한 6개 문구에만 적용합니다. 선택 근거와 각 효과의 재생 규칙은 [본문과 연출의 콘텐츠 선택 기록](content-presentation.md), 입력·처리·결과를 설명하는 기준은 [레슨 관찰·설명 기준](lesson-observation.md)에서 확인할 수 있습니다. 환경 선택에는 코드 없는 관계 시각화를 추가했고 기존 135개 예제의 코드·입력·출력·보조 파일은 유지했습니다.
 
 ## W3Schools 주제와 실제 설명 위치
 
@@ -90,7 +90,7 @@
    - 목표: 코드와 출력을 구분하고 세 줄의 실행 순서를 설명합니다.
    - 선행 레슨: 없음
    - 주제: Python · 실행 · print · 주석 · 문법
-   - 구간: 읽기·글만: [처음에는 결과부터 읽어 봅니다](../learn/run-python.html#run-python-reading-introduction) → 읽기: [한 줄로 말을 건네기](../learn/run-python.html#run-python-scene-1) → 읽기: [위에서 아래로 읽기](../learn/run-python.html#run-python-scene-2) → 읽기: [직접 실행할 준비](../learn/run-python.html#run-python-scene-3)
+   - 구간: 읽기·글만: [처음에는 결과부터 읽어 봅니다](../learn/run-python.html#run-python-reading-introduction) (`run-python-reading-introduction`) → 읽기: [한 줄로 말을 건네기](../learn/run-python.html#run-python-scene-1) (`run-python-scene-1`) → 시각화: [위에서 아래로 읽기](../learn/run-python.html#run-python-scene-2) (`run-python-scene-2`) → 읽기: [직접 실행할 준비](../learn/run-python.html#run-python-scene-3) (`run-python-scene-3`)
 
 2. **값에 이름을 연결하기** (`variables`)
 
@@ -98,7 +98,7 @@
    - 목표: 대입과 재대입을 이름과 객체의 연결로 설명합니다.
    - 선행 레슨: [처음 실행하고 결과 읽기](../learn/run-python.html)
    - 주제: 변수 · 이름 · 객체 · 대입 · 재대입
-   - 구간: 읽기·글만: [관찰한 수에 이름 붙이기](../learn/variables.html#variables-reading-introduction) → 읽기: [이름과 값 구분하기](../learn/variables.html#variables-scene-1) → 읽기: [오른쪽을 먼저 계산하기](../learn/variables.html#variables-scene-2) → 읽기: [이름으로 값을 사용하기](../learn/variables.html#variables-scene-3) → 시각화: [재대입으로 연결 바꾸기](../learn/variables.html#variables-scene-4)
+   - 구간: 읽기·글만: [관찰한 수에 이름 붙이기](../learn/variables.html#variables-reading-introduction) (`variables-reading-introduction`) → 읽기: [이름과 값 구분하기](../learn/variables.html#variables-scene-1) (`variables-scene-1`) → 읽기: [오른쪽을 먼저 계산하기](../learn/variables.html#variables-scene-2) (`variables-scene-2`) → 읽기: [이름으로 값을 사용하기](../learn/variables.html#variables-scene-3) (`variables-scene-3`) → 시각화: [재대입으로 연결 바꾸기](../learn/variables.html#variables-scene-4) (`variables-scene-4`)
 
 3. **같아 보이는 값 구별하기** (`data-types`)
 
@@ -106,7 +106,7 @@
    - 목표: 자료형에 따라 가능한 연산이 달라짐을 설명하고 필요한 변환을 선택합니다.
    - 선행 레슨: [값에 이름을 연결하기](../learn/variables.html)
    - 주제: 자료형 · int · float · str · bool · None · 형 변환
-   - 구간: 읽기: [자료형으로 역할 확인하기](../learn/data-types.html#data-types-scene-1) → 읽기: [계산할 값으로 변환하기](../learn/data-types.html#data-types-scene-2) → 읽기: [참·거짓과 값 없음 구별하기](../learn/data-types.html#data-types-scene-3)
+   - 구간: 시각화: [자료형으로 역할 확인하기](../learn/data-types.html#data-types-scene-1) (`data-types-scene-1`) → 읽기: [계산할 값으로 변환하기](../learn/data-types.html#data-types-scene-2) (`data-types-scene-2`) → 읽기: [참·거짓과 값 없음 구별하기](../learn/data-types.html#data-types-scene-3) (`data-types-scene-3`)
 
 4. **수량과 나머지 계산하기** (`numbers`)
 
@@ -114,7 +114,7 @@
    - 목표: 나눗셈의 종류를 구별하고 소수의 표시와 정확성을 설명합니다.
    - 선행 레슨: [같아 보이는 값 구별하기](../learn/data-types.html)
    - 주제: 산술 연산 · 나눗셈 · 나머지 · 거듭제곱 · 부동소수점 · complex
-   - 구간: 읽기: [몫과 나머지를 나누어 묻기](../learn/numbers.html#numbers-scene-1) → 읽기: [계산 순서 드러내기](../learn/numbers.html#numbers-scene-2) → 읽기: [소수 계산의 오차 알아두기](../learn/numbers.html#numbers-scene-3)
+   - 구간: 시각화: [몫과 나머지를 나누어 묻기](../learn/numbers.html#numbers-scene-1) (`numbers-scene-1`) → 읽기: [계산 순서 드러내기](../learn/numbers.html#numbers-scene-2) (`numbers-scene-2`) → 읽기: [소수 계산의 오차 알아두기](../learn/numbers.html#numbers-scene-3) (`numbers-scene-3`)
 
 5. **글의 위치와 표현 다루기** (`strings`)
 
@@ -122,7 +122,7 @@
    - 목표: 문자열의 위치·부분 범위·서식을 구분해 사용합니다.
    - 선행 레슨: [같아 보이는 값 구별하기](../learn/data-types.html)
    - 주제: 문자열 · 인덱스 · 슬라이스 · 이스케이프 · f-string
-   - 구간: 읽기: [첫 글자와 마지막 글자 찾기](../learn/strings.html#strings-scene-1) → 읽기: [부분 범위를 잘라 읽기](../learn/strings.html#strings-scene-2) → 읽기: [값을 문장 안에 넣기](../learn/strings.html#strings-scene-3)
+   - 구간: 읽기: [첫 글자와 마지막 글자 찾기](../learn/strings.html#strings-scene-1) (`strings-scene-1`) → 시각화: [부분 범위를 잘라 읽기](../learn/strings.html#strings-scene-2) (`strings-scene-2`) → 읽기: [값을 문장 안에 넣기](../learn/strings.html#strings-scene-3) (`strings-scene-3`)
 
 ### 입력을 판단으로 바꾸기 (5레슨)
 
@@ -134,7 +134,7 @@
    - 목표: 문자열 메서드로 공백·형태·구분자를 정리합니다.
    - 선행 레슨: [글의 위치와 표현 다루기](../learn/strings.html)
    - 주제: 메서드 · strip · lower · replace · split · join · 문자열 검색
-   - 구간: 읽기: [공백과 대소문자 맞추기](../learn/text-tools.html#text-tools-scene-1) → 읽기: [찾고 바꾸기](../learn/text-tools.html#text-tools-scene-2) → 읽기: [나누고 다시 잇기](../learn/text-tools.html#text-tools-scene-3)
+   - 구간: 시각화: [공백과 대소문자 맞추기](../learn/text-tools.html#text-tools-scene-1) (`text-tools-scene-1`) → 읽기: [찾고 바꾸기](../learn/text-tools.html#text-tools-scene-2) (`text-tools-scene-2`) → 읽기: [나누고 다시 잇기](../learn/text-tools.html#text-tools-scene-3) (`text-tools-scene-3`)
 
 7. **입력을 받아 답 만들기** (`input-output`)
 
@@ -142,7 +142,7 @@
    - 목표: input()의 문자열 결과를 변환하고 print()로 답을 구성합니다.
    - 선행 레슨: [같아 보이는 값 구별하기](../learn/data-types.html)
    - 주제: input · print · 표준 입력 · 표준 출력 · 형 변환
-   - 구간: 읽기: [한 줄을 입력받기](../learn/input-output.html#input-output-scene-1) → 읽기: [입력 문자를 수량으로 바꾸기](../learn/input-output.html#input-output-scene-2) → 읽기: [안내와 결과를 나누기](../learn/input-output.html#input-output-scene-3)
+   - 구간: 읽기: [한 줄을 입력받기](../learn/input-output.html#input-output-scene-1) (`input-output-scene-1`) → 시각화: [입력 문자를 수량으로 바꾸기](../learn/input-output.html#input-output-scene-2) (`input-output-scene-2`) → 읽기: [안내와 결과를 나누기](../learn/input-output.html#input-output-scene-3) (`input-output-scene-3`)
 
 8. **조건을 참과 거짓으로 읽기** (`booleans`)
 
@@ -150,7 +150,7 @@
    - 목표: 비교 결과와 논리 연산을 bool 값으로 설명합니다.
    - 선행 레슨: [같아 보이는 값 구별하기](../learn/data-types.html)
    - 주제: 불리언 · 비교 · and · or · not · 참값 판정 · None
-   - 구간: 읽기: [비교로 질문 만들기](../learn/booleans.html#booleans-scene-1) → 읽기: [여러 조건을 연결하기](../learn/booleans.html#booleans-scene-2) → 읽기: [비어 있음과 값 없음 구별하기](../learn/booleans.html#booleans-scene-3)
+   - 구간: 시각화: [비교로 질문 만들기](../learn/booleans.html#booleans-scene-1) (`booleans-scene-1`) → 읽기: [여러 조건을 연결하기](../learn/booleans.html#booleans-scene-2) (`booleans-scene-2`) → 읽기: [비어 있음과 값 없음 구별하기](../learn/booleans.html#booleans-scene-3) (`booleans-scene-3`)
 
 9. **상황에 맞는 실행 경로 고르기** (`branching`)
 
@@ -158,7 +158,7 @@
    - 목표: if·elif·else와 match에서 실행되는 분기를 설명합니다.
    - 선행 레슨: [조건을 참과 거짓으로 읽기](../learn/booleans.html)
    - 주제: if · elif · else · 들여쓰기 · 조건식 · match · case · pass
-   - 구간: 시각화: [if와 들여쓰기로 실행 묶기](../learn/branching.html#branching-scene-1) → 읽기: [여러 기준 중 하나 선택하기](../learn/branching.html#branching-scene-2) → 읽기: [정해진 값에 따라 나누기](../learn/branching.html#branching-scene-3)
+   - 구간: 시각화: [if와 들여쓰기로 실행 묶기](../learn/branching.html#branching-scene-1) (`branching-scene-1`) → 읽기: [여러 기준 중 하나 선택하기](../learn/branching.html#branching-scene-2) (`branching-scene-2`) → 읽기: [정해진 값에 따라 나누기](../learn/branching.html#branching-scene-3) (`branching-scene-3`)
 
 10. **연산의 뜻과 우선순위 확인하기** (`operators`)
 
@@ -166,7 +166,7 @@
    - 목표: 값 비교·동일성·포함 여부·비트 연산을 구별합니다.
    - 선행 레슨: [값에 이름을 연결하기](../learn/variables.html) · [수량과 나머지 계산하기](../learn/numbers.html) · [조건을 참과 거짓으로 읽기](../learn/booleans.html)
    - 주제: 연산자 · == · is · in · 단락 평가 · 증강 대입 · 비트 연산 · 우선순위
-   - 구간: 읽기: [값·객체·포함을 구별하기](../learn/operators.html#operators-scene-1) → 읽기: [조건의 계산 순서 이용하기](../learn/operators.html#operators-scene-2) → 읽기: [비트별 상태를 비교하기](../learn/operators.html#operators-scene-3)
+   - 구간: 시각화: [값·객체·포함을 구별하기](../learn/operators.html#operators-scene-1) (`operators-scene-1`) → 읽기: [조건의 계산 순서 이용하기](../learn/operators.html#operators-scene-2) (`operators-scene-2`) → 읽기: [비트별 상태를 비교하기](../learn/operators.html#operators-scene-3) (`operators-scene-3`)
 
 ### 여러 값을 정리하기 (6레슨)
 
@@ -178,7 +178,7 @@
    - 목표: 리스트의 항목을 읽고 추가·수정·삭제한 결과를 설명합니다.
    - 선행 레슨: [값에 이름을 연결하기](../learn/variables.html) · [글의 위치와 표현 다루기](../learn/strings.html)
    - 주제: 리스트 · 인덱스 · append · insert · pop · remove · 배열
-   - 구간: 읽기: [순서가 있는 묶음 만들기](../learn/lists.html#lists-scene-1) → 읽기: [추가하고 한 항목 수정하기](../learn/lists.html#lists-scene-2) → 읽기: [위치와 값으로 삭제하기](../learn/lists.html#lists-scene-3)
+   - 구간: 읽기: [순서가 있는 묶음 만들기](../learn/lists.html#lists-scene-1) (`lists-scene-1`) → 시각화: [추가하고 한 항목 수정하기](../learn/lists.html#lists-scene-2) (`lists-scene-2`) → 읽기: [위치와 값으로 삭제하기](../learn/lists.html#lists-scene-3) (`lists-scene-3`)
 
 12. **리스트를 복사하고 정렬하기** (`list-transform`)
 
@@ -186,7 +186,7 @@
    - 목표: 같은 객체 연결·얕은 복사·정렬 결과를 구별합니다.
    - 선행 레슨: [리스트의 순서와 항목 바꾸기](../learn/lists.html)
    - 주제: 별칭 · 얕은 복사 · copy · sorted · sort · 슬라이스 · extend
-   - 구간: 시각화: [같은 리스트를 가리키는 이름](../learn/list-transform.html#list-transform-scene-1) → 읽기: [별도 리스트로 복사하기](../learn/list-transform.html#list-transform-scene-2) → 읽기: [원본 정렬과 새 정렬 결과](../learn/list-transform.html#list-transform-scene-3)
+   - 구간: 시각화: [같은 리스트를 가리키는 이름](../learn/list-transform.html#list-transform-scene-1) (`list-transform-scene-1`) → 읽기: [별도 리스트로 복사하기](../learn/list-transform.html#list-transform-scene-2) (`list-transform-scene-2`) → 읽기: [원본 정렬과 새 정렬 결과](../learn/list-transform.html#list-transform-scene-3) (`list-transform-scene-3`)
 
 13. **한 묶음의 의미를 고정하기** (`tuples`)
 
@@ -194,7 +194,7 @@
    - 목표: 튜플의 불변성과 언패킹을 설명하고 항목을 꺼냅니다.
    - 선행 레슨: [리스트의 순서와 항목 바꾸기](../learn/lists.html)
    - 주제: 튜플 · 불변 · 언패킹 · 별표 언패킹 · tuple
-   - 구간: 읽기: [정해진 역할의 묶음](../learn/tuples.html#tuples-scene-1) → 읽기: [이름으로 나누어 받기](../learn/tuples.html#tuples-scene-2) → 읽기: [바꿔야 할 때 새 튜플 만들기](../learn/tuples.html#tuples-scene-3)
+   - 구간: 읽기: [정해진 역할의 묶음](../learn/tuples.html#tuples-scene-1) (`tuples-scene-1`) → 읽기: [이름으로 나누어 받기](../learn/tuples.html#tuples-scene-2) (`tuples-scene-2`) → 시각화: [바꿔야 할 때 새 튜플 만들기](../learn/tuples.html#tuples-scene-3) (`tuples-scene-3`)
 
 14. **중복과 공통 항목 찾기** (`sets`)
 
@@ -202,7 +202,7 @@
    - 목표: 집합의 중복 제거와 합집합·교집합·차집합을 사용합니다.
    - 선행 레슨: [리스트의 순서와 항목 바꾸기](../learn/lists.html)
    - 주제: 집합 · set · frozenset · 합집합 · 교집합 · 차집합 · 대칭 차집합
-   - 구간: 읽기: [같은 값을 하나로 세기](../learn/sets.html#sets-scene-1) → 읽기: [두 묶음의 관계 계산하기](../learn/sets.html#sets-scene-2) → 읽기: [수정할 집합과 고정할 집합](../learn/sets.html#sets-scene-3)
+   - 구간: 시각화: [같은 값을 하나로 세기](../learn/sets.html#sets-scene-1) (`sets-scene-1`) → 읽기: [두 묶음의 관계 계산하기](../learn/sets.html#sets-scene-2) (`sets-scene-2`) → 읽기: [수정할 집합과 고정할 집합](../learn/sets.html#sets-scene-3) (`sets-scene-3`)
 
 15. **이름표로 값 찾기** (`dictionaries`)
 
@@ -210,7 +210,7 @@
    - 목표: 딕셔너리의 키와 값을 읽고 추가·수정·삭제합니다.
    - 선행 레슨: [리스트의 순서와 항목 바꾸기](../learn/lists.html)
    - 주제: 딕셔너리 · 키 · 값 · get · items · update · pop
-   - 구간: 읽기: [키와 값의 관계 만들기](../learn/dictionaries.html#dictionaries-scene-1) → 읽기: [없는 키에 응답하기](../learn/dictionaries.html#dictionaries-scene-2) → 읽기: [같은 키를 갱신하기](../learn/dictionaries.html#dictionaries-scene-3)
+   - 구간: 읽기: [키와 값의 관계 만들기](../learn/dictionaries.html#dictionaries-scene-1) (`dictionaries-scene-1`) → 시각화: [없는 키에 응답하기](../learn/dictionaries.html#dictionaries-scene-2) (`dictionaries-scene-2`) → 읽기: [같은 키를 갱신하기](../learn/dictionaries.html#dictionaries-scene-3) (`dictionaries-scene-3`)
 
 16. **중첩된 기록 읽기** (`nested-data`)
 
@@ -218,7 +218,7 @@
    - 목표: 중첩 데이터의 접근 경로와 얕은 복사의 공유 관계를 설명합니다.
    - 선행 레슨: [리스트를 복사하고 정렬하기](../learn/list-transform.html) · [이름표로 값 찾기](../learn/dictionaries.html)
    - 주제: 중첩 · 리스트 안 딕셔너리 · 중첩 접근 · 얕은 복사
-   - 구간: 읽기: [기록 하나와 기록 묶음 구별하기](../learn/nested-data.html#nested-data-scene-1) → 읽기: [안쪽의 특정 값만 수정하기](../learn/nested-data.html#nested-data-scene-2) → 시각화: [얕은 복사의 안쪽 공유 확인하기](../learn/nested-data.html#nested-data-scene-3)
+   - 구간: 읽기: [기록 하나와 기록 묶음 구별하기](../learn/nested-data.html#nested-data-scene-1) (`nested-data-scene-1`) → 읽기: [안쪽의 특정 값만 수정하기](../learn/nested-data.html#nested-data-scene-2) (`nested-data-scene-2`) → 시각화: [얕은 복사의 안쪽 공유 확인하기](../learn/nested-data.html#nested-data-scene-3) (`nested-data-scene-3`)
 
 ### 반복을 맡기기 (4레슨)
 
@@ -230,7 +230,7 @@
    - 목표: for가 항목을 꺼내는 순서와 range의 끝 경계를 설명합니다.
    - 선행 레슨: [리스트의 순서와 항목 바꾸기](../learn/lists.html) · [한 묶음의 의미를 고정하기](../learn/tuples.html)
    - 주제: for · range · enumerate · zip · 중첩 반복
-   - 구간: 읽기: [항목마다 지시 실행하기](../learn/for-range.html#for-range-scene-1) → 읽기: [정해진 횟수만큼 반복하기](../learn/for-range.html#for-range-scene-2) → 읽기: [번호와 여러 묶음 함께 읽기](../learn/for-range.html#for-range-scene-3)
+   - 구간: 시각화: [항목마다 지시 실행하기](../learn/for-range.html#for-range-scene-1) (`for-range-scene-1`) → 읽기: [정해진 횟수만큼 반복하기](../learn/for-range.html#for-range-scene-2) (`for-range-scene-2`) → 읽기: [번호와 여러 묶음 함께 읽기](../learn/for-range.html#for-range-scene-3) (`for-range-scene-3`)
 
 18. **끝날 조건까지 반복하기** (`while-loops`)
 
@@ -238,7 +238,7 @@
    - 목표: while의 조건 검사와 상태 갱신으로 종료를 설명합니다.
    - 선행 레슨: [조건을 참과 거짓으로 읽기](../learn/booleans.html) · [연산의 뜻과 우선순위 확인하기](../learn/operators.html)
    - 주제: while · 조건 반복 · 누적 · 무한 반복
-   - 구간: 시각화: [실행 전에 조건 검사하기](../learn/while-loops.html#while-loops-scene-1) → 읽기: [누적값과 반복 횟수 분리하기](../learn/while-loops.html#while-loops-scene-2) → 읽기: [끝나는 이유를 확인하기](../learn/while-loops.html#while-loops-scene-3)
+   - 구간: 시각화: [실행 전에 조건 검사하기](../learn/while-loops.html#while-loops-scene-1) (`while-loops-scene-1`) → 읽기: [누적값과 반복 횟수 분리하기](../learn/while-loops.html#while-loops-scene-2) (`while-loops-scene-2`) → 읽기: [끝나는 이유를 확인하기](../learn/while-loops.html#while-loops-scene-3) (`while-loops-scene-3`)
 
 19. **건너뛸 때와 멈출 때 정하기** (`loop-control`)
 
@@ -246,7 +246,7 @@
    - 목표: continue·break·반복문의 else가 실행되는 조건을 구별합니다.
    - 선행 레슨: [상황에 맞는 실행 경로 고르기](../learn/branching.html) · [모든 항목에 같은 작업 하기](../learn/for-range.html) · [끝날 조건까지 반복하기](../learn/while-loops.html)
    - 주제: continue · break · 반복문 else · 검색
-   - 구간: 시각화: [이번 항목만 건너뛰기](../learn/loop-control.html#loop-control-scene-1) → 읽기: [발견한 순간 검색 끝내기](../learn/loop-control.html#loop-control-scene-2) → 읽기: [끝까지 못 찾은 경우 처리하기](../learn/loop-control.html#loop-control-scene-3)
+   - 구간: 시각화: [이번 항목만 건너뛰기](../learn/loop-control.html#loop-control-scene-1) (`loop-control-scene-1`) → 읽기: [발견한 순간 검색 끝내기](../learn/loop-control.html#loop-control-scene-2) (`loop-control-scene-2`) → 읽기: [끝까지 못 찾은 경우 처리하기](../learn/loop-control.html#loop-control-scene-3) (`loop-control-scene-3`)
 
 20. **필요한 값만 새 묶음으로 만들기** (`comprehensions`)
 
@@ -254,7 +254,7 @@
    - 목표: 컴프리헨션을 반복·필터·변환의 순서로 해석합니다.
    - 선행 레슨: [상황에 맞는 실행 경로 고르기](../learn/branching.html) · [중복과 공통 항목 찾기](../learn/sets.html) · [이름표로 값 찾기](../learn/dictionaries.html) · [모든 항목에 같은 작업 하기](../learn/for-range.html)
    - 주제: 리스트 컴프리헨션 · 필터 · 딕셔너리 컴프리헨션 · 집합 컴프리헨션
-   - 구간: 읽기: [변환 결과를 한곳에 모으기](../learn/comprehensions.html#comprehensions-scene-1) → 읽기: [조건에 맞는 항목만 남기기](../learn/comprehensions.html#comprehensions-scene-2) → 읽기: [키가 있는 묶음과 중복 없는 묶음](../learn/comprehensions.html#comprehensions-scene-3)
+   - 구간: 시각화: [변환 결과를 한곳에 모으기](../learn/comprehensions.html#comprehensions-scene-1) (`comprehensions-scene-1`) → 읽기: [조건에 맞는 항목만 남기기](../learn/comprehensions.html#comprehensions-scene-2) (`comprehensions-scene-2`) → 읽기: [키가 있는 묶음과 중복 없는 묶음](../learn/comprehensions.html#comprehensions-scene-3) (`comprehensions-scene-3`)
 
 ### 해결 방법을 재사용하기 (7레슨)
 
@@ -266,7 +266,7 @@
    - 목표: 함수 정의·호출·인자·반환값을 연결해 설명합니다.
    - 선행 레슨: [값에 이름을 연결하기](../learn/variables.html)
    - 주제: 함수 · def · 호출 · 매개변수 · 인자 · return · 문서 문자열
-   - 구간: 시각화: [작업 정의와 실행 구별하기](../learn/functions.html#functions-scene-1) → 읽기: [입력으로 다른 계산 하기](../learn/functions.html#functions-scene-2) → 읽기: [계약을 설명하고 None 확인하기](../learn/functions.html#functions-scene-3)
+   - 구간: 시각화: [작업 정의와 실행 구별하기](../learn/functions.html#functions-scene-1) (`functions-scene-1`) → 읽기: [입력으로 다른 계산 하기](../learn/functions.html#functions-scene-2) (`functions-scene-2`) → 읽기: [계약을 설명하고 None 확인하기](../learn/functions.html#functions-scene-3) (`functions-scene-3`)
 
 22. **함수 입력의 규칙 정하기** (`arguments`)
 
@@ -274,7 +274,7 @@
    - 목표: 위치·키워드·기본 인자와 가변 인자의 연결 방식을 설명합니다.
    - 선행 레슨: [한 묶음의 의미를 고정하기](../learn/tuples.html) · [이름표로 값 찾기](../learn/dictionaries.html) · [계산에 이름을 붙여 재사용하기](../learn/functions.html)
    - 주제: 인자 · 매개변수 · 기본값 · 키워드 인자 · args · kwargs · 위치 전용 · 키워드 전용
-   - 구간: 읽기: [순서로 전달하거나 이름으로 지정하기](../learn/arguments.html#arguments-scene-1) → 읽기: [여러 인자를 묶어 받기](../learn/arguments.html#arguments-scene-2) → 읽기: [기본값 객체를 공유하지 않기](../learn/arguments.html#arguments-scene-3) → 읽기: [실수하기 쉬운 옵션은 이름으로 받기](../learn/arguments.html#arguments-scene-4)
+   - 구간: 시각화: [순서로 전달하거나 이름으로 지정하기](../learn/arguments.html#arguments-scene-1) (`arguments-scene-1`) → 읽기: [여러 인자를 묶어 받기](../learn/arguments.html#arguments-scene-2) (`arguments-scene-2`) → 읽기: [기본값 객체를 공유하지 않기](../learn/arguments.html#arguments-scene-3) (`arguments-scene-3`) → 읽기: [실수하기 쉬운 옵션은 이름으로 받기](../learn/arguments.html#arguments-scene-4) (`arguments-scene-4`)
 
 23. **이름이 유효한 범위 구별하기** (`scope`)
 
@@ -282,7 +282,7 @@
    - 목표: 지역·전역·바깥 함수 이름의 조회와 변경을 구별합니다.
    - 선행 레슨: [값에 이름을 연결하기](../learn/variables.html) · [계산에 이름을 붙여 재사용하기](../learn/functions.html)
    - 주제: 이름 범위 · 지역 · 전역 · global · nonlocal · 클로저
-   - 구간: 읽기: [함수 안 이름과 바깥 이름](../learn/scope.html#scope-scene-1) → 읽기: [전역 변경이 필요한지 먼저 판단하기](../learn/scope.html#scope-scene-2) → 시각화: [바깥 함수의 값을 기억하기](../learn/scope.html#scope-scene-3)
+   - 구간: 읽기: [함수 안 이름과 바깥 이름](../learn/scope.html#scope-scene-1) (`scope-scene-1`) → 읽기: [전역 변경이 필요한지 먼저 판단하기](../learn/scope.html#scope-scene-2) (`scope-scene-2`) → 시각화: [바깥 함수의 값을 기억하기](../learn/scope.html#scope-scene-3) (`scope-scene-3`)
 
 24. **필요한 값부터 하나씩 만들기** (`iterators-generators`)
 
@@ -290,7 +290,7 @@
    - 목표: 반복 가능한 객체·반복자·제너레이터의 소비와 재개를 설명합니다.
    - 선행 레슨: [모든 항목에 같은 작업 하기](../learn/for-range.html) · [필요한 값만 새 묶음으로 만들기](../learn/comprehensions.html) · [계산에 이름을 붙여 재사용하기](../learn/functions.html)
    - 주제: 반복 가능한 객체 · 반복자 · iter · next · 제너레이터 · yield · 제너레이터 식
-   - 구간: 읽기: [다음 항목을 꺼내는 대상](../learn/iterators-generators.html#iterators-generators-scene-1) → 시각화: [yield에서 멈추고 재개하기](../learn/iterators-generators.html#iterators-generators-scene-2) → 읽기: [짧은 제너레이터 식 쓰기](../learn/iterators-generators.html#iterators-generators-scene-3)
+   - 구간: 읽기: [다음 항목을 꺼내는 대상](../learn/iterators-generators.html#iterators-generators-scene-1) (`iterators-generators-scene-1`) → 시각화: [yield에서 멈추고 재개하기](../learn/iterators-generators.html#iterators-generators-scene-2) (`iterators-generators-scene-2`) → 읽기: [짧은 제너레이터 식 쓰기](../learn/iterators-generators.html#iterators-generators-scene-3) (`iterators-generators-scene-3`)
 
 25. **짧은 계산을 함수에 전달하기** (`lambda`)
 
@@ -298,7 +298,7 @@
    - 목표: lambda의 입력·표현식과 정렬 기준 함수의 역할을 설명합니다.
    - 선행 레슨: [리스트를 복사하고 정렬하기](../learn/list-transform.html) · [중첩된 기록 읽기](../learn/nested-data.html) · [필요한 값만 새 묶음으로 만들기](../learn/comprehensions.html) · [계산에 이름을 붙여 재사용하기](../learn/functions.html)
    - 주제: lambda · 일급 함수 · key · map · filter
-   - 구간: 읽기: [함수도 값으로 전달하기](../learn/lambda.html#lambda-scene-1) → 읽기: [정렬 기준만 알려주기](../learn/lambda.html#lambda-scene-2) → 읽기: [변환과 선택 구별하기](../learn/lambda.html#lambda-scene-3)
+   - 구간: 시각화: [함수도 값으로 전달하기](../learn/lambda.html#lambda-scene-1) (`lambda-scene-1`) → 읽기: [정렬 기준만 알려주기](../learn/lambda.html#lambda-scene-2) (`lambda-scene-2`) → 읽기: [변환과 선택 구별하기](../learn/lambda.html#lambda-scene-3) (`lambda-scene-3`)
 
 26. **작은 같은 문제로 나누기** (`recursion`)
 
@@ -306,7 +306,7 @@
    - 목표: 재귀의 종료 조건·축소 단계·돌아오는 반환값을 추적합니다.
    - 선행 레슨: [상황에 맞는 실행 경로 고르기](../learn/branching.html) · [모든 항목에 같은 작업 하기](../learn/for-range.html) · [계산에 이름을 붙여 재사용하기](../learn/functions.html)
    - 주제: 재귀 · 종료 조건 · 호출 스택 · 재귀 한도
-   - 구간: 읽기: [가장 작은 문제부터 정하기](../learn/recursion.html#recursion-scene-1) → 시각화: [호출이 쌓이고 답이 돌아오기](../learn/recursion.html#recursion-scene-2) → 읽기: [반복이 더 알맞은 경우](../learn/recursion.html#recursion-scene-3)
+   - 구간: 읽기: [가장 작은 문제부터 정하기](../learn/recursion.html#recursion-scene-1) (`recursion-scene-1`) → 시각화: [호출이 쌓이고 답이 돌아오기](../learn/recursion.html#recursion-scene-2) (`recursion-scene-2`) → 읽기: [반복이 더 알맞은 경우](../learn/recursion.html#recursion-scene-3) (`recursion-scene-3`)
 
 27. **함수 앞뒤에 공통 작업 붙이기** (`decorators`)
 
@@ -314,7 +314,7 @@
    - 목표: 함수를 감싸는 함수와 @ 표기의 관계를 설명합니다.
    - 선행 레슨: [함수 입력의 규칙 정하기](../learn/arguments.html) · [이름이 유효한 범위 구별하기](../learn/scope.html)
    - 주제: 데코레이터 · 감싸는 함수 · 고차 함수 · functools.wraps
-   - 구간: 시각화: [함수를 받아 새 함수 돌려주기](../learn/decorators.html#decorators-scene-1) → 읽기: [@ 표기로 감싸기 명시하기](../learn/decorators.html#decorators-scene-2) → 읽기: [원래 함수 설명을 보존하기](../learn/decorators.html#decorators-scene-3)
+   - 구간: 시각화: [함수를 받아 새 함수 돌려주기](../learn/decorators.html#decorators-scene-1) (`decorators-scene-1`) → 읽기: [@ 표기로 감싸기 명시하기](../learn/decorators.html#decorators-scene-2) (`decorators-scene-2`) → 읽기: [원래 함수 설명을 보존하기](../learn/decorators.html#decorators-scene-3) (`decorators-scene-3`)
 
 ### 외부 도구와 데이터 연결하기 (6레슨)
 
@@ -326,7 +326,7 @@
    - 목표: 모듈 가져오기·자체 모듈 연결·리스트와 수치 배열의 차이를 설명합니다.
    - 선행 레슨: [리스트의 순서와 항목 바꾸기](../learn/lists.html) · [계산에 이름을 붙여 재사용하기](../learn/functions.html)
    - 주제: 모듈 · import · from · 별칭 · 패키지 · __name__ · array
-   - 구간: 읽기: [표준 라이브러리의 도구 사용하기](../learn/modules.html#modules-scene-1) → 읽기: [자기 파일에서 함수 가져오기](../learn/modules.html#modules-scene-2) → 읽기: [리스트와 수치 배열 선택하기](../learn/modules.html#modules-scene-3)
+   - 구간: 읽기: [표준 라이브러리의 도구 사용하기](../learn/modules.html#modules-scene-1) (`modules-scene-1`) → 시각화: [자기 파일에서 함수 가져오기](../learn/modules.html#modules-scene-2) (`modules-scene-2`) → 읽기: [리스트와 수치 배열 선택하기](../learn/modules.html#modules-scene-3) (`modules-scene-3`)
 
 29. **프로젝트마다 도구 환경 나누기** (`environments`)
 
@@ -334,7 +334,7 @@
    - 목표: 인터프리터·가상 환경·pip의 역할과 실행 경계를 구별합니다.
    - 선행 레슨: [처음 실행하고 결과 읽기](../learn/run-python.html) · [모듈을 불러와 연결하기](../learn/modules.html)
    - 주제: 인터프리터 · 가상 환경 · venv · pip · 패키지 설치 · 의존성
-   - 구간: 읽기·글만: [같은 컴퓨터, 다른 프로젝트](../learn/environments.html#environments-reading-introduction) → 읽기: [지금 실행하는 Python 확인하기](../learn/environments.html#environments-scene-1) → 읽기: [임시 폴더에서 가상 환경 만들어 보기](../learn/environments.html#environments-scene-2) → 읽기: [pip와 설치 범위 구별하기](../learn/environments.html#environments-scene-3)
+   - 구간: 읽기·글만: [같은 컴퓨터, 다른 프로젝트](../learn/environments.html#environments-reading-introduction) (`environments-reading-introduction`) → 읽기: [지금 실행하는 Python 확인하기](../learn/environments.html#environments-scene-1) (`environments-scene-1`) → 시각화: [설치할 환경과 실행할 Python을 맞추기](../learn/environments.html#environments-environment-selection) (`environments-environment-selection`) → 읽기: [참고: 임시 폴더에서 환경 생성 확인하기](../learn/environments.html#environments-scene-2) (`environments-scene-2`) → 읽기: [pip와 설치 범위 구별하기](../learn/environments.html#environments-scene-3) (`environments-scene-3`)
 
 30. **날짜를 값으로 계산하기** (`dates`)
 
@@ -342,7 +342,7 @@
    - 목표: date·timedelta·datetime의 역할을 구별하고 날짜 차이를 계산합니다.
    - 선행 레슨: [모듈을 불러와 연결하기](../learn/modules.html)
    - 주제: 날짜 · date · timedelta · datetime · 시간대 · isoformat · strptime · strftime
-   - 구간: 읽기: [달력 날짜를 객체로 만들기](../learn/dates.html#dates-scene-1) → 읽기: [기간을 더하고 날짜를 빼기](../learn/dates.html#dates-scene-2) → 읽기: [시각과 시간대를 명시하기](../learn/dates.html#dates-scene-3)
+   - 구간: 읽기: [달력 날짜를 객체로 만들기](../learn/dates.html#dates-scene-1) (`dates-scene-1`) → 시각화: [기간을 더하고 날짜를 빼기](../learn/dates.html#dates-scene-2) (`dates-scene-2`) → 읽기: [시각과 시간대를 명시하기](../learn/dates.html#dates-scene-3) (`dates-scene-3`)
 
 31. **수학 도구로 결과 확인하기** (`math`)
 
@@ -350,7 +350,7 @@
    - 목표: 수학·통계·정확한 십진 계산에 알맞은 도구를 고릅니다.
    - 선행 레슨: [수량과 나머지 계산하기](../learn/numbers.html) · [모듈을 불러와 연결하기](../learn/modules.html)
    - 주제: math · statistics · isclose · Decimal · random · 난수
-   - 구간: 읽기: [내장 계산과 수학 함수 조합하기](../learn/math.html#math-scene-1) → 읽기: [근사 비교와 정확한 십진수](../learn/math.html#math-scene-2) → 읽기: [자료의 대표값과 재현 가능한 무작위 선택](../learn/math.html#math-scene-3)
+   - 구간: 읽기: [내장 계산과 수학 함수 조합하기](../learn/math.html#math-scene-1) (`math-scene-1`) → 시각화: [근사 비교와 정확한 십진수](../learn/math.html#math-scene-2) (`math-scene-2`) → 읽기: [자료의 대표값과 재현 가능한 무작위 선택](../learn/math.html#math-scene-3) (`math-scene-3`)
 
 32. **일정한 글 패턴 찾기** (`regex`)
 
@@ -358,7 +358,7 @@
    - 목표: 정규 표현식의 검색·전체 일치·추출·치환을 구별합니다.
    - 선행 레슨: [입력한 글을 정리하기](../learn/text-tools.html) · [상황에 맞는 실행 경로 고르기](../learn/branching.html) · [모듈을 불러와 연결하기](../learn/modules.html)
    - 주제: 정규 표현식 · 패턴 · re · search · fullmatch · findall · group · sub
-   - 구간: 읽기: [부분 검색과 전체 검사](../learn/regex.html#regex-scene-1) → 읽기: [찾은 결과에서 일부 꺼내기](../learn/regex.html#regex-scene-2) → 읽기: [일치 부분만 치환하기](../learn/regex.html#regex-scene-3)
+   - 구간: 시각화: [부분 검색과 전체 검사](../learn/regex.html#regex-scene-1) (`regex-scene-1`) → 읽기: [찾은 결과에서 일부 꺼내기](../learn/regex.html#regex-scene-2) (`regex-scene-2`) → 읽기: [일치 부분만 치환하기](../learn/regex.html#regex-scene-3) (`regex-scene-3`)
 
 33. **다른 도구에서도 읽을 수 있는 기록 만들기** (`json-data`)
 
@@ -366,7 +366,7 @@
    - 목표: JSON 문자열과 Python 객체를 구분해 직렬화·역직렬화합니다.
    - 선행 레슨: [중첩된 기록 읽기](../learn/nested-data.html) · [모듈을 불러와 연결하기](../learn/modules.html)
    - 주제: JSON · 직렬화 · 역직렬화 · dumps · loads · null
-   - 구간: 읽기: [객체를 JSON 문자열로 바꾸기](../learn/json-data.html#json-data-scene-1) → 읽기: [텍스트에서 객체 복원하기](../learn/json-data.html#json-data-scene-2) → 읽기: [왕복해도 모든 자료형이 같지는 않기](../learn/json-data.html#json-data-scene-3)
+   - 구간: 시각화: [객체를 JSON 문자열로 바꾸기](../learn/json-data.html#json-data-scene-1) (`json-data-scene-1`) → 읽기: [텍스트에서 객체 복원하기](../learn/json-data.html#json-data-scene-2) (`json-data-scene-2`) → 읽기: [왕복해도 모든 자료형이 같지는 않기](../learn/json-data.html#json-data-scene-3) (`json-data-scene-3`)
 
 ### 함께 움직이는 데이터 만들기 (7레슨)
 
@@ -378,7 +378,7 @@
    - 목표: 클래스·인스턴스·초기화·self의 관계를 설명합니다.
    - 선행 레슨: [값에 이름을 연결하기](../learn/variables.html) · [계산에 이름을 붙여 재사용하기](../learn/functions.html)
    - 주제: 클래스 · 객체 · 인스턴스 · 속성 · __init__ · self · 객체 지향
-   - 구간: 읽기: [한 종류의 객체 만들기](../learn/objects.html#objects-scene-1) → 읽기: [생성할 때 상태 준비하기](../learn/objects.html#objects-scene-2) → 읽기: [개별 객체의 상태 구별하기](../learn/objects.html#objects-scene-3)
+   - 구간: 읽기: [한 종류의 객체 만들기](../learn/objects.html#objects-scene-1) (`objects-scene-1`) → 시각화: [생성할 때 상태 준비하기](../learn/objects.html#objects-scene-2) (`objects-scene-2`) → 읽기: [개별 객체의 상태 구별하기](../learn/objects.html#objects-scene-3) (`objects-scene-3`)
 
 35. **속성의 공유와 변경 규칙 정하기** (`attributes`)
 
@@ -386,7 +386,7 @@
    - 목표: 클래스 속성·인스턴스 속성·캡슐화와 property의 역할을 구별합니다.
    - 선행 레슨: [데이터와 행동을 객체로 묶기](../learn/objects.html) · [함수 앞뒤에 공통 작업 붙이기](../learn/decorators.html)
    - 주제: 속성 · 클래스 속성 · 인스턴스 속성 · 캡슐화 · property · 이름 변환 · del
-   - 구간: 읽기: [개별 속성을 추가하고 지우기](../learn/attributes.html#attributes-scene-1) → 시각화: [공통 값과 개별 값 구별하기](../learn/attributes.html#attributes-scene-2) → 읽기: [공개된 변경 경로에 규칙 두기](../learn/attributes.html#attributes-scene-3)
+   - 구간: 읽기: [개별 속성을 추가하고 지우기](../learn/attributes.html#attributes-scene-1) (`attributes-scene-1`) → 시각화: [공통 값과 개별 값 구별하기](../learn/attributes.html#attributes-scene-2) (`attributes-scene-2`) → 읽기: [공개된 변경 경로에 규칙 두기](../learn/attributes.html#attributes-scene-3) (`attributes-scene-3`)
 
 36. **객체의 행동에 이름 붙이기** (`methods`)
 
@@ -394,7 +394,7 @@
    - 목표: 인스턴스·클래스·정적 메서드의 첫 인자와 목적을 구별합니다.
    - 선행 레슨: [데이터와 행동을 객체로 묶기](../learn/objects.html) · [함수 앞뒤에 공통 작업 붙이기](../learn/decorators.html)
    - 주제: 메서드 · 인스턴스 메서드 · classmethod · staticmethod · cls
-   - 구간: 읽기: [인스턴스 상태를 사용하는 메서드](../learn/methods.html#methods-scene-1) → 읽기: [클래스로 만드는 다른 경로 제공하기](../learn/methods.html#methods-scene-2) → 읽기: [객체 상태가 필요 없는 보조 함수](../learn/methods.html#methods-scene-3)
+   - 구간: 시각화: [인스턴스 상태를 사용하는 메서드](../learn/methods.html#methods-scene-1) (`methods-scene-1`) → 읽기: [클래스로 만드는 다른 경로 제공하기](../learn/methods.html#methods-scene-2) (`methods-scene-2`) → 읽기: [객체 상태가 필요 없는 보조 함수](../learn/methods.html#methods-scene-3) (`methods-scene-3`)
 
 37. **공통 행동을 이어받아 바꾸기** (`inheritance`)
 
@@ -402,7 +402,7 @@
    - 목표: 상속·부모 초기화·메서드 재정의의 실행 관계를 설명합니다.
    - 선행 레슨: [객체의 행동에 이름 붙이기](../learn/methods.html)
    - 주제: 상속 · 부모 클래스 · 자식 클래스 · super · 재정의
-   - 구간: 읽기: [공통 속성과 행동 이어받기](../learn/inheritance.html#inheritance-scene-1) → 읽기: [부모 초기화 후 새 정보 더하기](../learn/inheritance.html#inheritance-scene-2) → 읽기: [같은 메서드 이름에 새 행동 제공하기](../learn/inheritance.html#inheritance-scene-3)
+   - 구간: 읽기: [공통 속성과 행동 이어받기](../learn/inheritance.html#inheritance-scene-1) (`inheritance-scene-1`) → 시각화: [부모 초기화 후 새 정보 더하기](../learn/inheritance.html#inheritance-scene-2) (`inheritance-scene-2`) → 읽기: [같은 메서드 이름에 새 행동 제공하기](../learn/inheritance.html#inheritance-scene-3) (`inheritance-scene-3`)
 
 38. **같은 요청을 여러 종류에 보내기** (`polymorphism`)
 
@@ -410,7 +410,7 @@
    - 목표: 동일한 호출 계약을 여러 객체가 제공하는 다형성을 설명합니다.
    - 선행 레슨: [객체의 행동에 이름 붙이기](../learn/methods.html)
    - 주제: 다형성 · 덕 타이핑 · 호출 계약
-   - 구간: 읽기: [같은 함수가 여러 종류에 동작하기](../learn/polymorphism.html#polymorphism-scene-1) → 읽기: [상속 없이 같은 요청에 답하기](../learn/polymorphism.html#polymorphism-scene-2) → 읽기: [반환 의미까지 같은 계약 유지하기](../learn/polymorphism.html#polymorphism-scene-3)
+   - 구간: 읽기: [같은 함수가 여러 종류에 동작하기](../learn/polymorphism.html#polymorphism-scene-1) (`polymorphism-scene-1`) → 시각화: [상속 없이 같은 요청에 답하기](../learn/polymorphism.html#polymorphism-scene-2) (`polymorphism-scene-2`) → 읽기: [반환 의미까지 같은 계약 유지하기](../learn/polymorphism.html#polymorphism-scene-3) (`polymorphism-scene-3`)
 
 39. **기본 연산과 객체 연결하기** (`special-methods`)
 
@@ -418,7 +418,7 @@
    - 목표: 특수 메서드가 표준 연산과 연결되는 방식을 설명합니다.
    - 선행 레슨: [연산의 뜻과 우선순위 확인하기](../learn/operators.html) · [리스트를 복사하고 정렬하기](../learn/list-transform.html) · [객체의 행동에 이름 붙이기](../learn/methods.html)
    - 주제: 특수 메서드 · __str__ · __repr__ · __len__ · __contains__ · __eq__ · __lt__ · __add__ · __call__ · NotImplemented
-   - 구간: 읽기: [사용자 표시와 개발 확인 구별하기](../learn/special-methods.html#special-methods-scene-1) → 읽기: [길이와 포함 여부 제공하기](../learn/special-methods.html#special-methods-scene-2) → 읽기: [값 비교와 정렬 기준 정의하기](../learn/special-methods.html#special-methods-scene-3) → 읽기: [덧셈과 호출에 의미 부여하기](../learn/special-methods.html#special-methods-scene-4)
+   - 구간: 시각화: [사용자 표시와 개발 확인 구별하기](../learn/special-methods.html#special-methods-scene-1) (`special-methods-scene-1`) → 읽기: [길이와 포함 여부 제공하기](../learn/special-methods.html#special-methods-scene-2) (`special-methods-scene-2`) → 읽기: [값 비교와 정렬 기준 정의하기](../learn/special-methods.html#special-methods-scene-3) (`special-methods-scene-3`) → 읽기: [덧셈과 호출에 의미 부여하기](../learn/special-methods.html#special-methods-scene-4) (`special-methods-scene-4`)
 
 40. **관련된 작은 자료형을 안에 두기** (`nested-classes`)
 
@@ -426,7 +426,7 @@
    - 목표: 중첩 클래스의 이름 경로와 바깥 인스턴스 연결의 한계를 설명합니다.
    - 선행 레슨: [데이터와 행동을 객체로 묶기](../learn/objects.html) · [객체의 행동에 이름 붙이기](../learn/methods.html)
    - 주제: 중첩 클래스 · 이름 공간 · 명시적 참조 · 구성
-   - 구간: 읽기: [클래스 안에서 다른 클래스 정의하기](../learn/nested-classes.html#nested-classes-scene-1) → 읽기: [바깥 정보를 쓰려면 직접 전달하기](../learn/nested-classes.html#nested-classes-scene-2) → 읽기: [중첩과 구성을 구별하기](../learn/nested-classes.html#nested-classes-scene-3)
+   - 구간: 읽기: [클래스 안에서 다른 클래스 정의하기](../learn/nested-classes.html#nested-classes-scene-1) (`nested-classes-scene-1`) → 시각화: [바깥 정보를 쓰려면 직접 전달하기](../learn/nested-classes.html#nested-classes-scene-2) (`nested-classes-scene-2`) → 읽기: [중첩과 구성을 구별하기](../learn/nested-classes.html#nested-classes-scene-3) (`nested-classes-scene-3`)
 
 ### 결과를 안전하게 남기기 (4레슨)
 
@@ -438,7 +438,7 @@
    - 목표: 예외 종류·처리 범위·정상 경로·정리 작업을 구별합니다.
    - 선행 레슨: [같아 보이는 값 구별하기](../learn/data-types.html) · [상황에 맞는 실행 경로 고르기](../learn/branching.html) · [계산에 이름을 붙여 재사용하기](../learn/functions.html)
    - 주제: 예외 · try · except · else · finally · raise · ValueError · TypeError
-   - 구간: 시각화: [예상한 입력 오류에 응답하기](../learn/exceptions.html#exceptions-scene-1) → 읽기: [정상 경로와 정리 구별하기](../learn/exceptions.html#exceptions-scene-2) → 읽기: [함수의 입력 규칙 위반 알리기](../learn/exceptions.html#exceptions-scene-3)
+   - 구간: 시각화: [예상한 입력 오류에 응답하기](../learn/exceptions.html#exceptions-scene-1) (`exceptions-scene-1`) → 읽기: [정상 경로와 정리 구별하기](../learn/exceptions.html#exceptions-scene-2) (`exceptions-scene-2`) → 읽기: [함수의 입력 규칙 위반 알리기](../learn/exceptions.html#exceptions-scene-3) (`exceptions-scene-3`)
 
 42. **저장된 파일에서 기록 읽기** (`read-files`)
 
@@ -446,7 +446,7 @@
    - 목표: 경로·텍스트 인코딩·읽기 범위·자동 닫기를 설명합니다.
    - 선행 레슨: [모든 항목에 같은 작업 하기](../learn/for-range.html) · [모듈을 불러와 연결하기](../learn/modules.html)
    - 주제: 파일 · 경로 · 상대 경로 · 인코딩 · UTF-8 · with · open · read · readline · 이진
-   - 구간: 읽기·글만: [출력 뒤에도 기록을 남기려면](../learn/read-files.html#read-files-reading-introduction) → 읽기: [파일 위치와 글자 해석 정하기](../learn/read-files.html#read-files-scene-1) → 시각화: [한 줄씩 읽고 자동으로 닫기](../learn/read-files.html#read-files-scene-2) → 읽기: [문자 수와 바이트 수 구별하기](../learn/read-files.html#read-files-scene-3)
+   - 구간: 읽기·글만: [출력 뒤에도 기록을 남기려면](../learn/read-files.html#read-files-reading-introduction) (`read-files-reading-introduction`) → 읽기: [파일 위치와 글자 해석 정하기](../learn/read-files.html#read-files-scene-1) (`read-files-scene-1`) → 시각화: [한 줄씩 읽고 자동으로 닫기](../learn/read-files.html#read-files-scene-2) (`read-files-scene-2`) → 읽기: [문자 수와 바이트 수 구별하기](../learn/read-files.html#read-files-scene-3) (`read-files-scene-3`)
 
 43. **파일을 만들고 안전하게 정리하기** (`write-files`)
 
@@ -454,7 +454,7 @@
    - 목표: 생성·덮어쓰기·추가 모드와 파일·빈 폴더 삭제의 차이를 설명합니다.
    - 선행 레슨: [저장된 파일에서 기록 읽기](../learn/read-files.html)
    - 주제: 파일 쓰기 · x 모드 · w 모드 · a 모드 · mkdir · unlink · rmdir · 임시 폴더
-   - 구간: 읽기: [새 파일 생성과 끝에 추가](../learn/write-files.html#write-files-scene-1) → 읽기: [덮어쓰기의 영향을 확인하기](../learn/write-files.html#write-files-scene-2) → 읽기: [방금 만든 파일과 빈 폴더 삭제하기](../learn/write-files.html#write-files-scene-3)
+   - 구간: 시각화: [새 파일 생성과 끝에 추가](../learn/write-files.html#write-files-scene-1) (`write-files-scene-1`) → 읽기: [덮어쓰기의 영향을 확인하기](../learn/write-files.html#write-files-scene-2) (`write-files-scene-2`) → 읽기: [방금 만든 파일과 빈 폴더 삭제하기](../learn/write-files.html#write-files-scene-3) (`write-files-scene-3`)
 
 44. **관찰 기록을 읽고 요약해 저장하기** (`final-project`)
 
@@ -462,4 +462,4 @@
    - 목표: 입력 검증·집계·JSON 저장을 각각 검증 가능한 단계로 연결합니다.
    - 선행 레슨: [입력한 글을 정리하기](../learn/text-tools.html) · [이름표로 값 찾기](../learn/dictionaries.html) · [건너뛸 때와 멈출 때 정하기](../learn/loop-control.html) · [계산에 이름을 붙여 재사용하기](../learn/functions.html) · [다른 도구에서도 읽을 수 있는 기록 만들기](../learn/json-data.html) · [예외를 구별해 처리하기](../learn/exceptions.html) · [파일을 만들고 안전하게 정리하기](../learn/write-files.html)
    - 주제: 종합 실습 · 입력 검증 · 집계 · JSON 저장 · 다시 읽기
-   - 구간: 읽기·글만: [작은 규칙을 하나의 작업으로 연결하기](../learn/final-project.html#final-project-reading-introduction) → 읽기: [한 줄의 입력 계약 정하기](../learn/final-project.html#final-project-scene-1) → 읽기: [유효한 줄만 장소별로 더하기](../learn/final-project.html#final-project-scene-2) → 읽기: [저장한 파일을 다시 읽어 대조하기](../learn/final-project.html#final-project-scene-3) → 읽기·글만: [저장한 결과에서 다시 질문하기](../learn/final-project.html#final-project-reading-reflection)
+   - 구간: 읽기·글만: [작은 규칙을 하나의 작업으로 연결하기](../learn/final-project.html#final-project-reading-introduction) (`final-project-reading-introduction`) → 읽기: [한 줄의 입력 계약 정하기](../learn/final-project.html#final-project-scene-1) (`final-project-scene-1`) → 시각화: [유효한 줄만 장소별로 더하기](../learn/final-project.html#final-project-scene-2) (`final-project-scene-2`) → 읽기: [저장한 파일을 다시 읽어 대조하기](../learn/final-project.html#final-project-scene-3) (`final-project-scene-3`) → 읽기·글만: [저장한 결과에서 다시 질문하기](../learn/final-project.html#final-project-reading-reflection) (`final-project-reading-reflection`)

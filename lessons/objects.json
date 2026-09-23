@@ -32,7 +32,8 @@
       "title": "한 종류의 객체 만들기",
       "body": [
         "객체 지향은 관련 데이터와 그 데이터를 다루는 행동을 객체 중심으로 구성하는 방식입니다. 클래스는 객체의 속성과 행동을 정의하는 규칙이며 class로 작성합니다.",
-        "Observation()처럼 클래스를 호출하면 인스턴스라는 개별 객체를 만듭니다. pass는 이 첫 예제의 빈 클래스 본문을 문법적으로 채웁니다. isinstance()는 객체가 지정한 종류에 속하는지 확인합니다."
+        "Observation()처럼 클래스를 호출하면 인스턴스라는 개별 객체를 만듭니다. pass는 이 첫 예제의 빈 클래스 본문을 문법적으로 채웁니다. isinstance()는 객체가 지정한 종류에 속하는지 확인합니다.",
+        "first와 second는 같은 규칙으로 만들었지만 서로 다른 두 객체입니다. isinstance(first, Observation)는 종류를 물어 True이고, first is second는 바로 그 하나의 객체인지 물어 False입니다."
       ],
       "code": "class Observation:\n    pass\n\nfirst = Observation()\nsecond = Observation()\nprint(isinstance(first, Observation))\nprint(first is second)",
       "output": "True\nFalse",
@@ -42,19 +43,75 @@
     {
       "title": "생성할 때 상태 준비하기",
       "body": [
-        "속성은 객체에 붙어 있는 이름과 값입니다. __init__은 새 인스턴스가 만들어진 뒤 초기 상태를 설정할 때 자동 호출되는 메서드입니다. 그 자체가 새 객체를 반환하는 함수는 아닙니다.",
-        "self는 현재 인스턴스를 받는 첫 매개변수의 관례적 이름입니다. self.place = place에서 왼쪽은 객체 속성이고 오른쪽은 전달받은 지역 매개변수입니다. 클래스를 호출할 때 self 인자는 직접 넣지 않습니다."
+        "한 관찰 기록에는 장소와 수량이 함께 필요합니다. record.place와 record.count처럼 객체에 이름을 붙여 저장한 값을 속성이라고 합니다. Observation(\"숲\", 4)로 새 기록을 만들 때 두 속성도 준비해 보겠습니다.",
+        "클래스를 호출해 새 인스턴스가 만들어지면 __init__이 초기 상태를 설정합니다. 이때 self에는 바로 그 새 인스턴스가, place에는 \"숲\"이, count에는 4가 전달됩니다. 호출하는 쪽은 self 인자를 직접 쓰지 않습니다.",
+        "self.place = place의 왼쪽은 새 객체에 남길 속성이고, 오른쪽 place는 이번 호출로 받은 값입니다. 다음 줄도 같은 방식으로 수량을 저장합니다. 초기화가 끝나면 바깥의 record가 준비된 객체를 가리킵니다. __init__ 자체가 새 객체를 반환하는 함수는 아닙니다."
       ],
       "code": "class Observation:\n    def __init__(self, place, count):\n        self.place = place\n        self.count = count\n\nrecord = Observation(\"숲\", 4)\nprint(record.place)\nprint(record.count)",
       "output": "숲\n4",
       "id": "objects-scene-2",
-      "kind": "reading"
+      "kind": "visualization",
+      "question": "place라는 이름이 두 번 나오는데, 어느 값이 객체에 남을까요?",
+      "rationale": "호출에서 받은 지역 매개변수가 self의 속성으로 저장되고 호출 뒤에는 record로 읽히는 관계를 추적해 self와 같은 철자의 두 이름을 구별합니다.",
+      "interpretation": [
+        "place와 count는 초기화 호출의 입력입니다. self.place와 self.count는 그 값을 객체에 남긴 속성이므로 초기화 호출이 끝난 뒤에도 record로 읽을 수 있습니다.",
+        "self는 다른 객체를 추가로 만든 이름이 아닙니다. 초기화 중의 self와 초기화 후의 record가 같은 새 인스턴스를 가리킵니다."
+      ],
+      "diagram": {
+        "type": "object",
+        "nodes": [
+          {
+            "label": "record",
+            "value": "초기화가 끝난 인스턴스"
+          },
+          {
+            "label": "record.place",
+            "value": "\"숲\""
+          },
+          {
+            "label": "record.count",
+            "value": "4"
+          }
+        ],
+        "caption": "초기화에 전달한 장소와 수량이 객체의 속성으로 남아 record에서 다시 읽힙니다."
+      },
+      "trace": [
+        {
+          "label": "초기화에 입력 전달",
+          "state": "6행의 클래스 호출이 새 인스턴스를 만들고 2행의 __init__에 self·place·count를 전달합니다."
+        },
+        {
+          "label": "장소를 속성에 저장",
+          "state": "3행의 오른쪽 place는 \"숲\"입니다. 왼쪽 self.place가 그 값을 객체에 남깁니다."
+        },
+        {
+          "label": "수량까지 준비",
+          "state": "4행이 self.count에 4를 저장합니다. 초기화가 끝나면 6행의 record가 이 객체를 가리킵니다."
+        },
+        {
+          "label": "준비된 속성 읽기",
+          "state": "7·8행은 초기화를 다시 하지 않고 객체에 남아 있는 두 속성을 읽어 출력합니다."
+        }
+      ],
+      "visualization": {
+        "ref": "objects-scene-2",
+        "pin": true,
+        "scrollDistance": 250,
+        "stops": [
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
+        ]
+      }
     },
     {
       "title": "개별 객체의 상태 구별하기",
       "body": [
         "같은 클래스로 만든 객체도 인스턴스 속성은 각자 갖습니다. first.count를 바꾸면 second.count까지 자동으로 바뀌지는 않습니다.",
-        "다만 같은 변경 가능한 객체를 두 속성에 연결하면 그 안의 내용은 공유할 수 있습니다. 리스트에서 배운 이름과 객체의 연결 규칙이 속성에도 적용됩니다."
+        "다만 같은 변경 가능한 객체를 두 속성에 연결하면 그 안의 내용은 공유할 수 있습니다. 리스트에서 배운 이름과 객체의 연결 규칙이 속성에도 적용됩니다.",
+        "6·7행은 초기화를 각각 한 번씩 호출합니다. 그래서 처음 수량은 first가 4, second가 2입니다. 8행은 first의 수량만 5로 바꾸므로 아래 두 출력에서 숲의 수만 증가합니다."
       ],
       "code": "class Observation:\n    def __init__(self, place, count):\n        self.place = place\n        self.count = count\n\nfirst = Observation(\"숲\", 4)\nsecond = Observation(\"강\", 2)\nfirst.count += 1\nprint(first.place, first.count)\nprint(second.place, second.count)",
       "output": "숲 5\n강 2",

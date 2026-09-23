@@ -1,8 +1,8 @@
-import { mountIntro } from './lib/intro-motion.js?v=7';
-import { mountTextEffect } from './lib/text-effects.js?v=7';
-import { clamp, sampleScene, validateMotion } from './lib/scroll-state.js?v=7';
-import { layoutGraph, interpolateGraph } from './lib/graph-layout.js?v=7';
-import { resolveLegacyDestination } from './lib/page-navigation.js?v=7';
+import { mountIntro } from './lib/intro-motion.js?v=12';
+import { mountTextEffect } from './lib/text-effects.js?v=12';
+import { clamp, sampleScene, validateMotion } from './lib/scroll-state.js?v=12';
+import { layoutGraph, interpolateGraph } from './lib/graph-layout.js?v=12';
+import { resolveLegacyDestination } from './lib/page-navigation.js?v=12';
 
 export function redirectLegacyEntry() {
   if (document.body?.dataset.pageKind !== 'home') return false;
@@ -17,8 +17,8 @@ export function redirectLegacyEntry() {
 }
 
 const escape = text => String(text).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
-// Reserve each binding's own slot across the whole example. A second object
-// appearing must not move an unchanged object or make its identity ambiguous.
+// Reserve positions across the whole example, including states that do not
+// follow one another. Simultaneous nodes can never share a reserved slot.
 function stableLayouts(section, motion) {
   const layouts = section.visualization.stops.map(p => layoutGraph(sampleScene(section, motion, p).nodes, section.diagram.type));
   const all = new Map();
@@ -40,6 +40,32 @@ function stableLayouts(section, motion) {
     });
     return { slots, count: Math.max(0, ...slots.values()) + 1 };
   };
+  const orderedSlotsFor = role => {
+    const ids = byRole(role).map(item => item.id);
+    const next = new Map(ids.map(id => [id, new Set()]));
+    const incoming = new Map(ids.map(id => [id, 0]));
+    layouts.forEach(layout => {
+      const row = layout.items.filter(item => item.role === role);
+      row.slice(1).forEach((item, i) => {
+        const successors = next.get(row[i].id);
+        if (!successors.has(item.id)) { successors.add(item.id); incoming.set(item.id, incoming.get(item.id) + 1); }
+      });
+    });
+    const slots = new Map(ids.map(id => [id, 0]));
+    const queue = ids.filter(id => incoming.get(id) === 0);
+    for (let i = 0; i < queue.length; i++) {
+      const id = queue[i];
+      next.get(id).forEach(successor => {
+        slots.set(successor, Math.max(slots.get(successor), slots.get(id) + 1));
+        incoming.set(successor, incoming.get(successor) - 1);
+        if (incoming.get(successor) === 0) queue.push(successor);
+      });
+    }
+    // An author may reverse comparison order in a later state. That has no
+    // consistent left-to-right ordering; retain identity and avoid collisions.
+    return queue.length === ids.length ? { slots, count: Math.max(0, ...slots.values()) + 1 } : slotsFor(role);
+  };
+  let horizontalSlots = 0;
   if (section.diagram.type === 'binding') {
     distribute(byRole('name'), 20, 22, 78);
     distribute(byRole('object'), 77, 22, 78);
@@ -53,12 +79,18 @@ function stableLayouts(section, motion) {
       y: grid ? (rows < 2 ? 50 : 25 + 50 * Math.floor(i / 2) / (rows - 1)) : (count < 2 ? 50 : 20 + 60 * i / (count - 1)),
     }); });
   } else {
-    // Use the most complete frame as the anchor; transient labels can reuse a
-    // departed label's slot, while any label present in both frames stays put.
-    const anchor = layouts.reduce((longest, layout) => layout.items.length > longest.items.length ? layout : longest, layouts[0]);
-    anchor.items.forEach(item => all.set(item.id, item));
+    const kind = section.diagram.type;
+    const role = kind === 'branch' ? 'branch' : kind === 'sequence' ? 'sequence' : kind === 'collection' ? 'collection' : kind === 'pipeline' ? 'pipeline' : 'flow';
+    const { slots, count } = orderedSlotsFor(role);
+    horizontalSlots = count;
+    const [start, end] = kind === 'branch' ? [18, 82] : kind === 'sequence' ? [8, 92] : [14, 86];
+    byRole(role).forEach(item => all.set(item.id, { ...item,
+      x: count < 2 ? 50 : start + (end - start) * slots.get(item.id) / (count - 1),
+      y: kind === 'branch' ? 76 : 50,
+    }));
+    byRole('condition').forEach(item => all.set(item.id, { ...item, x: 50, y: byRole('branch').length ? 22 : 50 }));
   }
-  return layouts.map(layout => ({ ...layout, items: layout.items.map(item => ({ ...item, x: all.get(item.id).x, y: all.get(item.id).y })) }));
+  return layouts.map(layout => ({ ...layout, horizontalSlots, items: layout.items.map(item => ({ ...item, x: all.get(item.id).x, y: all.get(item.id).y })) }));
 }
 
 // Commit the current semantic frame atomically. Motion introduces only its new
@@ -68,7 +100,9 @@ function presentGraph(previous, current, reveal) {
   const positions = new Map(introduced.items.map(item => [item.id, item]));
   const before = new Map(previous.items.map(item => [item.id, item]));
   const items = current.items.map(item => ({ ...positions.get(item.id), ...item,
-    x: positions.get(item.id).x, y: positions.get(item.id).y, opacity: 1,
+    // Horizontal entry would sweep a new card across its established neighbour.
+    x: ['flow', 'pipeline', 'object'].includes(item.role) ? item.x : positions.get(item.id).x,
+    y: item.role === 'object' ? item.y : ['flow', 'pipeline'].includes(item.role) && !before.has(item.id) ? item.y + 14 * (1 - reveal) : positions.get(item.id).y, opacity: 1,
     scale: before.has(item.id) && before.get(item.id).value !== item.value
       ? 1 + .025 * Math.sin(Math.PI * reveal) : positions.get(item.id).scale,
   }));
@@ -83,26 +117,29 @@ function presentGraph(previous, current, reveal) {
 function prepareGraph(canvas, layouts, kind) {
   const items=new Map(),edges=new Map();
   layouts.forEach(layout=>{layout.items.forEach(item=>items.set(item.id,item));layout.edges.forEach(edge=>edges.set(JSON.stringify([edge.from,edge.to]),edge));});
-  const roleClass=role=>({name:'name-node',object:'object-node',condition:'condition-node',branch:'branch-node',collection:'collection-node',timeline:'timeline-node',attribute:'attribute-node',frame:'object-frame',flow:'flow-node',pipeline:'flow-node'}[role]);
+  const roleClass=role=>({name:'name-node',object:'object-node',condition:'condition-node',branch:'branch-node',collection:'collection-node',timeline:'timeline-node',attribute:'attribute-node',frame:'object-frame',flow:'flow-node',pipeline:'flow-node',sequence:'sequence-node'}[role]);
   canvas.innerHTML=`<svg class="graph-connections" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${[...edges.keys()].map(key=>`<path data-edge-id="${escape(key)}"/>`).join('')}</svg>${[...items.values()].map(item=>`<div class="${item.role==='frame'?'':'graph-node '}${roleClass(item.role)}" data-graph-id="${escape(item.id)}"><span>${escape(item.role==='name'?'이름':item.label)}</span><strong></strong></div>`).join('')}`;
   const timelineGrid=kind==='timeline'&&[...items.values()].some(item=>item.x>60);
   const objectCount=[...items.values()].filter(item=>item.role==='object').length;
+  const horizontalSlots=Math.max(0,...layouts.map(layout=>layout.horizontalSlots || 0));
   const nodeElements=new Map([...canvas.querySelectorAll('[data-graph-id]')].map(node=>[node.dataset.graphId,node]));
   const edgeElements=new Map([...canvas.querySelectorAll('[data-edge-id]')].map(node=>[node.dataset.edgeId,node]));
   return graph=>{
+    canvas.style.setProperty('--node-count', String(Math.max(1, horizontalSlots, graph.items.filter(item => item.role !== 'frame').length)));
     canvas.dataset.timelineGrid=String(timelineGrid);
     canvas.dataset.objectCount=String(objectCount);
     nodeElements.forEach(node=>{node.style.opacity='0';node.hidden=true;node.setAttribute('aria-hidden','true');});
     edgeElements.forEach(node=>{node.style.opacity='0';});
     graph.items.forEach(item=>{
       const node=nodeElements.get(item.id);
+      node.classList.toggle('is-selected', item.active === true);
       node.style.opacity=String(item.opacity);node.hidden=item.opacity===0;node.setAttribute('aria-hidden',String(item.opacity===0));
       if(item.role!=='frame'){
         node.style.left=`${item.x}%`;node.style.top=`${item.y}%`;
         node.style.transform=`translate(-50%,-50%) scale(${item.scale})`;
         const value=item.role==='name'?item.label:item.value;
         const strong=node.querySelector('strong');strong.textContent=value;strong.classList.toggle('long-value',value.length>15||(item.role==='object'&&(value.length>=8||/[\[{]/.test(value))));
-        node.querySelector('span').textContent=item.role==='name'?'이름':item.label;
+        node.querySelector('span').textContent=item.role==='name'?'이름':item.role==='sequence'?`위치 ${item.label}`:item.label;
       }
     });
     graph.edges.forEach(edge=>{
@@ -297,10 +334,13 @@ export function setupScrollExperience() {
       disposers.push(restore);
       try {
         const render = mountScene(element);
-        const data = JSON.parse(element.querySelector('[data-scene-data]').textContent).section.visualization;
+        const section = JSON.parse(element.querySelector('[data-scene-data]').textContent).section;
+        const data = section.visualization, hasCode = section.code !== undefined;
         const stage = element.querySelector('.scene-stage');
         const track = element.querySelector('[data-visualization-track]');
         const transcript = element.querySelector('.visualization-fallback');
+        const narration = element.querySelector('.narration'), footer = element.querySelector('.scene-bottom');
+        const caption = element.querySelector('[data-state-caption]'), explanation = element.querySelector('[data-step-state]');
         if (!stage || !track || !transcript) throw new Error('시각화 표시 요소가 없습니다.');
         track.dataset.pin = String(data.pin);
         track.style.setProperty('--travel', data.scrollDistance);
@@ -328,22 +368,38 @@ export function setupScrollExperience() {
             const headerHeight = parseFloat(window.getComputedStyle(document.documentElement).getPropertyValue?.('--header')) || 72;
             stickyTop = headerHeight + 16;
             const viewport = window.innerHeight || document.documentElement.clientHeight;
-            const minimum = Math.max(parseFloat(window.getComputedStyle(stage).minHeight) || 0, window.innerWidth <= 760 ? 600 : 540);
-            const candidate = Math.max(minimum, viewport - stickyTop - 16);
+            const minimum = Math.max(parseFloat(window.getComputedStyle(stage).minHeight) || 0, hasCode ? (window.innerWidth <= 760 ? 600 : 540) : 480);
+            const candidate = Math.max(minimum, Math.min(hasCode ? Infinity : 560, viewport - stickyTop - 16));
             track.style.setProperty('--stage-height', `${candidate}px`);
+            const bottomPadding = Math.max(8, parseFloat(window.getComputedStyle(stage).paddingBottom) || 0);
+            const internalOverflow = () => {
+              const box = stage.getBoundingClientRect?.(), bottom = footer?.getBoundingClientRect?.();
+              const diagram = caption?.getBoundingClientRect?.(), copy = explanation?.getBoundingClientRect?.(), narrationBox = narration?.getBoundingClientRect?.();
+              return Math.max(0,
+                box && bottom ? bottom.bottom + bottomPadding - box.bottom : 0,
+                diagram && narrationBox ? diagram.bottom - narrationBox.top : 0,
+                copy && bottom ? copy.bottom - bottom.top : 0);
+            };
             // Captions and narration can wrap differently in each state. Measure
             // every authored state, then return to the same reading position.
             const progress = trigger?.progress || 0;
             let overflow = 0;
-            for (const stop of JSON.parse(element.querySelector('[data-scene-data]').textContent).section.visualization.stops) {
+            for (const stop of data.stops) {
               render(stop);
-              overflow = Math.max(overflow, stage.scrollHeight - Math.max(stage.clientHeight, candidate));
+              overflow = Math.max(overflow, stage.scrollHeight - Math.max(stage.clientHeight, candidate), internalOverflow());
+            }
+            const height = Math.ceil(Math.max(candidate + overflow, stage.offsetHeight));
+            track.style.setProperty('--stage-height', `${height}px`);
+            // scrollHeight alone misses overlapping flex children. Verify the
+            // caption, narration and footer after assigning the measured height.
+            let contentFits = true;
+            for (const stop of data.stops) {
+              render(stop);
+              if (internalOverflow() > 1) contentFits = false;
             }
             render(clamp(progress / .9));
-            const height = Math.max(candidate + overflow, stage.offsetHeight);
-            const pinned = data.pin && height + stickyTop + 16 <= viewport + 1;
+            const pinned = data.pin && contentFits && height + stickyTop + 16 <= viewport + 1;
             track.dataset.pin = String(pinned);
-            track.style.setProperty('--stage-height', `${height}px`);
             // A stage that cannot remain fully visible is not a scroll movie.
             // Show every ordered state as readable static material instead.
             stage.hidden = !pinned;

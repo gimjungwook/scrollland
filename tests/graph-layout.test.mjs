@@ -208,9 +208,13 @@ test('the real alias and nested-copy lessons preserve mutable identity through e
     assert.equal(target(graph, original), nestedSharedId, 'append edits the same nested list');
     assert.equal(target(graph, copied), nestedSharedId, 'shallow copying retains the nested alias');
   }
-  const independentId = target(nested[1], independent);
+  const copiedFrame = nested.findIndex(graph => graph.edges.some(edge => edge.from === `name:${independent}`));
+  assert(copiedFrame >= 0, 'the independent copy must appear');
+  const independentId = target(nested[copiedFrame], independent);
   assert.notEqual(independentId, nestedSharedId, 'copy() creates a separate list despite equal contents');
-  assert.equal(target(nested[2], independent), independentId, 'editing the copied list retains its identity');
-  assert.equal(byId(nested[1].items).get(nestedSharedId).value, byId(nested[2].items).get(nestedSharedId).value, 'the independent edit must not change the original list');
-  assert.notEqual(byId(nested[1].items).get(independentId).value, byId(nested[2].items).get(independentId).value);
+  const edited = nested.slice(copiedFrame + 1).find(graph => byId(graph.items).get(independentId)?.value !== byId(nested[copiedFrame].items).get(independentId).value);
+  assert(edited, 'the independent edit must be observable');
+  assert.equal(target(edited, independent), independentId, 'editing the copied list retains its identity');
+  assert.equal(byId(nested[copiedFrame].items).get(nestedSharedId).value, byId(edited.items).get(nestedSharedId).value, 'the independent edit must not change the original list');
+  assert.notEqual(byId(nested[copiedFrame].items).get(independentId).value, byId(edited.items).get(independentId).value);
 });

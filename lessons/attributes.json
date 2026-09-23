@@ -32,7 +32,8 @@
       "title": "개별 속성을 추가하고 지우기",
       "body": [
         "인스턴스 속성은 각 객체에 붙은 상태입니다. 일반 클래스에서는 생성 뒤 새 속성을 대입할 수 있습니다. hasattr()는 해당 이름의 속성을 읽을 수 있는지 확인합니다.",
-        "del record.note는 이 객체의 note 속성을 제거합니다. 객체 전체나 파일을 지우는 지시가 아닙니다. 필요한 필드를 언제나 보장해야 한다면 초기화 단계에서 이름을 정하고 일관되게 유지하세요."
+        "del record.note는 이 객체의 note 속성을 제거합니다. 객체 전체나 파일을 지우는 지시가 아닙니다. 필요한 필드를 언제나 보장해야 한다면 초기화 단계에서 이름을 정하고 일관되게 유지하세요.",
+        "처음에는 count만 있던 record에 6행에서 note가 생깁니다. 8행에서 note를 지운 뒤에는 hasattr가 False입니다. count 속성과 record 객체는 계속 남아 있습니다."
       ],
       "code": "class Observation:\n    def __init__(self, count):\n        self.count = count\n\nrecord = Observation(4)\nrecord.note = \"비 온 뒤\"\nprint(record.note)\ndel record.note\nprint(hasattr(record, \"note\"))",
       "output": "비 온 뒤\nFalse",
@@ -42,8 +43,9 @@
     {
       "title": "공통 값과 개별 값 구별하기",
       "body": [
-        "클래스 본문에 둔 속성은 여러 인스턴스가 공통으로 조회할 수 있습니다. 인스턴스에 같은 이름의 속성이 있으면 그 값이 클래스 속성을 가립니다.",
-        "여러 객체가 각자 다른 목록을 가져야 할 때 빈 리스트를 클래스 속성으로 두면 하나를 공유하게 됩니다. 개별 목록은 __init__ 안에서 self.items = []처럼 매번 만드세요."
+        "모든 관찰 기록이 처음에는 같은 단위 \"마리\"를 사용한다고 해 보겠습니다. 클래스 본문에 unit을 두면 각 인스턴스에 unit을 따로 만들지 않아도 공통 값을 읽을 수 있습니다.",
+        "이 예제의 일반 속성 조회는 먼저 해당 인스턴스의 값을 찾고, 없으면 클래스에서 찾습니다. first.unit = \"개체\"는 first에 개별 unit을 만듭니다. 이후 first만 자기 값을 읽으며, 클래스와 second의 단위는 바뀌지 않습니다. 이를 클래스 속성을 가린다고 표현합니다.",
+        "공통 값이 리스트라면 주의가 더 필요합니다. 클래스에 둔 리스트 하나를 여러 인스턴스가 함께 수정할 수 있기 때문입니다. 각 객체가 별도 목록을 가져야 하면 __init__에서 self.items = []로 새 목록을 각각 만듭니다."
       ],
       "code": "class Observation:\n    unit = \"마리\"\n    def __init__(self, count):\n        self.count = count\n\nfirst = Observation(4)\nsecond = Observation(2)\nfirst.unit = \"개체\"\nprint(first.unit)\nprint(second.unit)\nprint(Observation.unit)",
       "output": "개체\n마리\n마리",
@@ -51,46 +53,56 @@
         "type": "object",
         "nodes": [
           {
-            "label": "클래스 공통 속성",
-            "value": "unit=마리"
+            "label": "first.unit",
+            "value": "\"개체\" · 개별 값"
           },
           {
-            "label": "first 개별 속성",
-            "value": "unit=개체"
+            "label": "second.unit",
+            "value": "\"마리\" · 클래스 값"
           },
           {
-            "label": "second 조회",
-            "value": "클래스의 마리 사용"
+            "label": "Observation.unit",
+            "value": "\"마리\" · 바뀌지 않음"
           }
         ],
-        "caption": "클래스 공통 속성: unit=마리 · first 개별 속성: unit=개체 · second 조회: 클래스의 마리 사용"
+        "caption": "first에 개별 속성이 생겨 조회 경로만 달라졌습니다. 공통 값을 덮어쓴 것이 아닙니다."
       },
       "trace": [
         {
-          "label": "초기 조회",
-          "state": "둘 다 공통 단위를 읽을 수 있습니다."
+          "label": "공통 값 사용",
+          "state": "6·7행에서 만든 두 인스턴스에는 count만 있습니다. unit을 읽으면 클래스의 값을 찾습니다."
         },
         {
-          "label": "개별 대입",
-          "state": "first에만 별도 unit 속성을 만듭니다."
+          "label": "first에만 대입",
+          "state": "8행이 first에 개별 unit을 만듭니다. 클래스의 값에는 대입하지 않습니다."
+        },
+        {
+          "label": "개별 값 출력",
+          "state": "9행은 first 자체에서 찾은 \"개체\"를 출력합니다."
+        },
+        {
+          "label": "공통 값 유지 확인",
+          "state": "10행은 second를 통해, 11행은 클래스를 직접 통해 공통 값 \"마리\"를 출력합니다."
         }
       ],
       "id": "attributes-scene-2",
       "kind": "visualization",
-      "question": "first.unit을 바꾸면 클래스와 second의 단위도 바뀔까요?",
-      "rationale": "클래스의 공통 속성과 인스턴스에 새로 생긴 개별 속성의 조회 관계를 비교합니다. 같은 unit 철자가 서로 다른 위치에 있을 수 있어 first의 경로만 달라지고 공통 값은 남는 모습을 표시합니다.",
+      "question": "first.unit을 바꾸면 second와 클래스의 단위도 바뀔까요?",
+      "rationale": "공통 값을 찾던 경로 중 first만 개별 값으로 바뀌는 과정을 출력 순서와 함께 보여 속성의 대입 위치와 조회 위치를 구별합니다.",
       "interpretation": [
-        "first에 unit 속성을 대입하면 first의 조회는 그 개별 값 개체를 사용합니다. Observation.unit의 마리는 바뀌지 않습니다.",
-        "second에는 개별 unit이 없으므로 클래스의 마리를 계속 읽습니다. 공통 값을 덮어쓴 것과 개별 속성으로 가린 것을 구별하세요."
+        "8행은 Observation.unit을 바꾸지 않고 first에만 같은 이름의 속성을 만듭니다. 따라서 첫 출력만 개체입니다.",
+        "second에는 개별 unit이 없어 클래스의 마리를 읽습니다. 마지막에 클래스를 직접 읽은 결과도 마리이므로 공통 값이 유지됐음을 확인할 수 있습니다."
       ],
       "visualization": {
         "ref": "attributes-scene-2",
         "pin": true,
-        "scrollDistance": 155,
+        "scrollDistance": 250,
         "stops": [
-          0,
-          0.55,
-          1
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.0
         ]
       }
     },
@@ -100,7 +112,8 @@
         "캡슐화는 내부 상태와 그 상태를 다루는 규칙을 한곳에 묶고 사용할 접근 방법을 정하는 설계입니다. 밑줄 하나로 시작하는 _count는 내부 구현이라는 관례이며 보안 잠금이 아닙니다.",
         "@property 아래의 count 메서드는 record.count를 읽을 때 실행됩니다. @count.setter 아래의 count 메서드는 record.count = 값처럼 대입할 때 실행됩니다. 두 데코레이터는 이름이 같은 두 메서드를 조회와 대입을 담당하는 한 속성에 연결합니다.",
         "raise ValueError(...)는 허용하지 않는 값이라고 알리고 해당 대입을 중단하는 지시입니다. 아래 대입 메서드는 음수가 아닌 값만 _count에 저장합니다. 예외를 받아 사용자에게 응답하는 방법은 「예외를 구별해 처리하기」 레슨에서 다룹니다.",
-        "밑줄 두 개로 시작하는 __count 같은 속성 이름에는 클래스 이름을 포함하는 이름 변환이 적용됩니다. 다른 클래스의 이름과 우연히 충돌하는 일을 줄이지만 외부 접근을 완전히 금지하지는 않습니다. 이 예제는 내부 구현임을 나타내는 밑줄 하나의 _count를 사용합니다."
+        "밑줄 두 개로 시작하는 __count 같은 속성 이름에는 클래스 이름을 포함하는 이름 변환이 적용됩니다. 다른 클래스의 이름과 우연히 충돌하는 일을 줄이지만 외부 접근을 완전히 금지하지는 않습니다. 이 예제는 내부 구현임을 나타내는 밑줄 하나의 _count를 사용합니다.",
+        "record.count = 5를 읽으면 대입 메서드로 들어가 5가 음수인지 먼저 확인하고 _count에 저장한다고 해석하면 됩니다. print(record.count)는 조회 메서드에서 _count를 돌려받습니다. 겉으로는 속성처럼 읽고 쓰지만 그 사이에 검사 규칙이 실행됩니다."
       ],
       "code": "class Observation:\n    def __init__(self, count):\n        self.count = count\n    @property\n    def count(self):\n        return self._count\n    @count.setter\n    def count(self, value):\n        if value < 0:\n            raise ValueError(\"수량은 0 이상이어야 합니다\")\n        self._count = value\n\nrecord = Observation(4)\nrecord.count = 5\nprint(record.count)",
       "output": "5",

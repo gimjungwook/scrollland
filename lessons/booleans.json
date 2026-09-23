@@ -30,19 +30,75 @@
     {
       "title": "비교로 질문 만들기",
       "body": [
-        "비교는 두 값의 관계를 묻고 True 또는 False를 만듭니다. ==는 값이 같은지, !=는 다른지, >=는 크거나 같은지 묻습니다. =의 대입과 구별하세요.",
-        "아래 질문은 각각 “관찰 수가 5 이상인가?”와 “관찰 수가 정확히 0인가?”입니다. 조건을 질문으로 읽으면 결과를 예측하기 쉽습니다."
+        "관찰 수가 6일 때 “5 이상인가?”와 “0인가?”는 서로 다른 질문입니다. Python은 비교의 답을 참인 True 또는 거짓인 False로 표현합니다. 이 두 값의 자료형이 불리언(bool)입니다.",
+        "count = 6은 count에 값을 연결하는 대입입니다. count == 0은 count를 0으로 바꾸지 않고 현재 값이 0과 같은지 묻는 비교입니다. 등호 하나와 둘을 구별하세요.",
+        ">=는 “크거나 같은가?”, ==는 “같은가?”, !=는 “다른가?”라고 읽습니다. 아래에서는 count를 바꾸지 않은 채 세 질문의 답만 차례로 출력합니다."
       ],
       "code": "count = 6\nprint(count >= 5)\nprint(count == 0)\nprint(count != 0)",
       "output": "True\nFalse\nTrue",
       "id": "booleans-scene-1",
-      "kind": "reading"
+      "kind": "visualization",
+      "question": "같은 count를 비교했는데 왜 True, False, True가 차례로 나올까요?",
+      "rationale": "비교할 때마다 count가 바뀌는 것이 아니라 질문이 바뀐다는 점을 보이도록 수량 6을 고정하고 비교식과 참·거짓 결과를 함께 갱신합니다.",
+      "diagram": {
+        "type": "collection",
+        "nodes": [
+          {
+            "label": "count",
+            "value": "6 그대로"
+          },
+          {
+            "label": "세 질문",
+            "value": ">= 5 · == 0 · != 0"
+          },
+          {
+            "label": "각 답",
+            "value": "True · False · True"
+          }
+        ],
+        "caption": "count는 세 비교 내내 6입니다. 서로 다른 세 질문의 답이 True, False, True로 출력됩니다."
+      },
+      "trace": [
+        {
+          "label": "비교할 수량 준비",
+          "state": "count에 정수 6을 연결합니다. 세 비교식은 모두 이 값을 읽으며, 아직 출력은 없습니다."
+        },
+        {
+          "label": "5 이상인지 비교",
+          "state": "6은 5보다 크므로 count >= 5의 답은 True입니다. 이 답을 출력한 뒤에도 count는 6입니다."
+        },
+        {
+          "label": "정확히 0인지 비교",
+          "state": "count == 0은 6과 0이 같은지 묻습니다. 같지 않으므로 False를 출력합니다. count에 0을 대입한 것이 아닙니다."
+        },
+        {
+          "label": "0과 다른지 비교",
+          "state": "count != 0은 앞 질문을 반대로 묻습니다. 6은 0과 다르므로 True를 출력합니다."
+        }
+      ],
+      "visualization": {
+        "ref": "booleans-scene-1",
+        "pin": true,
+        "scrollDistance": 205,
+        "stops": [
+          0,
+          0.22,
+          0.48,
+          0.74,
+          1
+        ]
+      },
+      "interpretation": [
+        "비교는 원래 수량을 고치는 명령이 아닙니다. count는 계속 6이고 비교식이 만든 True·False만 출력됩니다.",
+        "답을 예측할 때는 먼저 이름을 실제 값으로 바꾸어 읽으세요. count == 0을 “6과 0은 같은가?”라고 읽으면 대입과 혼동하지 않습니다."
+      ]
     },
     {
       "title": "여러 조건을 연결하기",
       "body": [
-        "and는 두 조건이 모두 참인지, or는 적어도 하나가 참인지, not은 참·거짓을 뒤집어 묻습니다. 이 예제처럼 비교식끼리 연결하면 결과는 bool입니다.",
-        "Python의 and와 or는 일반적으로 피연산자 중 하나를 반환하고 결과가 정해지면 나머지 식을 계산하지 않습니다. 피연산자는 연산자의 대상인 값이나 식입니다. 이 성질을 이용한 안전한 조건은 「연산의 뜻과 우선순위 확인하기」 레슨에서 다룹니다."
+        "“관찰 수가 5 이상이고 비가 오지 않는가?”처럼 질문을 합칠 수 있습니다. 아래 count >= 5는 True이고 raining은 False입니다. not raining은 “비가 오지 않는가?”라고 묻기 때문에 True가 됩니다. 두 답이 모두 True이므로 and로 연결한 첫 결과는 True입니다.",
+        "or는 적어도 한쪽이 참인지 묻습니다. 두 번째 식의 count == 0과 raining은 모두 False여서 결과도 False입니다. not은 참·거짓 판정을 뒤집습니다.",
+        "and와 or는 답이 이미 정해지면 뒤 식을 계산하지 않습니다. 여기처럼 불리언끼리 연결하면 bool이 나오지만, 일반적으로는 계산한 값 중 하나를 그대로 돌려줍니다. 뒤 계산을 건너뛰는 예는 「연산의 뜻과 우선순위 확인하기」 레슨에서 확인합니다."
       ],
       "code": "count = 6\nraining = False\nprint(count >= 5 and not raining)\nprint(count == 0 or raining)",
       "output": "True\nFalse",
@@ -52,8 +108,9 @@
     {
       "title": "비어 있음과 값 없음 구별하기",
       "body": [
-        "bool()로 참값 판정을 확인할 수 있습니다. 0, 빈 문자열, 빈 묶음, None은 거짓으로 판정됩니다. 값이 없음을 확인하려면 is None을 사용합니다.",
-        "\"0\"은 글자 하나가 있는 문자열이라 참으로 판정됩니다. bool(value)가 False라는 이유만으로 그 값이 None이라고 결론 내리면 안 됩니다."
+        "조건에 숫자나 문자열을 넣었을 때 Python이 어떻게 판단하는지는 bool()로 확인할 수 있습니다. 수량 0, 빈 문자열 \"\", 빈 묶음, 값 없음을 나타내는 None은 False로 판정됩니다.",
+        "숫자 0과 문자열 \"0\"은 다릅니다. \"0\"에는 글자 한 개가 들어 있으므로 빈 문자열이 아니며 bool(\"0\")은 True입니다. 여기서 문자열을 숫자로 변환한 것은 아닙니다.",
+        "거짓으로 판정되는 값이 모두 None인 것은 아닙니다. 정말 값이 없는지 확인할 때는 value is None처럼 묻습니다. 아래 마지막 줄은 value에 None을 연결했기 때문에 True입니다."
       ],
       "code": "print(bool(0))\nprint(bool(\"0\"))\nprint(bool(\"\"))\nvalue = None\nprint(value is None)",
       "output": "False\nTrue\nFalse\nTrue",

@@ -39,10 +39,11 @@
             "bold": true
           },
           {
-            "text": "에 연결된 다른 이름입니다. backup = original은 리스트를 복사하지 않습니다. 둘 중 어느 이름으로 항목을 바꿔도 같은 리스트를 읽습니다."
+            "text": "에 연결된 다른 이름입니다. original = [4, 2]로 리스트 하나를 만들고 backup = original로 이름을 더 붙이면 리스트가 둘이 되는 것이 아닙니다."
           }
         ],
-        "숫자 재대입을 배운 「값에 이름을 연결하기」 레슨과 비교하세요. 여기서는 backup이라는 이름을 재대입한 것이 아니라 backup이 가리키는 리스트의 항목을 변경합니다."
+        "backup[0] = 9는 backup이라는 이름을 다른 리스트에 연결하는 대입이 아닙니다. backup이 가리키는 리스트를 찾아 그 안의 첫 항목을 바꿉니다. original도 같은 리스트를 가리키므로 바뀐 9가 보입니다.",
+        "그림에서는 두 이름의 선이 한 리스트에 계속 연결되는지 확인하세요. 「값에 이름을 연결하기」 레슨의 숫자 재대입처럼 이름을 새 객체로 옮기는 경우와 구별합니다."
       ],
       "code": "original = [4, 2]\nbackup = original\nbackup[0] = 9\nprint(original)\nprint(original is backup)",
       "output": "[9, 2]\nTrue",
@@ -51,23 +52,33 @@
         "nodes": [
           {
             "label": "original",
-            "value": "같은 리스트 → [9, 2]"
+            "value": "[9, 2]",
+            "objectId": "shared-list"
           },
           {
             "label": "backup",
-            "value": "같은 리스트 → [9, 2]"
+            "value": "[9, 2]",
+            "objectId": "shared-list"
           }
         ],
-        "caption": "original: 같은 리스트 → [9, 2] · backup: 같은 리스트 → [9, 2]"
+        "caption": "original과 backup은 처음부터 끝까지 같은 리스트 하나를 가리킵니다. 그 리스트의 첫 항목만 4에서 9로 바뀌었습니다."
       },
       "trace": [
         {
-          "label": "대입 후",
-          "state": "두 이름이 [4, 2] 객체 하나를 가리킵니다."
+          "label": "두 이름, 리스트 하나",
+          "state": "original로 [4, 2]를 만든 뒤 backup도 같은 리스트에 연결합니다. 별도 복사본은 아직 만들지 않았습니다."
         },
         {
-          "label": "항목 변경 후",
-          "state": "그 객체의 첫 항목이 9로 바뀝니다."
+          "label": "공유한 리스트의 항목 변경",
+          "state": "backup을 통해 위치 0을 9로 바꿉니다. 바뀐 것은 리스트 내용이며 두 이름의 연결은 그대로입니다."
+        },
+        {
+          "label": "다른 이름으로 읽기",
+          "state": "print(original)도 같은 리스트를 읽으므로 [9, 2]를 출력합니다. original에 따로 수정 명령을 내릴 필요가 없습니다."
+        },
+        {
+          "label": "객체가 같은지 확인",
+          "state": "original is backup은 두 이름이 같은 리스트를 가리키므로 True입니다. 값만 같아서 True가 나온 것이 아닙니다."
         }
       ],
       "id": "list-transform-scene-1",
@@ -75,16 +86,18 @@
       "question": "backup으로 첫 항목을 바꿨는데 original에서도 9가 보이는 이유는 무엇일까요?",
       "rationale": "서로 다른 이름이 객체 하나를 공유하는 관계와 그 객체의 항목 변경을 동시에 보여줍니다. 결과 두 개만 놓으면 복사본 두 개를 각각 수정했다고 오해할 수 있어 같은 객체의 동일성을 유지합니다.",
       "interpretation": [
-        "original과 backup은 같은 리스트를 가리킵니다. backup[0] = 9는 이름을 새 리스트로 옮기지 않고 그 리스트의 첫 항목을 바꿉니다.",
-        "original is backup의 True는 두 이름으로 같은 객체를 읽는다는 뜻입니다. 다음 예제에서는 copy()로 별도 리스트를 만든 뒤 결과를 비교합니다."
+        "backup이라는 이름을 붙인 것만으로 원본의 이전 상태가 보관되지는 않습니다. 두 이름이 하나의 변경 가능한 리스트를 공유하기 때문입니다.",
+        "다음 예제에서는 original.copy()로 바깥 리스트를 새로 만든 뒤 첫 항목을 바꿉니다. 그때는 두 이름이 별도 리스트를 가리키므로 원본의 첫 항목이 유지되는지 비교하세요."
       ],
       "visualization": {
         "ref": "list-transform-scene-1",
         "pin": true,
-        "scrollDistance": 175,
+        "scrollDistance": 215,
         "stops": [
           0,
-          0.54,
+          0.24,
+          0.5,
+          0.77,
           1
         ]
       }
