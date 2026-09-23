@@ -4,6 +4,15 @@
   "title": "날짜를 값으로 계산하기",
   "problem": "날짜를 문자열로 더했더니 다음 날짜가 계산되지 않습니다.",
   "goal": "date·timedelta·datetime의 역할을 구별하고 날짜 차이를 계산합니다.",
+  "intro": {
+    "hook": "9월 29일에서 사흘 뒤는 며칠일까요? 날짜의 일 숫자에 3만 더하면 달의 경계를 놓칩니다.",
+    "connection": "표준 모듈을 가져올 수 있습니다. 날짜 도구에 달력 날짜와 기간을 각각 전달하면 월이 바뀌는 계산도 같은 규칙으로 처리합니다.",
+    "payoff": "9월 29일에서 10월 2일로 넘어가는 계산을 확인하고, 날짜 차이와 시간대가 있는 시각을 구별합니다.",
+    "preview": {
+      "before": "2026-09-29 + 3일",
+      "after": "2026-10-02"
+    }
+  },
   "prerequisites": [
     "modules"
   ],
@@ -23,77 +32,81 @@
       "title": "달력 날짜를 객체로 만들기",
       "body": [
         "datetime 모듈의 date는 연·월·일을 나타냅니다. date(2026, 9, 20)처럼 만들면 달력 규칙에 맞는지 확인하며, 존재하지 않는 날짜에는 오류를 냅니다.",
-        "fromisoformat()은 YYYY-MM-DD 형식의 문자열을 날짜로 읽습니다. isoformat()은 같은 형식의 문자열을 만듭니다. 날짜를 그냥 이어 붙이지 않고 객체로 바꾸는 것이 계산의 출발점입니다."
+        "fromisoformat()은 YYYY-MM-DD 형식의 문자열을 날짜로 읽습니다. isoformat()은 같은 형식의 문자열을 만듭니다. 날짜를 그냥 이어 붙이지 않고 객체로 바꾸는 것이 계산의 출발점입니다.",
+        "예제의 start와 end는 겉모양만 날짜인 문자열이 아니라 날짜 값입니다. 그래서 end > start는 어느 날이 뒤인지 비교합니다. isoformat()으로 출력할 때만 사람이 읽을 문자열로 바꿉니다."
       ],
       "code": "from datetime import date\n\nstart = date(2026, 9, 20)\nend = date.fromisoformat(\"2026-09-23\")\nprint(start.isoformat())\nprint(end > start)",
       "output": "2026-09-20\nTrue",
-      "diagram": {
-        "type": "pipeline",
-        "nodes": [
-          {
-            "label": "문자열 입력",
-            "value": "2026-09-23"
-          },
-          {
-            "label": "날짜 객체",
-            "value": "2026년 9월 23일"
-          }
-        ],
-        "caption": "문자열 입력: 2026-09-23 · 날짜 객체: 2026년 9월 23일"
-      },
-      "trace": [
-        {
-          "label": "파싱",
-          "state": "형식에 맞는 문자열을 날짜로 읽습니다."
-        },
-        {
-          "label": "비교",
-          "state": "날짜 객체끼리 선후 관계를 비교합니다."
-        }
-      ]
+      "id": "dates-scene-1",
+      "kind": "reading"
     },
     {
       "title": "기간을 더하고 날짜를 빼기",
       "body": [
-        "timedelta는 두 시점 사이의 기간을 나타냅니다. 날짜에 timedelta(days=3)을 더하면 달력 경계를 넘어도 올바른 날짜를 계산합니다.",
-        "날짜에서 날짜를 빼면 timedelta가 됩니다. days로 일수를 읽을 수 있습니다. 아래에서는 월말에서 사흘 뒤가 다음 달이 되는 것을 확인합니다."
+        "9월 29일에서 사흘 뒤를 구할 때 날짜의 글자 \"29\"에 3을 붙이거나 일 숫자를 32로 바꾸면 올바른 달력 날짜가 되지 않습니다. date 값에 기간을 나타내는 timedelta(days=3)을 더하면 월말 규칙까지 적용해 새 날짜를 만듭니다.",
+        "아래에서 start는 계속 2026-09-29입니다. 덧셈 결과인 2026-10-02를 end에 따로 연결합니다. 시작 날짜를 직접 바꾼 것이 아닙니다.",
+        "반대로 end - start는 두 날짜 사이의 기간입니다. 그 결과의 .days를 읽으면 정수 3을 얻습니다. 날짜에 기간을 더하면 날짜, 날짜에서 날짜를 빼면 기간이라는 결과의 종류를 구별해 보세요."
       ],
       "code": "from datetime import date, timedelta\n\nstart = date(2026, 9, 29)\nend = start + timedelta(days=3)\nprint(end.isoformat())\nprint((end - start).days)",
       "output": "2026-10-02\n3",
+      "id": "dates-scene-2",
+      "kind": "visualization",
+      "question": "사흘을 더한 뒤 start도 10월 2일로 바뀔까요?",
+      "rationale": "원래 날짜는 유지한 채 새 날짜와 두 날짜의 차이가 만들어지는 관계를 함께 보여 문자열 덧셈이나 원본 변경과 구별합니다.",
+      "interpretation": [
+        "start는 9월 29일에 남고 end만 10월 2일입니다. 달력으로 세면 9월 30일·10월 1일·10월 2일이지만, 코드에는 날짜 덧셈 한 번만 있습니다.",
+        "마지막 3은 달의 날짜 번호가 아니라 두 날짜 사이의 기간에서 읽은 일수입니다."
+      ],
       "diagram": {
         "type": "timeline",
         "nodes": [
           {
-            "label": "시작 날짜",
-            "value": "2026-09-29"
+            "label": "start",
+            "value": "2026-09-29 · 유지"
           },
           {
-            "label": "기간",
+            "label": "end",
+            "value": "2026-10-02 · 새 날짜"
+          },
+          {
+            "label": "날짜 차이",
             "value": "3일"
-          },
-          {
-            "label": "계산 결과",
-            "value": "2026-10-02"
           }
         ],
-        "caption": "시작 날짜: 2026-09-29 · 기간: 3일 · 계산 결과: 2026-10-02"
+        "caption": "원래 날짜와 새 날짜는 함께 남고, 두 날짜를 빼면 더했던 사흘을 다시 얻습니다."
       },
       "trace": [
         {
-          "label": "기간 더하기",
-          "state": "월말을 지나 다음 달로 넘어갑니다."
+          "label": "출발 날짜",
+          "state": "3행이 2026년 9월 29일을 날짜 값으로 만듭니다."
         },
         {
-          "label": "차이 계산",
-          "state": "결과 날짜에서 시작을 빼면 3일입니다."
+          "label": "새 날짜 계산",
+          "state": "4행에서 사흘을 더한 새 날짜를 end에 연결하고 5행이 문자열로 출력합니다. start는 바뀌지 않습니다."
+        },
+        {
+          "label": "날짜 차이 읽기",
+          "state": "6행의 end - start는 기간이며, .days로 읽은 일수 3을 출력합니다."
         }
-      ]
+      ],
+      "visualization": {
+        "ref": "dates-scene-2",
+        "pin": true,
+        "scrollDistance": 210,
+        "stops": [
+          0.0,
+          0.333,
+          0.667,
+          1.0
+        ]
+      }
     },
     {
       "title": "시각과 시간대를 명시하기",
       "body": [
         "datetime은 날짜와 시각을 함께 나타냅니다. strptime()은 지정 서식의 문자열을 읽고 strftime()은 지정 서식으로 표시합니다. %H는 24시간 기준 시, %M은 분입니다.",
-        "시간대는 지역에 따른 시각 기준입니다. 서로 다른 지역의 실제 순간을 비교하려면 UTC 같은 기준을 명시해야 합니다. 아래는 이미 UTC라고 정한 입력에만 timezone.utc를 붙이며, 다른 지역 시각을 UTC로 변환하는 예제는 아닙니다."
+        "시간대는 지역에 따른 시각 기준입니다. 서로 다른 지역의 실제 순간을 비교하려면 UTC 같은 기준을 명시해야 합니다. 아래는 이미 UTC라고 정한 입력에만 timezone.utc를 붙이며, 다른 지역 시각을 UTC로 변환하는 예제는 아닙니다.",
+        "이 예제의 입력 09:30은 처음부터 UTC 시각이라고 가정했습니다. replace(tzinfo=timezone.utc)는 시계 숫자 09:30을 바꾸지 않고 그 기준만 붙입니다. 한국 시각 09:30을 UTC로 환산하는 작업과 혼동하지 마세요."
       ],
       "code": "from datetime import datetime, timezone\n\ntext = \"2026-09-23 09:30\"\nmoment = datetime.strptime(text, \"%Y-%m-%d %H:%M\").replace(tzinfo=timezone.utc)\nprint(moment.strftime(\"%H:%M\"))\nprint(moment.isoformat())",
       "output": "09:30\n2026-09-23T09:30:00+00:00",
@@ -111,16 +124,8 @@
         ],
         "caption": "정한 입력 기준: UTC의 2026-09-23 09:30 · 표준 표시: 2026-09-23T09:30:00+00:00"
       },
-      "trace": [
-        {
-          "label": "문자열 읽기",
-          "state": "연월일·시·분을 지정 형식으로 읽습니다."
-        },
-        {
-          "label": "기준 표시",
-          "state": "UTC 기준임을 결과 문자열에 남깁니다."
-        }
-      ]
+      "id": "dates-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

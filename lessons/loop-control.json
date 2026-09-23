@@ -4,6 +4,15 @@
   "title": "건너뛸 때와 멈출 때 정하기",
   "problem": "잘못된 기록은 제외하고 찾던 항목을 발견하면 검색을 끝내고 싶습니다.",
   "goal": "continue·break·반복문의 else가 실행되는 조건을 구별합니다.",
+  "intro": {
+    "hook": "수량 기록이 3, -1, 2입니다. 잘못된 -1만 빼고 나머지를 계속 더하려면 어디로 이동해야 할까요?",
+    "connection": "반복과 분기로 실행 경로를 나눌 수 있습니다. 이번에는 현재 항목만 건너뛰는 일과 반복 전체를 끝내는 일을 구별합니다.",
+    "payoff": "continue로 다음 항목을 처리한 합계 5를 확인하고, break와 반복문의 else가 어떤 상황에서 필요한지 비교합니다.",
+    "preview": {
+      "before": "[3, -1, 2]",
+      "after": "음수를 제외한 합계: 5"
+    }
+  },
   "prerequisites": [
     "branching",
     "for-range",
@@ -20,49 +29,80 @@
     {
       "title": "이번 항목만 건너뛰기",
       "body": [
-        "continue는 현재 반복의 남은 지시를 건너뛰고 다음 반복으로 이동합니다. 아래에서는 음수인 기록을 제외하고 0 이상의 수만 더합니다.",
-        "for에서는 다음 항목을 받지만 while에서는 조건 검사로 돌아갑니다. while의 값 갱신이 continue 아래에 있으면 갱신을 건너뛰어 끝나지 않을 수 있습니다."
+        "continue는 이번 항목에서 아직 실행하지 않은 지시를 건너뛰고 다음 반복으로 이동합니다. 반복 전체를 끝내는 지시는 아닙니다. 아래에서는 count가 음수일 때 덧셈 한 줄을 건너뜁니다.",
+        "total은 지금까지 더한 합계입니다. 3을 처리하면 total이 3이 됩니다. 그다음 -1에서 continue가 실행되면 total += count에 도달하지 않으므로 합계는 2가 아니라 3에 머뭅니다. 이어 2를 처리하므로 최종 합계는 5입니다.",
+        "for의 continue는 다음 항목을 받는 곳으로, while의 continue는 조건 검사로 돌아갑니다. while에서 값을 바꾸는 줄을 continue 아래에 두면 그 줄을 계속 건너뛰어 반복이 끝나지 않을 수 있습니다."
       ],
       "code": "total = 0\nfor count in [3, -1, 2]:\n    if count < 0:\n        continue\n    total += count\nprint(total)",
       "output": "5",
       "diagram": {
-        "type": "timeline",
+        "type": "collection",
         "nodes": [
           {
-            "label": "3",
-            "value": "누적 → 3"
+            "label": "이번 count",
+            "value": "2"
           },
           {
-            "label": "-1",
-            "value": "건너뜀"
+            "label": "total",
+            "value": "5"
           },
           {
-            "label": "2",
-            "value": "누적 → 5"
+            "label": "실행한 지시",
+            "value": "print(total)"
           }
         ],
-        "caption": "3: 누적 → 3 · -1: 건너뜀 · 2: 누적 → 5"
+        "caption": "-1에서 건너뛴 것은 덧셈 한 줄입니다. total=3을 유지한 채 다음 2를 더해 5를 출력합니다."
       },
       "trace": [
         {
-          "label": "정상 항목",
-          "state": "3을 더합니다."
+          "label": "합계 준비",
+          "state": "total을 0으로 준비했습니다. for가 아직 항목을 꺼내지 않았고 출력도 없습니다."
         },
         {
-          "label": "잘못된 항목",
-          "state": "-1은 continue로 누적하지 않습니다."
+          "label": "3은 더하기",
+          "state": "count=3에서는 count < 0이 거짓이므로 continue를 실행하지 않습니다. total += count가 0 + 3을 계산해 total은 3이 됩니다."
         },
         {
-          "label": "다음 항목",
-          "state": "2를 더해 5가 됩니다."
+          "label": "-1은 건너뛰기",
+          "state": "count=-1에서는 count < 0이 참이어서 continue를 실행합니다. total += count를 건너뛰므로 total은 3으로 유지됩니다."
+        },
+        {
+          "label": "다음 2는 더하기",
+          "state": "반복은 끝나지 않았습니다. 다음 count=2에서 조건이 거짓이므로 total += count가 3 + 2를 계산합니다. total은 5이고 아직 출력은 없습니다."
+        },
+        {
+          "label": "반복 밖에서 출력",
+          "state": "세 항목을 모두 처리한 뒤 들여쓰기 밖의 print(total)이 5를 출력합니다."
         }
-      ]
+      ],
+      "id": "loop-control-scene-1",
+      "kind": "visualization",
+      "question": "-1을 만났을 때 total은 바뀌고, 다음 항목 2는 처리될까요?",
+      "rationale": "continue가 현재 항목의 누적만 건너뛰는 동안 total은 유지되고 다음 항목으로 실행 위치가 이동합니다. 항목 이동과 유지되는 누적값을 함께 보여줘 break와 혼동하지 않게 합니다.",
+      "interpretation": [
+        "-1을 만난 순간에는 입력 count만 바뀌고 누적값 total은 3에 머뭅니다. continue가 바로 아래의 덧셈을 건너뛰었기 때문입니다.",
+        "continue를 break로 바꾸면 -1에서 반복 전체가 끝나 다음 2를 처리하지 않습니다. 그 경우 합계는 3이 된다는 점으로 두 지시를 구별할 수 있습니다."
+      ],
+      "visualization": {
+        "ref": "loop-control-scene-1",
+        "pin": true,
+        "scrollDistance": 255,
+        "stops": [
+          0.0,
+          0.2,
+          0.4,
+          0.6,
+          0.8,
+          1.0
+        ]
+      }
     },
     {
       "title": "발견한 순간 검색 끝내기",
       "body": [
         "break는 현재 속한 가장 안쪽 반복을 즉시 끝냅니다. 다음 항목을 읽지 않고 반복 바깥의 다음 지시로 이동합니다.",
-        "아래에서는 첫 번째로 5 이상인 수 7을 찾습니다. 그 뒤의 9는 확인하지 않습니다. 따라서 “첫 번째 일치”를 구하는 문제에 맞는 흐름입니다."
+        "아래에서는 첫 번째로 5 이상인 수 7을 찾습니다. 그 뒤의 9는 확인하지 않습니다. 따라서 “첫 번째 일치”를 구하는 문제에 맞는 흐름입니다.",
+        "found = None은 아직 찾은 값이 없다는 시작 상태입니다. 2는 기준에 미달해 아무 값도 저장하지 않고, 7을 만나면 found=7로 저장한 뒤 break로 나옵니다. while 안의 break도 조건을 다시 검사하러 가지 않고 반복 바깥으로 나옵니다."
       ],
       "code": "found = None\nfor count in [2, 7, 9]:\n    if count >= 5:\n        found = count\n        break\nprint(found)",
       "output": "7",
@@ -84,53 +124,20 @@
         ],
         "caption": "첫 검사: 2는 기준 미달 · 다음 검사: 7이 일치 · 남은 항목: 9는 검사하지 않음"
       },
-      "trace": [
-        {
-          "label": "2 확인",
-          "state": "계속 검색합니다."
-        },
-        {
-          "label": "7 확인",
-          "state": "found=7로 대입하고 반복을 종료합니다."
-        }
-      ]
+      "id": "loop-control-scene-2",
+      "kind": "reading"
     },
     {
       "title": "끝까지 못 찾은 경우 처리하기",
       "body": [
         "반복문의 else는 break 없이 반복이 정상적으로 끝났을 때 실행됩니다. if의 else와 들여쓰기 위치가 다르다는 점에 주의하세요.",
-        "검색 대상이 처음부터 비어 있어도 break가 없으므로 else는 실행됩니다. 아래처럼 찾은 값이 없을 때만 안내를 남길 수 있습니다."
+        "검색 대상이 처음부터 비어 있어도 break가 없으므로 else는 실행됩니다. 아래처럼 찾은 값이 없을 때만 안내를 남길 수 있습니다.",
+        "이 else는 for와 같은 들여쓰기 깊이에 있습니다. 숲과 강에서는 if가 모두 거짓이어서 break를 실행하지 못했고, 목록 끝까지 온 뒤 else의 안내를 출력합니다. 중간에 \"못\"을 찾아 break했다면 이 안내는 실행하지 않습니다."
       ],
       "code": "for place in [\"숲\", \"강\"]:\n    if place == \"못\":\n        print(\"찾음\")\n        break\nelse:\n    print(\"못 기록 없음\")",
       "output": "못 기록 없음",
-      "diagram": {
-        "type": "branch",
-        "nodes": [
-          {
-            "label": "검색 대상",
-            "value": "숲, 강"
-          },
-          {
-            "label": "break 발생",
-            "value": "없음"
-          },
-          {
-            "label": "else 실행",
-            "value": "못 기록 없음"
-          }
-        ],
-        "caption": "검색 대상: 숲, 강 · break 발생: 없음 · else 실행: 못 기록 없음"
-      },
-      "trace": [
-        {
-          "label": "전체 검사",
-          "state": "두 장소 모두 못과 다릅니다."
-        },
-        {
-          "label": "정상 종료",
-          "state": "항목을 끝까지 읽었으므로 else를 실행합니다."
-        }
-      ]
+      "id": "loop-control-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

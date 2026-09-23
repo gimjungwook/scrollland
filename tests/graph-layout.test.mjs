@@ -164,13 +164,13 @@ test('layout and interpolation are deterministic, bounded and do not mutate thei
   assert.equal(JSON.stringify({ before, after }), original);
 });
 
-test('all 135 authored scenes produce valid interpolated graphs for every state transition', async () => {
+test('every selected visualization produces valid graphs through all authored state transitions', async () => {
   const content = await readContent();
   let scenes = 0;
   for (const slug of content.order) {
-    content.lessons[slug].sections.forEach((section, i) => {
+    content.lessons[slug].sections.filter(section => section.kind === 'visualization').forEach(section => {
       scenes++;
-      const authored = content.motion.lessons[slug][i];
+      const authored = content.motion.scenes[section.id];
       const layouts = [...authored.steps.map(step => step.nodes), authored.finalNodes].map(nodes => layoutGraph(nodes, section.diagram.type));
       layouts.forEach(validGraph);
       for (let j = 1; j < layouts.length; j++) {
@@ -178,13 +178,14 @@ test('all 135 authored scenes produce valid interpolated graphs for every state 
       }
     });
   }
-  assert.equal(scenes, 135);
+  assert(scenes > 0);
+  assert.equal(scenes, Object.keys(content.motion.scenes).length);
 });
 
 test('the real alias and nested-copy lessons preserve mutable identity through every displayed edit', async () => {
   const content = await readContent();
   const layouts = (slug, scene) => {
-    const authored = content.motion.lessons[slug][scene];
+    const authored = content.motion.scenes[`${slug}-scene-${scene + 1}`];
     return [...authored.steps.map(step => step.nodes), authored.finalNodes].map(nodes => layoutGraph(nodes, 'binding'));
   };
   const target = (graph, name) => {
@@ -207,9 +208,13 @@ test('the real alias and nested-copy lessons preserve mutable identity through e
     assert.equal(target(graph, original), nestedSharedId, 'append edits the same nested list');
     assert.equal(target(graph, copied), nestedSharedId, 'shallow copying retains the nested alias');
   }
-  const independentId = target(nested[1], independent);
+  const copiedFrame = nested.findIndex(graph => graph.edges.some(edge => edge.from === `name:${independent}`));
+  assert(copiedFrame >= 0, 'the independent copy must appear');
+  const independentId = target(nested[copiedFrame], independent);
   assert.notEqual(independentId, nestedSharedId, 'copy() creates a separate list despite equal contents');
-  assert.equal(target(nested[2], independent), independentId, 'editing the copied list retains its identity');
-  assert.equal(byId(nested[1].items).get(nestedSharedId).value, byId(nested[2].items).get(nestedSharedId).value, 'the independent edit must not change the original list');
-  assert.notEqual(byId(nested[1].items).get(independentId).value, byId(nested[2].items).get(independentId).value);
+  const edited = nested.slice(copiedFrame + 1).find(graph => byId(graph.items).get(independentId)?.value !== byId(nested[copiedFrame].items).get(independentId).value);
+  assert(edited, 'the independent edit must be observable');
+  assert.equal(target(edited, independent), independentId, 'editing the copied list retains its identity');
+  assert.equal(byId(nested[copiedFrame].items).get(nestedSharedId).value, byId(edited.items).get(nestedSharedId).value, 'the independent edit must not change the original list');
+  assert.notEqual(byId(nested[copiedFrame].items).get(independentId).value, byId(edited.items).get(independentId).value);
 });

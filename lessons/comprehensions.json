@@ -4,6 +4,15 @@
   "title": "필요한 값만 새 묶음으로 만들기",
   "problem": "유효한 관찰 수량만 골라 같은 단위로 바꾼 목록이 필요합니다.",
   "goal": "컴프리헨션을 반복·필터·변환의 순서로 해석합니다.",
+  "intro": {
+    "hook": "수량 [2, 4, 3]을 모두 두 배로 바꾼 새 목록이 필요합니다. 항목마다 반복할 규칙을 한곳에 적을 수 있을까요?",
+    "connection": "반복으로 값을 꺼내고 조건으로 항목을 고를 수 있습니다. 컴프리헨션은 그 선택과 변환을 새 묶음을 만드는 표현으로 적습니다.",
+    "payoff": "일반 for와 컴프리헨션이 같은 [4, 8, 6]을 만드는지 대조한 뒤, 조건을 붙여 필요한 항목만 남깁니다.",
+    "preview": {
+      "before": "[2, 4, 3]",
+      "after": "두 배: [4, 8, 6]"
+    }
+  },
   "prerequisites": [
     "branching",
     "sets",
@@ -21,113 +30,98 @@
     {
       "title": "변환 결과를 한곳에 모으기",
       "body": [
-        "컴프리헨션은 반복한 결과로 새 묶음을 만드는 표기입니다. [count * 2 for count in counts]는 각 count를 받아 두 배로 계산한 값을 새 리스트에 넣습니다.",
-        "아래에서는 먼저 일반 for와 append()로 loop_result를 만들고, 이어서 컴프리헨션으로 doubled를 만듭니다. 출력은 원본 counts, 일반 반복의 결과, 컴프리헨션의 결과 순서입니다. 두 방식의 리스트 결과가 같고 원본은 그대로인지 비교하세요."
+        "컴프리헨션은 반복한 계산 결과로 새 묶음을 만드는 표기입니다. [count * 2 for count in counts]에서는 먼저 for count in counts로 항목을 하나 받고, 앞의 count * 2를 계산해 새 리스트에 추가합니다. 화면에 적힌 왼쪽부터 계산하는 것은 아닙니다.",
+        "count가 2이면 4를, 4이면 8을, 3이면 6을 넣습니다. 이 계산은 counts의 항목을 두 배로 고쳐 쓰지 않습니다. 원본 [2, 4, 3]과 새 결과 [4, 8, 6]이 따로 남습니다.",
+        "아래의 일반 for와 append()가 loop_result를 먼저 완성합니다. 이어 같은 규칙의 컴프리헨션이 별도 리스트를 만들고, 항목을 모두 처리한 뒤 doubled에 연결합니다. 리스트를 만드는 도중에는 아직 doubled의 대입이 끝나지 않았습니다.",
+        "두 리스트를 계산하는 동안에는 print()가 실행되지 않습니다. 마지막 세 print()가 원본, 일반 반복 결과, 컴프리헨션 결과를 차례로 화면에 남깁니다."
       ],
       "code": "counts = [2, 4, 3]\nloop_result = []\nfor count in counts:\n    loop_result.append(count * 2)\ndoubled = [count * 2 for count in counts]\nprint(counts)\nprint(loop_result)\nprint(doubled)",
       "output": "[2, 4, 3]\n[4, 8, 6]\n[4, 8, 6]",
       "diagram": {
-        "type": "pipeline",
+        "type": "collection",
         "nodes": [
           {
-            "label": "원본 counts",
-            "value": "[2, 4, 3] 유지"
+            "label": "counts",
+            "value": "[2, 4, 3]"
           },
           {
-            "label": "일반 반복 결과",
-            "value": "loop_result → [4, 8, 6]"
+            "label": "loop_result",
+            "value": "[4, 8, 6]"
           },
           {
-            "label": "컴프리헨션 결과",
-            "value": "doubled → [4, 8, 6]"
+            "label": "doubled",
+            "value": "[4, 8, 6]"
           }
         ],
-        "caption": "원본은 유지됩니다. 일반 반복과 컴프리헨션은 같은 항목과 순서의 새 리스트를 각각 만듭니다."
+        "caption": "같은 원본에서 두 개의 새 리스트를 만듭니다. doubled는 컴프리헨션이 끝난 뒤 완성된 리스트에 연결됩니다."
       },
+      "id": "comprehensions-scene-1",
+      "kind": "visualization",
+      "question": "컴프리헨션이 4·8·6을 모으는 동안 원본 counts도 바뀔까요?",
+      "rationale": "for로 받은 항목과 결과 식의 계산, 새 리스트의 증가를 대응시킵니다. 원본 수정과 새 결과 생성, 계산과 출력을 구별합니다.",
       "trace": [
         {
-          "label": "일반 반복",
-          "state": "빈 loop_result에 4, 8, 6을 차례로 추가합니다."
+          "label": "비교할 일반 반복 완료",
+          "state": "일반 for가 2·4·3을 두 배로 계산해 loop_result를 [4, 8, 6]으로 만들었습니다. 이제 별도 컴프리헨션을 시작하며 아직 출력은 없습니다."
         },
         {
-          "label": "컴프리헨션",
-          "state": "같은 변환 결과를 새 리스트 doubled에 모읍니다."
+          "label": "2를 받아 4 추가",
+          "state": "컴프리헨션이 첫 count=2를 받아 count * 2를 계산합니다. 새 리스트에는 4만 들어 있고 counts는 그대로입니다."
         },
         {
-          "label": "비교",
-          "state": "counts는 [2, 4, 3]이고 두 결과 리스트는 모두 [4, 8, 6]입니다."
+          "label": "4를 받아 8 추가",
+          "state": "다음 count=4를 두 배로 계산해 8을 추가합니다. 새 리스트는 [4, 8]이고 기존 4도 유지됩니다."
+        },
+        {
+          "label": "3을 받아 6 추가",
+          "state": "마지막 count=3에서 6을 추가합니다. 반복을 마치면 완성된 [4, 8, 6]을 doubled에 연결합니다. 아직 print()는 실행하지 않았습니다."
+        },
+        {
+          "label": "세 리스트 출력",
+          "state": "세 print()가 counts, loop_result, doubled를 차례로 출력합니다. 원본은 [2, 4, 3]이고 두 계산 결과는 모두 [4, 8, 6]입니다."
         }
-      ]
+      ],
+      "interpretation": [
+        "counts에서 꺼낸 숫자는 바꾸지 않고, 그 숫자로 계산한 결과를 새 리스트에 넣었습니다. 그래서 원본과 결과를 각각 출력해 비교할 수 있습니다.",
+        "컴프리헨션이 짧아져도 항목별 계산 순서는 일반 for와 같습니다. for로 받을 항목 → 결과 식으로 계산할 값 → 새 리스트에 넣을 값 순서로 읽어 보세요."
+      ],
+      "visualization": {
+        "ref": "comprehensions-scene-1",
+        "pin": true,
+        "scrollDistance": 275,
+        "stops": [
+          0.0,
+          0.2,
+          0.4,
+          0.6,
+          0.8,
+          1.0
+        ]
+      }
     },
     {
       "title": "조건에 맞는 항목만 남기기",
       "body": [
         "필터는 조건에 맞는 항목만 통과시키는 과정입니다. 컴프리헨션 끝의 if는 원본의 각 항목이 결과에 들어갈지 결정합니다.",
-        "실행할 때는 for로 항목을 받고 if로 거른 뒤 앞의 결과 식을 계산합니다. 아래 -1은 조건을 만족하지 않아 결과에 들어가지 않습니다."
+        "실행할 때는 for로 항목을 받고 if로 거른 뒤 앞의 결과 식을 계산합니다. 아래 -1은 조건을 만족하지 않아 결과에 들어가지 않습니다.",
+        "첫 식의 count >= 0에는 0도 통과하므로 valid는 [3, 5, 0]입니다. 다음 식의 count > 0에는 3과 5만 통과하고, 그 뒤 두 배로 계산하므로 [6, 10]입니다. 조건에서 탈락한 -1은 결과 식을 계산하지 않습니다."
       ],
       "code": "counts = [3, -1, 5, 0]\nvalid = [count for count in counts if count >= 0]\nprint(valid)\nprint([count * 2 for count in counts if count > 0])",
       "output": "[3, 5, 0]\n[6, 10]",
-      "diagram": {
-        "type": "pipeline",
-        "nodes": [
-          {
-            "label": "원본",
-            "value": "3, -1, 5, 0"
-          },
-          {
-            "label": "0 이상 필터",
-            "value": "3, 5, 0"
-          },
-          {
-            "label": "양수만 두 배",
-            "value": "6, 10"
-          }
-        ],
-        "caption": "원본: 3, -1, 5, 0 · 0 이상 필터: 3, 5, 0 · 양수만 두 배: 6, 10"
-      },
-      "trace": [
-        {
-          "label": "항목 검사",
-          "state": "조건을 만족하는지 먼저 봅니다."
-        },
-        {
-          "label": "결과 계산",
-          "state": "남은 항목에만 결과 식을 적용합니다."
-        }
-      ]
+      "id": "comprehensions-scene-2",
+      "kind": "reading"
     },
     {
       "title": "키가 있는 묶음과 중복 없는 묶음",
       "body": [
         "딕셔너리 컴프리헨션은 {키 식: 값 식 for ...}, 집합 컴프리헨션은 {값 식 for ...} 형태입니다. 중괄호 안에 콜론이 있는지로 구별합니다.",
-        "복잡한 중첩 조건이나 여러 부수 작업을 넣기보다는 일반 for로 나누는 편이 읽기 좋을 수 있습니다. 여기서는 짧은 변환 하나만 수행하고 결과를 바로 확인합니다."
+        "복잡한 중첩 조건이나 여러 부수 작업을 넣기보다는 일반 for로 나누는 편이 읽기 좋을 수 있습니다. 여기서는 짧은 변환 하나만 수행하고 결과를 바로 확인합니다.",
+        "딕셔너리에서는 숲·강이라는 키는 그대로 두고 수량만 4→8, 2→4로 계산합니다. 집합에서는 숲과 강의 글자 수가 모두 1이어서 1을 한 번만 남기고, 공원의 글자 수 2를 함께 담습니다. sorted()는 이 집합을 [1, 2] 순서의 리스트로 보여주기 위한 것입니다."
       ],
       "code": "counts = {\"숲\": 4, \"강\": 2}\ndoubled = {place: count * 2 for place, count in counts.items()}\nlengths = {len(place) for place in [\"숲\", \"강\", \"공원\"]}\nprint(doubled)\nprint(sorted(lengths))",
       "output": "{'숲': 8, '강': 4}\n[1, 2]",
-      "diagram": {
-        "type": "collection",
-        "nodes": [
-          {
-            "label": "딕셔너리 결과",
-            "value": "숲 → 8, 강 → 4"
-          },
-          {
-            "label": "집합 결과",
-            "value": "글자 수 1과 2"
-          }
-        ],
-        "caption": "딕셔너리 결과: 숲 → 8, 강 → 4 · 집합 결과: 글자 수 1과 2"
-      },
-      "trace": [
-        {
-          "label": "키·값 변환",
-          "state": "키를 유지하고 수량만 두 배로 만듭니다."
-        },
-        {
-          "label": "중복 제거",
-          "state": "두 번 나온 길이 1은 한 항목으로 남습니다."
-        }
-      ]
+      "id": "comprehensions-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

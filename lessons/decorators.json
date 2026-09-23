@@ -4,6 +4,15 @@
   "title": "함수 앞뒤에 공통 작업 붙이기",
   "problem": "여러 함수의 실행 시작과 종료를 알리는 코드를 반복해서 쓰고 있습니다.",
   "goal": "함수를 감싸는 함수와 @ 표기의 관계를 설명합니다.",
+  "intro": {
+    "hook": "계산 함수의 본문은 그대로 두고 호출할 때마다 시작과 끝을 알리고 싶습니다. 계산 앞뒤에 지시를 붙일 수 있을까요?",
+    "connection": "함수를 전달하고 바깥 함수의 값을 기억하는 방법을 배웠습니다. 이 둘을 이용해 원래 함수를 호출하는 새 함수를 만듭니다.",
+    "payoff": "감싼 함수를 준비하는 순간과 실제 호출을 구별하고, @ 표기와 원래 함수 설명을 보존하는 방법을 연결합니다.",
+    "preview": {
+      "before": "print(tracked())",
+      "after": "시작 → 끝 → 6"
+    }
+  },
   "prerequisites": [
     "arguments",
     "scope"
@@ -19,113 +28,98 @@
     {
       "title": "함수를 받아 새 함수 돌려주기",
       "body": [
-        "고차 함수는 함수를 입력으로 받거나 함수로 결과를 반환하는 함수입니다. 감싸는 함수는 다른 함수를 호출하면서 앞뒤 동작을 덧붙이는 함수입니다.",
-        "아래 trace는 전달받은 original을 기억하는 wrapped를 반환합니다. trace(total) 시점에는 total을 실행하지 않으며, 반환한 함수를 호출할 때 원래 계산을 수행합니다."
+        "함수를 입력으로 받거나 함수를 결과로 돌려주는 함수를 고차 함수라고 부릅니다. 아래 trace는 total이라는 함수를 받아, 그 함수를 호출하는 새 함수 wrapped를 만들어 돌려줍니다.",
+        "trace(total)은 total의 계산 결과를 받는 호출이 아닙니다. 괄호 없는 total이라는 함수 자체를 original에 전달합니다. return wrapped에도 괄호가 없으므로 새 함수를 돌려줄 뿐, 그 안의 시작·계산·끝 지시는 아직 실행하지 않습니다.",
+        "tracked = trace(total)을 마치면 tracked가 wrapped 함수를 가리킵니다. tracked()를 호출할 때 wrapped로 들어가 시작을 출력하고, original()로 total을 호출해 6을 받습니다. 이어 끝을 출력하고 그 6을 바깥 호출자에게 반환합니다.",
+        "마지막 print(tracked())에서는 tracked()가 끝나야 바깥 print()가 결과를 받습니다. 따라서 시작과 끝은 함수 안에서 먼저 출력되고, 숫자 6은 마지막에 바깥 print()가 출력합니다."
       ],
       "code": "def trace(original):\n    def wrapped():\n        print(\"시작\")\n        result = original()\n        print(\"끝\")\n        return result\n    return wrapped\n\ndef total():\n    return 4 + 2\n\ntracked = trace(total)\nprint(tracked())",
       "output": "시작\n끝\n6",
       "diagram": {
-        "type": "pipeline",
+        "type": "collection",
         "nodes": [
           {
-            "label": "감싸는 함수 시작",
-            "value": "시작 출력"
+            "label": "original",
+            "value": "total 함수"
           },
           {
-            "label": "원래 함수",
-            "value": "4 + 2 → 6"
+            "label": "tracked",
+            "value": "wrapped 함수"
           },
           {
-            "label": "감싸는 함수 종료",
-            "value": "끝 출력 후 6 반환"
+            "label": "반환할 값",
+            "value": "6"
           }
         ],
-        "caption": "감싸는 함수 시작: 시작 출력 · 원래 함수: 4 + 2 → 6 · 감싸는 함수 종료: 끝 출력 후 6 반환"
+        "caption": "tracked()가 감싼 함수를 실행하고 original()가 원래 계산을 실행합니다. 반환된 6은 마지막 바깥 print()에서 출력됩니다."
       },
       "trace": [
         {
-          "label": "감싸기",
-          "state": "원래 함수를 기억하는 새 함수를 만듭니다."
+          "label": "감싼 함수 준비",
+          "state": "trace(total)이 total을 기억하는 wrapped를 만들어 tracked에 연결합니다. total과 wrapped의 본문은 아직 실행하지 않았고 출력도 없습니다."
         },
         {
-          "label": "호출",
-          "state": "시작 안내, 계산, 끝 안내 순서로 실행합니다."
+          "label": "tracked 호출",
+          "state": "바깥 print()가 받을 값을 구하려고 tracked()를 호출합니다. wrapped의 첫 print()가 시작을 출력합니다."
+        },
+        {
+          "label": "원래 계산 호출",
+          "state": "original()가 total()을 실행해 4 + 2의 결과 6을 반환합니다. wrapped가 그 값을 result에 연결하지만 아직 6을 출력하지 않습니다."
+        },
+        {
+          "label": "끝 출력과 값 반환",
+          "state": "wrapped가 끝을 출력한 뒤 return result로 6을 바깥 호출자에게 전달합니다. 이때 출력은 시작과 끝 두 줄입니다."
+        },
+        {
+          "label": "바깥 print 실행",
+          "state": "tracked()에서 돌아온 6을 마지막 print()가 받아 출력합니다. 전체 출력은 시작, 끝, 6 순서입니다."
         }
-      ]
+      ],
+      "id": "decorators-scene-1",
+      "kind": "visualization",
+      "question": "함수를 감싸는 순간과 감싼 함수를 호출하는 순간에는 각각 무엇이 실행될까요?",
+      "rationale": "원래 함수와 감싼 함수의 연결이 만들어지는 시점과 실제 호출 경로가 다릅니다. 두 함수의 역할을 유지하며 시작·원래 계산·끝·반환의 경로를 따라가도록 채택합니다.",
+      "interpretation": [
+        "함수를 준비하는 trace(total)에는 total 뒤에 괄호가 없습니다. 실행할 함수를 전달한 것이므로 시작·끝·6 중 어느 것도 이 단계에서 출력하지 않습니다.",
+        "tracked()가 받은 계산 결과를 return하지 않으면, 원래 total이 6을 반환했더라도 바깥 print()에는 None이 전달됩니다. 시작·끝 출력과 계산 결과의 반환은 별도로 유지해야 합니다."
+      ],
+      "visualization": {
+        "ref": "decorators-scene-1",
+        "pin": true,
+        "scrollDistance": 275,
+        "stops": [
+          0.0,
+          0.2,
+          0.4,
+          0.6,
+          0.8,
+          1.0
+        ]
+      }
     },
     {
       "title": "@ 표기로 감싸기 명시하기",
       "body": [
         "데코레이터는 함수 정의에 적용하는 변환 함수입니다. @trace를 붙인 정의는 정의한 함수를 trace에 전달하고 그 결과를 같은 이름에 다시 연결하는 방식입니다.",
-        "여러 입력을 받는 원래 함수를 감싸려면 *args와 **kwargs로 받은 값을 그대로 전달할 수 있습니다. 반환값도 돌려줘야 호출자가 계산 결과를 계속 사용할 수 있습니다."
+        "여러 입력을 받는 원래 함수를 감싸려면 *args와 **kwargs로 받은 값을 그대로 전달할 수 있습니다. 반환값도 돌려줘야 호출자가 계산 결과를 계속 사용할 수 있습니다.",
+        "@trace로 add를 정의한 결과는 함수를 만든 뒤 add = trace(add)로 다시 연결한 것과 같습니다. add(3, b=4)를 호출하면 wrapped가 받은 위치 인자 3과 키워드 인자 b=4를 original에 그대로 전달합니다. original의 반환값 7도 바깥으로 그대로 돌려줍니다."
       ],
       "code": "def trace(original):\n    def wrapped(*args, **kwargs):\n        print(\"계산 요청\")\n        return original(*args, **kwargs)\n    return wrapped\n\n@trace\ndef add(a, b):\n    return a + b\n\nprint(add(3, b=4))",
       "output": "계산 요청\n7",
-      "diagram": {
-        "type": "pipeline",
-        "nodes": [
-          {
-            "label": "입력",
-            "value": "args=(3,), kwargs={'b': 4}"
-          },
-          {
-            "label": "전달",
-            "value": "원래 add(3, b=4)"
-          },
-          {
-            "label": "반환",
-            "value": "7"
-          }
-        ],
-        "caption": "입력: args=(3,), kwargs={'b': 4} · 전달: 원래 add(3, b=4) · 반환: 7"
-      },
-      "trace": [
-        {
-          "label": "정의 시점",
-          "state": "add 이름이 감싼 함수에 연결됩니다."
-        },
-        {
-          "label": "호출 시점",
-          "state": "인자를 넘겨 원래 계산을 실행합니다."
-        }
-      ]
+      "id": "decorators-scene-2",
+      "kind": "reading"
     },
     {
       "title": "원래 함수 설명을 보존하기",
       "body": [
         "감싸는 함수로 바꾸면 함수의 이름과 문서 문자열이 감싸는 함수의 것으로 보일 수 있습니다. Python 표준 라이브러리의 functools.wraps는 원래 함수의 이런 설명 정보를 감싼 함수에 복사합니다.",
-        "모듈은 불러와 사용할 수 있는 코드 묶음이며 from functools import wraps는 그 안의 wraps를 가져오는 지시입니다. wraps가 모든 동작을 자동 보장하지는 않으므로 인자 전달과 반환값은 직접 유지해야 합니다."
+        "모듈은 불러와 사용할 수 있는 코드 묶음이며 from functools import wraps는 그 안의 wraps를 가져오는 지시입니다. wraps가 모든 동작을 자동 보장하지는 않으므로 인자 전달과 반환값은 직접 유지해야 합니다.",
+        "wraps를 사용하면 total.__name__과 total.__doc__에서 원래 total의 이름과 설명을 읽을 수 있습니다. 실제 호출은 여전히 wrapped를 거치며, 원래 계산의 반환값을 전달하는 일은 return original(*args, **kwargs)가 합니다."
       ],
       "code": "from functools import wraps\n\ndef trace(original):\n    @wraps(original)\n    def wrapped(*args, **kwargs):\n        return original(*args, **kwargs)\n    return wrapped\n\n@trace\ndef total(count):\n    \"\"\"두 배 수량을 반환합니다.\"\"\"\n    return count * 2\n\nprint(total.__name__)\nprint(total.__doc__)\nprint(total(3))",
       "output": "total\n두 배 수량을 반환합니다.\n6",
-      "diagram": {
-        "type": "object",
-        "nodes": [
-          {
-            "label": "보존한 이름",
-            "value": "total"
-          },
-          {
-            "label": "보존한 설명",
-            "value": "두 배 수량을 반환합니다."
-          },
-          {
-            "label": "실제 계산",
-            "value": "3 × 2 → 6"
-          }
-        ],
-        "caption": "보존한 이름: total · 보존한 설명: 두 배 수량을 반환합니다. · 실제 계산: 3 × 2 → 6"
-      },
-      "trace": [
-        {
-          "label": "wraps 적용",
-          "state": "원래 함수의 이름과 설명을 감싼 함수에 전달합니다."
-        },
-        {
-          "label": "호출 검증",
-          "state": "감싸는 함수가 같은 인자로 원래 함수를 호출합니다."
-        }
-      ]
+      "id": "decorators-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

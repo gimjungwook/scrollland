@@ -24,7 +24,8 @@ async function main() {
   if (version.status !== 0) throw new Error('Python 3.10 이상이 필요합니다. SCROLLLAND_PYTHON으로 실행 파일을 지정할 수 있습니다.');
   const { lessons, order } = await readContent(); let total = 0;
   for (const slug of order) for (const [index, section] of lessons[slug].sections.entries()) {
-    try { await executeExample(section, { python }); total++; } catch (error) { throw new Error(`${slug} 장면 ${index + 1} (${section.title}): ${error.message}`); }
+    if (!section.code) continue;
+    try { await executeExample(section, { python }); total++; } catch (error) { throw new Error(`${slug} 구간 ${index + 1} (${section.title}): ${error.message}`); }
   }
   console.log(`Python ${version.stdout.trim()}: ${order.length}개 레슨의 예제 ${total}개 실행·출력 일치. 각 예제는 별도 임시 폴더에서 실행하고 입력 자료를 정리했습니다.`);
 }
