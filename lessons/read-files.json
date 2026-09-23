@@ -23,6 +23,15 @@
   "takeaway": "파일의 위치와 인코딩을 명시하고 필요한 범위만 읽습니다.",
   "sections": [
     {
+      "id": "read-files-reading-introduction",
+      "kind": "reading",
+      "title": "출력 뒤에도 기록을 남기려면",
+      "body": [
+        "지금까지의 출력은 실행 결과를 읽는 통로였습니다. 프로그램이 끝난 뒤에도 다른 실행에서 기록을 다시 읽으려면 파일에 저장한 글과 그 파일의 위치를 알아야 합니다.",
+        "이번 예제는 준비한 파일을 읽습니다. 파일 경로, 글자를 해석하는 규칙, 열린 파일을 닫는 시점을 차례로 구별하겠습니다."
+      ]
+    },
+    {
       "title": "파일 위치와 글자 해석 정하기",
       "body": [
         "경로는 파일이 어디에 있는지 나타내는 값입니다. 상대 경로 observations.txt는 실행 중인 작업 폴더를 기준으로 찾습니다. 예제에 제공된 같은 이름의 파일을 작업 폴더에 준비하세요.",
@@ -30,38 +39,27 @@
       ],
       "code": "from pathlib import Path\n\npath = Path(\"observations.txt\")\ntext = path.read_text(encoding=\"utf-8\")\nprint(text, end=\"\")",
       "output": "숲:4\n강:2",
-      "diagram": {
-        "type": "pipeline",
-        "nodes": [
-          {
-            "label": "상대 경로",
-            "value": "작업 폴더의 observations.txt"
-          },
-          {
-            "label": "UTF-8 읽기",
-            "value": "파일 바이트 → 문자열"
-          }
-        ],
-        "caption": "상대 경로: 작업 폴더의 observations.txt · UTF-8 읽기: 파일 바이트 → 문자열"
-      },
-      "trace": [
-        {
-          "label": "경로 결정",
-          "state": "현재 작업 폴더에서 제공된 파일을 찾습니다."
-        },
-        {
-          "label": "읽기",
-          "state": "UTF-8로 해석한 문자열을 출력합니다."
-        }
-      ],
       "files": {
         "observations.txt": "숲:4\n강:2\n"
-      }
+      },
+      "id": "read-files-scene-1",
+      "kind": "reading"
     },
     {
       "title": "한 줄씩 읽고 자동으로 닫기",
       "body": [
-        "with는 구간을 나갈 때 정리 동작을 보장하는 문법입니다. open()으로 연 파일은 with 구간이 끝날 때 닫히며, 중간에 예외가 나도 닫기 처리를 수행합니다.",
+        [
+          {
+            "text": "with는 구간을 나갈 때 정리 동작을 보장하는 문법입니다. open()으로 연 파일은 "
+          },
+          {
+            "text": "with 구간이 끝날 때 닫히며",
+            "bold": true
+          },
+          {
+            "text": ", 중간에 예외가 나도 닫기 처리를 수행합니다."
+          }
+        ],
         "파일 객체를 for로 반복하면 한 줄씩 읽습니다. 줄 끝의 줄바꿈은 포함되므로 rstrip(\"\\n\")으로 줄바꿈만 제거합니다. strip()은 필요한 앞뒤 공백까지 지울 수 있어 의도에 맞게 선택하세요."
       ],
       "code": "with open(\"observations.txt\", \"r\", encoding=\"utf-8\") as source:\n    for number, line in enumerate(source, start=1):\n        print(number, line.rstrip(\"\\n\"))\nprint(source.closed)",
@@ -96,6 +94,25 @@
       ],
       "files": {
         "observations.txt": "숲:4\n강:2\n"
+      },
+      "id": "read-files-scene-2",
+      "kind": "visualization",
+      "question": "두 줄을 읽는 동안과 with를 나간 뒤 source.closed는 어떻게 다를까요?",
+      "rationale": "현재 읽은 줄과 누적 출력이 변하는 동안 파일은 열린 상태를 유지하고 with를 나갈 때만 닫힙니다. 읽기 위치·출력·닫힘 시점의 관계를 함께 추적해야 파일 내용과 파일 객체의 상태를 구별할 수 있습니다.",
+      "interpretation": [
+        "첫 줄을 읽은 뒤에도 파일은 열려 있어 다음 줄을 받을 수 있습니다. with의 들여쓴 구간을 벗어나면 source.closed가 True가 됩니다.",
+        "닫기는 열린 파일 객체의 사용을 마치는 일입니다. observations.txt를 삭제하는 일이 아니며, 이미 얻은 문자열과 출력도 사라지지 않습니다."
+      ],
+      "visualization": {
+        "ref": "read-files-scene-2",
+        "pin": true,
+        "scrollDistance": 220,
+        "stops": [
+          0,
+          0.3,
+          0.64,
+          1
+        ]
       }
     },
     {
@@ -120,23 +137,11 @@
         ],
         "caption": "텍스트 해석: 숲: 문자 1개 · UTF-8 저장: 바이트 3개"
       },
-      "trace": [
-        {
-          "label": "텍스트 읽기",
-          "state": "저장된 바이트를 한글 한 글자로 해석합니다."
-        },
-        {
-          "label": "이진 읽기",
-          "state": "바이트 3개를 그대로 읽습니다."
-        },
-        {
-          "label": "명시적 해석",
-          "state": "decode로 같은 글자를 복원합니다."
-        }
-      ],
       "files": {
         "place.txt": "숲"
-      }
+      },
+      "id": "read-files-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

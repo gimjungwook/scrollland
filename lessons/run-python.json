@@ -15,6 +15,36 @@
   "takeaway": "코드는 실행할 지시이고, 출력은 그 지시가 화면에 남긴 결과입니다.",
   "sections": [
     {
+      "id": "run-python-reading-introduction",
+      "kind": "reading",
+      "title": "처음에는 결과부터 읽어 봅니다",
+      "body": [
+        [
+          {
+            "text": "짧은 "
+          },
+          {
+            "text": "지시 한 줄",
+            "bold": true,
+            "effect": {
+              "preset": "lift",
+              "mode": "scrub",
+              "purpose": "처음 만나는 짧은 코드에 시선을 모아 첫 예제로 이어 읽게 합니다.",
+              "start": "top 85%",
+              "end": "top 35%",
+              "duration": 0.85,
+              "reentry": "repeat",
+              "exit": "cancel",
+              "initial": "play"
+            }
+          },
+          {
+            "text": "이 화면에 어떤 글을 남기는지부터 살펴보겠습니다. 예제의 코드와 출력은 이미 함께 준비되어 있으므로, 설치하거나 버튼을 누르지 않고 아래로 읽어 가면 됩니다."
+          }
+        ]
+      ]
+    },
+    {
       "title": "한 줄로 말을 건네기",
       "body": [
         "Python은 컴퓨터가 실행할 지시를 적는 프로그래밍 언어입니다. 코드는 그 언어로 작성한 지시이고, 실행은 컴퓨터가 지시를 수행하는 일입니다.",
@@ -22,30 +52,8 @@
       ],
       "code": "print(\"오늘의 관찰을 시작합니다\")",
       "output": "오늘의 관찰을 시작합니다",
-      "diagram": {
-        "type": "flow",
-        "nodes": [
-          {
-            "label": "코드",
-            "value": "print(\"오늘의 관찰을 시작합니다\")"
-          },
-          {
-            "label": "출력",
-            "value": "오늘의 관찰을 시작합니다"
-          }
-        ],
-        "caption": "코드: print(\"오늘의 관찰을 시작합니다\") · 출력: 오늘의 관찰을 시작합니다"
-      },
-      "trace": [
-        {
-          "label": "호출 전",
-          "state": "아직 출력이 없습니다."
-        },
-        {
-          "label": "호출 후",
-          "state": "괄호 안 글이 출력에 한 줄 남습니다."
-        }
-      ]
+      "id": "run-python-scene-1",
+      "kind": "reading"
     },
     {
       "title": "위에서 아래로 읽기",
@@ -55,34 +63,8 @@
       ],
       "code": "# 관찰한 새의 수를 더합니다\nprint(4 + 3)\nprint(\"기록 #1\")",
       "output": "7\n기록 #1",
-      "diagram": {
-        "type": "flow",
-        "nodes": [
-          {
-            "label": "첫 지시",
-            "value": "4 + 3을 계산하고 7 출력"
-          },
-          {
-            "label": "다음 지시",
-            "value": "기록 #1 출력"
-          }
-        ],
-        "caption": "첫 지시: 4 + 3을 계산하고 7 출력 · 다음 지시: 기록 #1 출력"
-      },
-      "trace": [
-        {
-          "label": "주석 줄",
-          "state": "Python은 이 줄의 설명을 실행하지 않습니다."
-        },
-        {
-          "label": "두 번째 줄",
-          "state": "덧셈 결과 7을 출력합니다."
-        },
-        {
-          "label": "세 번째 줄",
-          "state": "문자열을 출력하고 다음 줄로 이동합니다."
-        }
-      ]
+      "id": "run-python-scene-2",
+      "kind": "reading"
     },
     {
       "title": "직접 실행할 준비",
@@ -92,34 +74,8 @@
       ],
       "code": "print(\"준비\")\nprint(12 - 5)\nprint(\"끝\")",
       "output": "준비\n7\n끝",
-      "diagram": {
-        "type": "flow",
-        "nodes": [
-          {
-            "label": "practice.py",
-            "value": "실행할 코드가 저장된 파일"
-          },
-          {
-            "label": "터미널",
-            "value": "준비 → 7 → 끝 순서로 출력"
-          }
-        ],
-        "caption": "practice.py: 실행할 코드가 저장된 파일 · 터미널: 준비 → 7 → 끝 순서로 출력"
-      },
-      "trace": [
-        {
-          "label": "실행 시작",
-          "state": "Python이 파일의 첫 지시를 읽습니다."
-        },
-        {
-          "label": "계산 실행",
-          "state": "12에서 5를 뺀 7을 출력합니다."
-        },
-        {
-          "label": "파일 끝",
-          "state": "끝을 출력한 뒤 실행을 마칩니다."
-        }
-      ]
+      "id": "run-python-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

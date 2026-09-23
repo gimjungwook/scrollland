@@ -26,34 +26,8 @@
       ],
       "code": "import math\n\ncounts = [4, 2, 7]\nprint(min(counts), max(counts))\nprint(abs(-3))\nprint(math.sqrt(25))\nprint(math.ceil(2.1), math.floor(2.9))",
       "output": "2 7\n3\n5.0\n3 2",
-      "diagram": {
-        "type": "collection",
-        "nodes": [
-          {
-            "label": "관찰 범위",
-            "value": "최소 2, 최대 7"
-          },
-          {
-            "label": "거리 크기",
-            "value": "abs(-3) → 3"
-          },
-          {
-            "label": "용기 수",
-            "value": "ceil(2.1) → 3"
-          }
-        ],
-        "caption": "관찰 범위: 최소 2, 최대 7 · 거리 크기: abs(-3) → 3 · 용기 수: ceil(2.1) → 3"
-      },
-      "trace": [
-        {
-          "label": "문제 선택",
-          "state": "범위·크기·정수 맞춤이 서로 다른 작업입니다."
-        },
-        {
-          "label": "함수 적용",
-          "state": "각 질문에 맞는 계산 함수를 사용합니다."
-        }
-      ]
+      "id": "math-scene-1",
+      "kind": "reading"
     },
     {
       "title": "근사 비교와 정확한 십진수",
@@ -77,16 +51,8 @@
         ],
         "caption": "float 비교: 작은 오차를 허용해 가까운지 확인 · Decimal 계산: 십진 문자열로부터 정확한 덧셈"
       },
-      "trace": [
-        {
-          "label": "근사값 비교",
-          "state": "isclose가 작은 차이를 허용합니다."
-        },
-        {
-          "label": "십진수 생성",
-          "state": "문자열에서 직접 Decimal을 만듭니다."
-        }
-      ]
+      "id": "math-scene-2",
+      "kind": "reading"
     },
     {
       "title": "자료의 대표값과 재현 가능한 무작위 선택",
@@ -96,38 +62,8 @@
       ],
       "code": "import statistics\nimport random\n\ncounts = [2, 3, 10]\nprint(statistics.mean(counts))\nprint(statistics.median(counts))\ngenerator = random.Random(7)\nvalue = generator.random()\nprint(0 <= value < 1)",
       "output": "5\n3\nTrue",
-      "diagram": {
-        "type": "collection",
-        "nodes": [
-          {
-            "label": "평균",
-            "value": "(2 + 3 + 10) / 3 → 5"
-          },
-          {
-            "label": "중앙값",
-            "value": "정렬 가운데 3"
-          },
-          {
-            "label": "무작위 생성 범위",
-            "value": "0 이상 1 미만"
-          }
-        ],
-        "caption": "평균: (2 + 3 + 10) / 3 → 5 · 중앙값: 정렬 가운데 3 · 무작위 생성 범위: 0 이상 1 미만"
-      },
-      "trace": [
-        {
-          "label": "대표값 계산",
-          "state": "평균과 중앙값이 다른 이유를 항목에서 찾습니다."
-        },
-        {
-          "label": "생성기 준비",
-          "state": "시드로 초기 상태를 고정합니다."
-        },
-        {
-          "label": "범위 확인",
-          "state": "생성 결과가 약속한 범위에 있는지 검사합니다."
-        }
-      ]
+      "id": "math-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

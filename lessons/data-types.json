@@ -40,16 +40,8 @@
         ],
         "caption": "정수 계산: 12 + 3 → 15 · 문자열 연결: \"12\" + \"3\" → \"123\""
       },
-      "trace": [
-        {
-          "label": "자료형 확인",
-          "state": "숫자 12는 int, 따옴표 안 12는 str입니다."
-        },
-        {
-          "label": "연산 선택",
-          "state": "같은 +라도 객체의 종류에 따라 동작이 다릅니다."
-        }
-      ]
+      "id": "data-types-scene-1",
+      "kind": "reading"
     },
     {
       "title": "계산할 값으로 변환하기",
@@ -59,34 +51,8 @@
       ],
       "code": "text = \"12\"\namount = int(text)\nprint(amount + 3)\nprint(type(text))\nprint(str(2.5))",
       "output": "15\n<class 'str'>\n2.5",
-      "diagram": {
-        "type": "binding",
-        "nodes": [
-          {
-            "label": "입력 객체",
-            "value": "text → 문자열 \"12\""
-          },
-          {
-            "label": "변환 결과",
-            "value": "amount → 정수 12"
-          }
-        ],
-        "caption": "입력 객체: text → 문자열 \"12\" · 변환 결과: amount → 정수 12"
-      },
-      "trace": [
-        {
-          "label": "변환 전",
-          "state": "text는 문자열입니다."
-        },
-        {
-          "label": "변환 후",
-          "state": "amount는 계산할 수 있는 정수입니다."
-        },
-        {
-          "label": "원본 확인",
-          "state": "text의 자료형은 str로 유지됩니다."
-        }
-      ]
+      "id": "data-types-scene-2",
+      "kind": "reading"
     },
     {
       "title": "참·거짓과 값 없음 구별하기",
@@ -110,16 +76,8 @@
         ],
         "caption": "확인한 수량: seat_count → 0 · 미확인 수량: unknown_count → None"
       },
-      "trace": [
-        {
-          "label": "확인 여부",
-          "state": "confirmed는 bool의 참 값입니다."
-        },
-        {
-          "label": "수량 비교",
-          "state": "0은 확인한 숫자이고 None은 수량이 없다는 표시입니다."
-        }
-      ]
+      "id": "data-types-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

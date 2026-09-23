@@ -27,30 +27,8 @@
       ],
       "code": "import math as calculation\nfrom math import ceil\n\nprint(calculation.sqrt(49))\nprint(ceil(2.2))",
       "output": "7.0\n3",
-      "diagram": {
-        "type": "binding",
-        "nodes": [
-          {
-            "label": "불러온 모듈",
-            "value": "calculation → math"
-          },
-          {
-            "label": "직접 가져온 함수",
-            "value": "ceil → math.ceil"
-          }
-        ],
-        "caption": "불러온 모듈: calculation → math · 직접 가져온 함수: ceil → math.ceil"
-      },
-      "trace": [
-        {
-          "label": "가져오기",
-          "state": "표준 도구를 현재 코드에서 사용할 수 있게 합니다."
-        },
-        {
-          "label": "호출",
-          "state": "제곱근과 올림 함수를 사용합니다."
-        }
-      ]
+      "id": "modules-scene-1",
+      "kind": "reading"
     },
     {
       "title": "자기 파일에서 함수 가져오기",
@@ -74,19 +52,11 @@
         ],
         "caption": "보조 파일: measures.py의 double 함수 · 현재 파일: import measures 후 함수 호출"
       },
-      "trace": [
-        {
-          "label": "import 시점",
-          "state": "measures의 함수가 정의되며 직접 실행용 출력은 건너뜁니다."
-        },
-        {
-          "label": "함수 호출",
-          "state": "double(6)이 12를 반환합니다."
-        }
-      ],
       "files": {
         "measures.py": "def double(count):\n    return count * 2\n\nif __name__ == \"__main__\":\n    print(\"직접 실행 시연\")\n"
-      }
+      },
+      "id": "modules-scene-2",
+      "kind": "reading"
     },
     {
       "title": "리스트와 수치 배열 선택하기",
@@ -96,30 +66,8 @@
       ],
       "code": "from array import array\n\ncounts = array(\"i\", [2, 4, 6])\ncounts.append(8)\nprint(list(counts))\nprint(counts.typecode)\nprint(counts[1])",
       "output": "[2, 4, 6, 8]\ni\n4",
-      "diagram": {
-        "type": "collection",
-        "nodes": [
-          {
-            "label": "리스트 선택",
-            "value": "일반 객체 묶음에 사용"
-          },
-          {
-            "label": "array 선택",
-            "value": "정해진 기본 수치 형식으로 저장"
-          }
-        ],
-        "caption": "리스트 선택: 일반 객체 묶음에 사용 · array 선택: 정해진 기본 수치 형식으로 저장"
-      },
-      "trace": [
-        {
-          "label": "배열 생성",
-          "state": "정수 형식 i의 배열을 만듭니다."
-        },
-        {
-          "label": "배열 사용",
-          "state": "같은 형식의 수량을 추가하고 위치로 읽습니다."
-        }
-      ]
+      "id": "modules-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

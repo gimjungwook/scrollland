@@ -25,30 +25,8 @@
       ],
       "code": "def total_to(n):\n    if n == 0:\n        return 0\n    return n + total_to(n - 1)\n\nprint(total_to(0))\nprint(total_to(3))",
       "output": "0\n6",
-      "diagram": {
-        "type": "pipeline",
-        "nodes": [
-          {
-            "label": "종료 문제",
-            "value": "total_to(0) → 0"
-          },
-          {
-            "label": "작게 나누기",
-            "value": "total_to(3) → 3 + total_to(2)"
-          }
-        ],
-        "caption": "종료 문제: total_to(0) → 0 · 작게 나누기: total_to(3) → 3 + total_to(2)"
-      },
-      "trace": [
-        {
-          "label": "종료 확인",
-          "state": "0일 때 즉시 0을 반환합니다."
-        },
-        {
-          "label": "축소",
-          "state": "0보다 크면 n을 1 줄여 호출합니다."
-        }
-      ]
+      "id": "recursion-scene-1",
+      "kind": "reading"
     },
     {
       "title": "호출이 쌓이고 답이 돌아오기",
@@ -74,18 +52,57 @@
       },
       "trace": [
         {
-          "label": "내려가기",
-          "state": "각 호출이 더 작은 호출의 답을 기다립니다."
+          "label": "3에서 호출",
+          "state": "total_to(3)이 3 + total_to(2)의 결과를 기다립니다."
         },
         {
-          "label": "바닥 도달",
-          "state": "0을 반환합니다."
+          "label": "2에서 호출",
+          "state": "total_to(2)도 2 + total_to(1)의 결과를 기다립니다."
         },
         {
-          "label": "올라오기",
-          "state": "기다리던 덧셈을 차례로 완료합니다."
+          "label": "1에서 호출",
+          "state": "total_to(1)이 1 + total_to(0)의 결과를 기다립니다."
+        },
+        {
+          "label": "종료 조건",
+          "state": "total_to(0)이 더 호출하지 않고 0을 반환합니다."
+        },
+        {
+          "label": "1로 복귀",
+          "state": "기다리던 1 + 0을 계산해 1을 반환합니다."
+        },
+        {
+          "label": "2로 복귀",
+          "state": "기다리던 2 + 1을 계산해 3을 반환합니다."
+        },
+        {
+          "label": "3으로 복귀",
+          "state": "기다리던 3 + 3을 계산해 6을 반환합니다."
         }
-      ]
+      ],
+      "id": "recursion-scene-2",
+      "kind": "visualization",
+      "question": "0에 도달한 뒤 답은 어떤 호출부터 돌아올까요?",
+      "rationale": "호출이 쌓이는 순서와 반환이 풀리는 순서가 반대입니다. 출력 목록만 읽으면 각 합계가 어느 기다리던 호출에 전달되는지 놓칠 수 있어 기다리는 계산과 반환 경로를 대응시킵니다.",
+      "interpretation": [
+        "total_to(0)이 0을 반환하면 기다리던 total_to(1)이 1을, total_to(2)가 3을, total_to(3)이 6을 반환합니다.",
+        "마지막 6은 한 번에 나온 숫자가 아니라 작은 호출의 결과를 차례로 더한 합계입니다. 종료 조건이 없으면 이 반환 과정도 시작하지 못합니다."
+      ],
+      "visualization": {
+        "ref": "recursion-scene-2",
+        "pin": true,
+        "scrollDistance": 335,
+        "stops": [
+          0,
+          0.12,
+          0.25,
+          0.4,
+          0.56,
+          0.7,
+          0.84,
+          1
+        ]
+      }
     },
     {
       "title": "반복이 더 알맞은 경우",
@@ -95,34 +112,8 @@
       ],
       "code": "def total_to(n):\n    total = 0\n    for value in range(1, n + 1):\n        total += value\n    return total\n\nprint(total_to(3))\nprint(total_to(100))",
       "output": "6\n5050",
-      "diagram": {
-        "type": "timeline",
-        "nodes": [
-          {
-            "label": "반복 상태",
-            "value": "total에 현재 합 유지"
-          },
-          {
-            "label": "종료",
-            "value": "range의 마지막 항목까지 처리"
-          }
-        ],
-        "caption": "반복 상태: total에 현재 합 유지 · 종료: range의 마지막 항목까지 처리"
-      },
-      "trace": [
-        {
-          "label": "시작",
-          "state": "total=0"
-        },
-        {
-          "label": "각 반복",
-          "state": "현재 숫자를 total에 더합니다."
-        },
-        {
-          "label": "반환",
-          "state": "추가 호출을 쌓지 않고 합계를 돌려줍니다."
-        }
-      ]
+      "id": "recursion-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

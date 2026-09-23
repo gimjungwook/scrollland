@@ -48,20 +48,8 @@
         ],
         "caption": "first와 second: 내용은 같고 객체는 다름 · first와 alias: 같은 객체 · 포함 여부: 4는 first에 있음"
       },
-      "trace": [
-        {
-          "label": "별도 생성",
-          "state": "리스트 객체 두 개를 만듭니다."
-        },
-        {
-          "label": "같은 객체 연결",
-          "state": "alias는 first와 같은 리스트를 가리킵니다."
-        },
-        {
-          "label": "질문별 결과",
-          "state": "==는 값, is는 객체, in은 포함을 확인합니다."
-        }
-      ]
+      "id": "operators-scene-1",
+      "kind": "reading"
     },
     {
       "title": "조건의 계산 순서 이용하기",
@@ -71,34 +59,8 @@
       ],
       "code": "count = 0\nprint(count != 0 and 12 / count > 2)\ncount += 2\nprint(count)",
       "output": "False\n2",
-      "diagram": {
-        "type": "branch",
-        "nodes": [
-          {
-            "label": "앞 조건",
-            "value": "0 != 0 → False"
-          },
-          {
-            "label": "뒤 식",
-            "value": "12 / count 계산 안 함"
-          },
-          {
-            "label": "이후 대입",
-            "value": "count → 2"
-          }
-        ],
-        "caption": "앞 조건: 0 != 0 → False · 뒤 식: 12 / count 계산 안 함 · 이후 대입: count → 2"
-      },
-      "trace": [
-        {
-          "label": "and 검사",
-          "state": "앞이 거짓이라 전체 결과가 정해집니다."
-        },
-        {
-          "label": "다음 지시",
-          "state": "증강 대입으로 count의 값을 2로 바꿉니다."
-        }
-      ]
+      "id": "operators-scene-2",
+      "kind": "reading"
     },
     {
       "title": "비트별 상태를 비교하기",
@@ -108,34 +70,8 @@
       ],
       "code": "flags = 0b101\nmask = 0b001\nprint(flags & mask)\nprint(flags | 0b010)\nprint(flags ^ mask)\nprint(mask << 2)\nprint(flags >> 1)\nprint(~mask)",
       "output": "1\n7\n4\n4\n2\n-2",
-      "diagram": {
-        "type": "collection",
-        "nodes": [
-          {
-            "label": "기존 비트",
-            "value": "101"
-          },
-          {
-            "label": "검사할 비트",
-            "value": "001"
-          },
-          {
-            "label": "AND 결과",
-            "value": "001 → 1"
-          }
-        ],
-        "caption": "기존 비트: 101 · 검사할 비트: 001 · AND 결과: 001 → 1"
-      },
-      "trace": [
-        {
-          "label": "비트 비교",
-          "state": "같은 자리끼리 규칙을 적용합니다."
-        },
-        {
-          "label": "표현 확인",
-          "state": "출력은 기본적으로 이진 표기가 아닌 십진수입니다."
-        }
-      ]
+      "id": "operators-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

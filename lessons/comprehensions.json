@@ -44,20 +44,8 @@
         ],
         "caption": "원본은 유지됩니다. 일반 반복과 컴프리헨션은 같은 항목과 순서의 새 리스트를 각각 만듭니다."
       },
-      "trace": [
-        {
-          "label": "일반 반복",
-          "state": "빈 loop_result에 4, 8, 6을 차례로 추가합니다."
-        },
-        {
-          "label": "컴프리헨션",
-          "state": "같은 변환 결과를 새 리스트 doubled에 모읍니다."
-        },
-        {
-          "label": "비교",
-          "state": "counts는 [2, 4, 3]이고 두 결과 리스트는 모두 [4, 8, 6]입니다."
-        }
-      ]
+      "id": "comprehensions-scene-1",
+      "kind": "reading"
     },
     {
       "title": "조건에 맞는 항목만 남기기",
@@ -67,34 +55,8 @@
       ],
       "code": "counts = [3, -1, 5, 0]\nvalid = [count for count in counts if count >= 0]\nprint(valid)\nprint([count * 2 for count in counts if count > 0])",
       "output": "[3, 5, 0]\n[6, 10]",
-      "diagram": {
-        "type": "pipeline",
-        "nodes": [
-          {
-            "label": "원본",
-            "value": "3, -1, 5, 0"
-          },
-          {
-            "label": "0 이상 필터",
-            "value": "3, 5, 0"
-          },
-          {
-            "label": "양수만 두 배",
-            "value": "6, 10"
-          }
-        ],
-        "caption": "원본: 3, -1, 5, 0 · 0 이상 필터: 3, 5, 0 · 양수만 두 배: 6, 10"
-      },
-      "trace": [
-        {
-          "label": "항목 검사",
-          "state": "조건을 만족하는지 먼저 봅니다."
-        },
-        {
-          "label": "결과 계산",
-          "state": "남은 항목에만 결과 식을 적용합니다."
-        }
-      ]
+      "id": "comprehensions-scene-2",
+      "kind": "reading"
     },
     {
       "title": "키가 있는 묶음과 중복 없는 묶음",
@@ -104,30 +66,8 @@
       ],
       "code": "counts = {\"숲\": 4, \"강\": 2}\ndoubled = {place: count * 2 for place, count in counts.items()}\nlengths = {len(place) for place in [\"숲\", \"강\", \"공원\"]}\nprint(doubled)\nprint(sorted(lengths))",
       "output": "{'숲': 8, '강': 4}\n[1, 2]",
-      "diagram": {
-        "type": "collection",
-        "nodes": [
-          {
-            "label": "딕셔너리 결과",
-            "value": "숲 → 8, 강 → 4"
-          },
-          {
-            "label": "집합 결과",
-            "value": "글자 수 1과 2"
-          }
-        ],
-        "caption": "딕셔너리 결과: 숲 → 8, 강 → 4 · 집합 결과: 글자 수 1과 2"
-      },
-      "trace": [
-        {
-          "label": "키·값 변환",
-          "state": "키를 유지하고 수량만 두 배로 만듭니다."
-        },
-        {
-          "label": "중복 제거",
-          "state": "두 번 나온 길이 1은 한 항목으로 남습니다."
-        }
-      ]
+      "id": "comprehensions-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

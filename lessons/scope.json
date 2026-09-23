@@ -40,16 +40,8 @@
         ],
         "caption": "전역 이름: count → 10 · 함수 지역 이름: count → 2"
       },
-      "trace": [
-        {
-          "label": "호출 중",
-          "state": "함수 안의 count는 지역 값 2입니다."
-        },
-        {
-          "label": "호출 후",
-          "state": "바깥 count는 10을 유지합니다."
-        }
-      ]
+      "id": "scope-scene-1",
+      "kind": "reading"
     },
     {
       "title": "전역 변경이 필요한지 먼저 판단하기",
@@ -59,34 +51,8 @@
       ],
       "code": "calls = 0\ndef record_call():\n    global calls\n    calls += 1\n\nrecord_call()\nrecord_call()\nprint(calls)",
       "output": "2",
-      "diagram": {
-        "type": "timeline",
-        "nodes": [
-          {
-            "label": "호출 전",
-            "value": "전역 calls=0"
-          },
-          {
-            "label": "첫 호출 뒤",
-            "value": "전역 calls=1"
-          },
-          {
-            "label": "둘째 호출 뒤",
-            "value": "전역 calls=2"
-          }
-        ],
-        "caption": "호출 전: 전역 calls=0 · 첫 호출 뒤: 전역 calls=1 · 둘째 호출 뒤: 전역 calls=2"
-      },
-      "trace": [
-        {
-          "label": "global 선언",
-          "state": "지역 이름을 새로 만들지 않습니다."
-        },
-        {
-          "label": "공유 상태 갱신",
-          "state": "두 호출이 같은 전역 이름을 바꿉니다."
-        }
-      ]
+      "id": "scope-scene-2",
+      "kind": "reading"
     },
     {
       "title": "바깥 함수의 값을 기억하기",
@@ -112,18 +78,47 @@
       },
       "trace": [
         {
-          "label": "첫 생성",
+          "label": "first 준비",
           "state": "first가 사용할 count=0을 준비합니다."
         },
         {
-          "label": "둘째 생성",
+          "label": "second 준비",
           "state": "second가 사용할 별도 count=0을 준비합니다."
         },
         {
-          "label": "호출 결과",
-          "state": "first는 두 번, second는 한 번 증가합니다."
+          "label": "first 첫 호출",
+          "state": "first의 count만 1이 되고 1을 반환합니다."
+        },
+        {
+          "label": "first 둘째 호출",
+          "state": "first의 count만 2가 되고 2를 반환합니다."
+        },
+        {
+          "label": "second 첫 호출",
+          "state": "second의 count가 1이 되고 1을 반환합니다. 바깥 print()가 1 2 1을 출력합니다."
         }
-      ]
+      ],
+      "id": "scope-scene-3",
+      "kind": "visualization",
+      "question": "first를 두 번 호출하면 second가 기억하는 count도 2가 될까요?",
+      "rationale": "함수 호출마다 별도 상태가 생기고 반환한 함수가 자기 상태를 계속 사용합니다. 철자가 같은 count의 두 저장 관계와 호출 순서를 동시에 추적해야 독립성을 확인할 수 있습니다.",
+      "interpretation": [
+        "first는 자기 count를 0에서 1, 다시 2로 바꿉니다. second는 별도 count를 처음 0에서 1로 바꾸므로 출력은 1 2 1입니다.",
+        "클로저가 기억하는 것은 모든 호출이 공유하는 전역 count가 아닙니다. make_counter()를 호출할 때마다 준비한 별도 바깥 함수의 상태입니다."
+      ],
+      "visualization": {
+        "ref": "scope-scene-3",
+        "pin": true,
+        "scrollDistance": 275,
+        "stops": [
+          0,
+          0.16,
+          0.34,
+          0.55,
+          0.76,
+          1
+        ]
+      }
     }
   ],
   "quiz": {

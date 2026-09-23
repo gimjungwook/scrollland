@@ -26,30 +26,8 @@
       ],
       "code": "raw = \"  PARK  \"\nplace = raw.strip().lower()\nprint(place)\nprint(len(raw))",
       "output": "park\n8",
-      "diagram": {
-        "type": "pipeline",
-        "nodes": [
-          {
-            "label": "원본",
-            "value": "공백 2개 + PARK + 공백 2개"
-          },
-          {
-            "label": "정리한 값",
-            "value": "park"
-          }
-        ],
-        "caption": "원본: 공백 2개 + PARK + 공백 2개 · 정리한 값: park"
-      },
-      "trace": [
-        {
-          "label": "strip 이후",
-          "state": "앞뒤 공백이 빠진 PARK를 얻습니다."
-        },
-        {
-          "label": "lower 이후",
-          "state": "소문자 park를 place에 연결합니다."
-        }
-      ]
+      "id": "text-tools-scene-1",
+      "kind": "reading"
     },
     {
       "title": "찾고 바꾸기",
@@ -59,30 +37,8 @@
       ],
       "code": "label = \"zone-west\"\nprint(\"west\" in label)\nprint(label.startswith(\"zone\"))\nprint(label.find(\"east\"))\nprint(label.replace(\"west\", \"east\"))",
       "output": "True\nTrue\n-1\nzone-east",
-      "diagram": {
-        "type": "flow",
-        "nodes": [
-          {
-            "label": "찾을 글",
-            "value": "west는 있음, east는 없음"
-          },
-          {
-            "label": "바꾼 결과",
-            "value": "zone-east"
-          }
-        ],
-        "caption": "찾을 글: west는 있음, east는 없음 · 바꾼 결과: zone-east"
-      },
-      "trace": [
-        {
-          "label": "검색",
-          "state": "west 포함 여부는 True, east의 위치는 -1입니다."
-        },
-        {
-          "label": "치환",
-          "state": "west를 east로 바꾼 새 문자열을 얻습니다."
-        }
-      ]
+      "id": "text-tools-scene-2",
+      "kind": "reading"
     },
     {
       "title": "나누고 다시 잇기",
@@ -110,16 +66,8 @@
         ],
         "caption": "입력 글: 숲,강,공원 · 중간 묶음: 숲 · 강 · 공원 · 출력 글: 숲 / 강 / 공원"
       },
-      "trace": [
-        {
-          "label": "나누기",
-          "state": "쉼표마다 글을 나누어 순서대로 담습니다."
-        },
-        {
-          "label": "잇기",
-          "state": "각 문자열 사이에 /를 넣어 연결합니다."
-        }
-      ]
+      "id": "text-tools-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

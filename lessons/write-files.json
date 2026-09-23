@@ -28,34 +28,8 @@
       ],
       "code": "from pathlib import Path\nfrom tempfile import TemporaryDirectory\n\nwith TemporaryDirectory() as folder:\n    path = Path(folder) / \"observations.txt\"\n    with path.open(\"x\", encoding=\"utf-8\") as target:\n        target.write(\"숲:4\\n\")\n    with path.open(\"a\", encoding=\"utf-8\") as target:\n        target.write(\"강:2\\n\")\n    print(path.read_text(encoding=\"utf-8\"), end=\"\")",
       "output": "숲:4\n강:2",
-      "diagram": {
-        "type": "timeline",
-        "nodes": [
-          {
-            "label": "x로 생성",
-            "value": "첫 줄 숲:4"
-          },
-          {
-            "label": "a로 추가",
-            "value": "둘째 줄 강:2"
-          },
-          {
-            "label": "최종 파일",
-            "value": "두 줄이 남음"
-          }
-        ],
-        "caption": "x로 생성: 첫 줄 숲:4 · a로 추가: 둘째 줄 강:2 · 최종 파일: 두 줄이 남음"
-      },
-      "trace": [
-        {
-          "label": "새 파일",
-          "state": "임시 폴더에 새 기록 파일을 만듭니다."
-        },
-        {
-          "label": "추가 기록",
-          "state": "기존 첫 줄 뒤에 두 번째 줄을 씁니다."
-        }
-      ]
+      "id": "write-files-scene-1",
+      "kind": "reading"
     },
     {
       "title": "덮어쓰기의 영향을 확인하기",
@@ -79,16 +53,8 @@
         ],
         "caption": "덮기 전: 이전 긴 기록 · 덮은 후: 새 기록만 남음"
       },
-      "trace": [
-        {
-          "label": "초기 쓰기",
-          "state": "예제용 이전 내용을 만듭니다."
-        },
-        {
-          "label": "덮어쓰기",
-          "state": "파일 전체 내용을 새 기록으로 바꿉니다."
-        }
-      ]
+      "id": "write-files-scene-2",
+      "kind": "reading"
     },
     {
       "title": "방금 만든 파일과 빈 폴더 삭제하기",
@@ -98,34 +64,8 @@
       ],
       "code": "from pathlib import Path\nfrom tempfile import TemporaryDirectory\n\nwith TemporaryDirectory() as folder:\n    drafts = Path(folder) / \"drafts\"\n    drafts.mkdir()\n    path = drafts / \"draft.txt\"\n    path.write_text(\"연습\", encoding=\"utf-8\")\n    path.unlink()\n    print(path.exists())\n    drafts.rmdir()\n    print(drafts.exists())",
       "output": "False\nFalse",
-      "diagram": {
-        "type": "timeline",
-        "nodes": [
-          {
-            "label": "삭제 대상 파일",
-            "value": "이번 예제에서 만든 draft.txt"
-          },
-          {
-            "label": "삭제 대상 폴더",
-            "value": "파일 삭제로 비워진 drafts"
-          }
-        ],
-        "caption": "삭제 대상 파일: 이번 예제에서 만든 draft.txt · 삭제 대상 폴더: 파일 삭제로 비워진 drafts"
-      },
-      "trace": [
-        {
-          "label": "파일 삭제",
-          "state": "unlink로 예제 파일을 지웁니다."
-        },
-        {
-          "label": "빈 폴더 삭제",
-          "state": "rmdir로 비어 있는 예제 폴더를 지웁니다."
-        },
-        {
-          "label": "확인",
-          "state": "두 경로 모두 존재하지 않습니다."
-        }
-      ]
+      "id": "write-files-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

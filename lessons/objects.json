@@ -27,34 +27,8 @@
       ],
       "code": "class Observation:\n    pass\n\nfirst = Observation()\nsecond = Observation()\nprint(isinstance(first, Observation))\nprint(first is second)",
       "output": "True\nFalse",
-      "diagram": {
-        "type": "object",
-        "nodes": [
-          {
-            "label": "클래스",
-            "value": "Observation"
-          },
-          {
-            "label": "첫 인스턴스",
-            "value": "first"
-          },
-          {
-            "label": "다른 인스턴스",
-            "value": "second"
-          }
-        ],
-        "caption": "클래스: Observation · 첫 인스턴스: first · 다른 인스턴스: second"
-      },
-      "trace": [
-        {
-          "label": "클래스 정의",
-          "state": "Observation이라는 종류를 정의합니다."
-        },
-        {
-          "label": "두 번 호출",
-          "state": "서로 다른 개별 객체를 두 개 만듭니다."
-        }
-      ]
+      "id": "objects-scene-1",
+      "kind": "reading"
     },
     {
       "title": "생성할 때 상태 준비하기",
@@ -64,30 +38,8 @@
       ],
       "code": "class Observation:\n    def __init__(self, place, count):\n        self.place = place\n        self.count = count\n\nrecord = Observation(\"숲\", 4)\nprint(record.place)\nprint(record.count)",
       "output": "숲\n4",
-      "diagram": {
-        "type": "object",
-        "nodes": [
-          {
-            "label": "호출 인자",
-            "value": "place=숲, count=4"
-          },
-          {
-            "label": "record 인스턴스",
-            "value": "place 속성: 숲, count 속성: 4"
-          }
-        ],
-        "caption": "호출 인자: place=숲, count=4 · record 인스턴스: place 속성: 숲, count 속성: 4"
-      },
-      "trace": [
-        {
-          "label": "인스턴스 생성",
-          "state": "새 객체를 만들고 __init__을 호출합니다."
-        },
-        {
-          "label": "초기화",
-          "state": "전달한 값으로 속성을 설정합니다."
-        }
-      ]
+      "id": "objects-scene-2",
+      "kind": "reading"
     },
     {
       "title": "개별 객체의 상태 구별하기",
@@ -111,16 +63,8 @@
         ],
         "caption": "first의 상태: 숲, 5 · second의 상태: 강, 2"
       },
-      "trace": [
-        {
-          "label": "초기 상태",
-          "state": "서로 다른 인스턴스에 수량 4와 2가 있습니다."
-        },
-        {
-          "label": "개별 갱신",
-          "state": "first.count만 5로 바뀝니다."
-        }
-      ]
+      "id": "objects-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

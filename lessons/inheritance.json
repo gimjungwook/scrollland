@@ -24,30 +24,8 @@
       ],
       "code": "class Observation:\n    def __init__(self, count):\n        self.count = count\n    def summary(self):\n        return f\"관찰 {self.count}개\"\n\nclass BirdObservation(Observation):\n    pass\n\nrecord = BirdObservation(4)\nprint(record.summary())\nprint(isinstance(record, Observation))",
       "output": "관찰 4개\nTrue",
-      "diagram": {
-        "type": "object",
-        "nodes": [
-          {
-            "label": "부모",
-            "value": "Observation의 count와 summary"
-          },
-          {
-            "label": "자식",
-            "value": "BirdObservation이 공통 동작 사용"
-          }
-        ],
-        "caption": "부모: Observation의 count와 summary · 자식: BirdObservation이 공통 동작 사용"
-      },
-      "trace": [
-        {
-          "label": "생성",
-          "state": "부모의 초기화 메서드로 count를 설정합니다."
-        },
-        {
-          "label": "호출",
-          "state": "부모에서 찾은 summary를 실행합니다."
-        }
-      ]
+      "id": "inheritance-scene-1",
+      "kind": "reading"
     },
     {
       "title": "부모 초기화 후 새 정보 더하기",
@@ -57,30 +35,8 @@
       ],
       "code": "class Observation:\n    def __init__(self, count):\n        self.count = count\n\nclass BirdObservation(Observation):\n    def __init__(self, count, species):\n        super().__init__(count)\n        self.species = species\n\nrecord = BirdObservation(4, \"참새\")\nprint(record.count, record.species)",
       "output": "4 참새",
-      "diagram": {
-        "type": "pipeline",
-        "nodes": [
-          {
-            "label": "부모 초기화",
-            "value": "count=4"
-          },
-          {
-            "label": "자식 초기화",
-            "value": "species=참새"
-          }
-        ],
-        "caption": "부모 초기화: count=4 · 자식 초기화: species=참새"
-      },
-      "trace": [
-        {
-          "label": "super 호출",
-          "state": "공통 수량 속성을 설정합니다."
-        },
-        {
-          "label": "추가 설정",
-          "state": "자식에게 필요한 종 이름을 붙입니다."
-        }
-      ]
+      "id": "inheritance-scene-2",
+      "kind": "reading"
     },
     {
       "title": "같은 메서드 이름에 새 행동 제공하기",
@@ -90,30 +46,8 @@
       ],
       "code": "class Observation:\n    def summary(self):\n        return \"현장 기록\"\n\nclass BirdObservation(Observation):\n    def summary(self):\n        return super().summary() + \" / 조류\"\n\nprint(Observation().summary())\nprint(BirdObservation().summary())",
       "output": "현장 기록\n현장 기록 / 조류",
-      "diagram": {
-        "type": "pipeline",
-        "nodes": [
-          {
-            "label": "부모 결과",
-            "value": "현장 기록"
-          },
-          {
-            "label": "자식 결과",
-            "value": "현장 기록 / 조류"
-          }
-        ],
-        "caption": "부모 결과: 현장 기록 · 자식 결과: 현장 기록 / 조류"
-      },
-      "trace": [
-        {
-          "label": "자식 호출",
-          "state": "자식 summary에 진입합니다."
-        },
-        {
-          "label": "부모 재사용",
-          "state": "공통 문자열을 받고 자식 설명을 붙입니다."
-        }
-      ]
+      "id": "inheritance-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

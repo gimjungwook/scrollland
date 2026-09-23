@@ -26,30 +26,8 @@
       ],
       "code": "count = 6\nprint(count >= 5)\nprint(count == 0)\nprint(count != 0)",
       "output": "True\nFalse\nTrue",
-      "diagram": {
-        "type": "branch",
-        "nodes": [
-          {
-            "label": "질문 1",
-            "value": "6은 5 이상인가? → 참"
-          },
-          {
-            "label": "질문 2",
-            "value": "6은 0인가? → 거짓"
-          }
-        ],
-        "caption": "질문 1: 6은 5 이상인가? → 참 · 질문 2: 6은 0인가? → 거짓"
-      },
-      "trace": [
-        {
-          "label": "값 준비",
-          "state": "count는 정수 6입니다."
-        },
-        {
-          "label": "비교 후",
-          "state": "각 비교는 bool 값을 만듭니다."
-        }
-      ]
+      "id": "booleans-scene-1",
+      "kind": "reading"
     },
     {
       "title": "여러 조건을 연결하기",
@@ -59,34 +37,8 @@
       ],
       "code": "count = 6\nraining = False\nprint(count >= 5 and not raining)\nprint(count == 0 or raining)",
       "output": "True\nFalse",
-      "diagram": {
-        "type": "branch",
-        "nodes": [
-          {
-            "label": "충분한 수량",
-            "value": "6 >= 5 → True"
-          },
-          {
-            "label": "비가 오지 않음",
-            "value": "not False → True"
-          },
-          {
-            "label": "함께 충족",
-            "value": "True and True → True"
-          }
-        ],
-        "caption": "충분한 수량: 6 >= 5 → True · 비가 오지 않음: not False → True · 함께 충족: True and True → True"
-      },
-      "trace": [
-        {
-          "label": "첫 조건",
-          "state": "수량 조건이 참입니다."
-        },
-        {
-          "label": "둘째 조건",
-          "state": "비가 오지 않는 조건도 참이라 전체가 참입니다."
-        }
-      ]
+      "id": "booleans-scene-2",
+      "kind": "reading"
     },
     {
       "title": "비어 있음과 값 없음 구별하기",
@@ -96,34 +48,8 @@
       ],
       "code": "print(bool(0))\nprint(bool(\"0\"))\nprint(bool(\"\"))\nvalue = None\nprint(value is None)",
       "output": "False\nTrue\nFalse\nTrue",
-      "diagram": {
-        "type": "collection",
-        "nodes": [
-          {
-            "label": "숫자 0",
-            "value": "거짓으로 판정"
-          },
-          {
-            "label": "문자열 \"0\"",
-            "value": "비어 있지 않아 참으로 판정"
-          },
-          {
-            "label": "None",
-            "value": "값 없음"
-          }
-        ],
-        "caption": "숫자 0: 거짓으로 판정 · 문자열 \"0\": 비어 있지 않아 참으로 판정 · None: 값 없음"
-      },
-      "trace": [
-        {
-          "label": "참값 검사",
-          "state": "같아 보이는 0도 자료형에 따라 판정이 다릅니다."
-        },
-        {
-          "label": "None 검사",
-          "state": "is None으로 값 없음 자체를 확인합니다."
-        }
-      ]
+      "id": "booleans-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

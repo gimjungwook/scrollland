@@ -26,30 +26,8 @@
       ],
       "code": "counts = {\"숲\": 4, \"강\": 2}\nprint(counts[\"강\"])\nprint(\"숲\" in counts)\nprint(len(counts))",
       "output": "2\nTrue\n2",
-      "diagram": {
-        "type": "collection",
-        "nodes": [
-          {
-            "label": "키 숲",
-            "value": "값 4"
-          },
-          {
-            "label": "키 강",
-            "value": "값 2"
-          }
-        ],
-        "caption": "키 숲: 값 4 · 키 강: 값 2"
-      },
-      "trace": [
-        {
-          "label": "매핑 생성",
-          "state": "장소 이름 두 개에 수량을 연결합니다."
-        },
-        {
-          "label": "검색",
-          "state": "강이라는 키로 값 2를 찾습니다."
-        }
-      ]
+      "id": "dictionaries-scene-1",
+      "kind": "reading"
     },
     {
       "title": "없는 키에 응답하기",
@@ -59,30 +37,8 @@
       ],
       "code": "counts = {\"숲\": 4}\nprint(counts.get(\"못\", 0))\nprint(\"못\" in counts)\nprint(counts.get(\"숲\", 0))",
       "output": "0\nFalse\n4",
-      "diagram": {
-        "type": "branch",
-        "nodes": [
-          {
-            "label": "등록된 키",
-            "value": "숲 → 4"
-          },
-          {
-            "label": "등록되지 않은 키",
-            "value": "못 → 조회할 때 기본값 0"
-          }
-        ],
-        "caption": "등록된 키: 숲 → 4 · 등록되지 않은 키: 못 → 조회할 때 기본값 0"
-      },
-      "trace": [
-        {
-          "label": "기본값 조회",
-          "state": "못이 없으므로 0을 반환합니다."
-        },
-        {
-          "label": "등록 여부 확인",
-          "state": "못은 여전히 딕셔너리에 없습니다."
-        }
-      ]
+      "id": "dictionaries-scene-2",
+      "kind": "reading"
     },
     {
       "title": "같은 키를 갱신하기",
@@ -92,38 +48,8 @@
       ],
       "code": "counts = {\"숲\": 4, \"강\": 2}\ncounts[\"숲\"] = 5\ncounts.update({\"못\": 3})\nremoved = counts.pop(\"강\")\nprint(removed)\nprint(list(counts.items()))",
       "output": "2\n[('숲', 5), ('못', 3)]",
-      "diagram": {
-        "type": "collection",
-        "nodes": [
-          {
-            "label": "갱신한 키",
-            "value": "숲 → 5"
-          },
-          {
-            "label": "새 키",
-            "value": "못 → 3"
-          },
-          {
-            "label": "제거한 키",
-            "value": "강의 이전 값 2 반환"
-          }
-        ],
-        "caption": "갱신한 키: 숲 → 5 · 새 키: 못 → 3 · 제거한 키: 강의 이전 값 2 반환"
-      },
-      "trace": [
-        {
-          "label": "변경 전",
-          "state": "숲 4, 강 2"
-        },
-        {
-          "label": "추가와 수정",
-          "state": "숲 5, 강 2, 못 3"
-        },
-        {
-          "label": "제거 후",
-          "state": "숲 5, 못 3"
-        }
-      ]
+      "id": "dictionaries-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

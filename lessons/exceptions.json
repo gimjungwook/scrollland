@@ -60,7 +60,26 @@
           "label": "계속 실행",
           "state": "처리가 끝나면 바깥 다음 지시로 갑니다."
         }
-      ]
+      ],
+      "id": "exceptions-scene-1",
+      "kind": "visualization",
+      "question": "정수 변환이 실패한 뒤 프로그램은 어느 줄로 이동할까요?",
+      "rationale": "오류를 일으킨 지시, 그 종류에 맞는 처리 구간, 처리 뒤의 실행을 같은 코드에서 추적합니다. 최종 안내문만으로는 count 대입이 완료되지 않았다는 사실과 경로 이동을 놓칠 수 있습니다.",
+      "interpretation": [
+        "int(\"여섯\")은 값을 반환하지 못하고 ValueError를 발생시킵니다. 따라서 count의 대입은 완료되지 않습니다.",
+        "해당 예외를 except에서 처리한 뒤 바깥의 다음 기록 안내를 출력합니다. 처리했다는 사실이 잘못된 입력을 정상 수량으로 바꾼 것은 아닙니다."
+      ],
+      "visualization": {
+        "ref": "exceptions-scene-1",
+        "pin": true,
+        "scrollDistance": 205,
+        "stops": [
+          0,
+          0.25,
+          0.66,
+          1
+        ]
+      }
     },
     {
       "title": "정상 경로와 정리 구별하기",
@@ -70,38 +89,8 @@
       ],
       "code": "try:\n    count = int(\"6\")\nexcept ValueError:\n    print(\"입력 오류\")\nelse:\n    print(\"수량\", count)\nfinally:\n    print(\"처리 종료\")",
       "output": "수량 6\n처리 종료",
-      "diagram": {
-        "type": "timeline",
-        "nodes": [
-          {
-            "label": "정상 변환",
-            "value": "count=6"
-          },
-          {
-            "label": "else",
-            "value": "수량 출력"
-          },
-          {
-            "label": "finally",
-            "value": "처리 종료"
-          }
-        ],
-        "caption": "정상 변환: count=6 · else: 수량 출력 · finally: 처리 종료"
-      },
-      "trace": [
-        {
-          "label": "try 성공",
-          "state": "예외가 없으므로 except를 건너뜁니다."
-        },
-        {
-          "label": "else 실행",
-          "state": "성공한 값을 사용합니다."
-        },
-        {
-          "label": "finally 실행",
-          "state": "종료 작업을 수행합니다."
-        }
-      ]
+      "id": "exceptions-scene-2",
+      "kind": "reading"
     },
     {
       "title": "함수의 입력 규칙 위반 알리기",
@@ -111,34 +100,8 @@
       ],
       "code": "def checked_count(value):\n    if not isinstance(value, int) or isinstance(value, bool):\n        raise TypeError(\"수량은 정수여야 합니다\")\n    if value < 0:\n        raise ValueError(\"수량은 0 이상이어야 합니다\")\n    return value\n\ntry:\n    checked_count(-2)\nexcept ValueError as error:\n    print(error)\nprint(checked_count(3))",
       "output": "수량은 0 이상이어야 합니다\n3",
-      "diagram": {
-        "type": "branch",
-        "nodes": [
-          {
-            "label": "입력 -2",
-            "value": "자료형은 정수지만 범위 위반"
-          },
-          {
-            "label": "입력 3",
-            "value": "모든 검사 통과"
-          }
-        ],
-        "caption": "입력 -2: 자료형은 정수지만 범위 위반 · 입력 3: 모든 검사 통과"
-      },
-      "trace": [
-        {
-          "label": "검사",
-          "state": "음수 입력에 ValueError를 발생시킵니다."
-        },
-        {
-          "label": "호출자 처리",
-          "state": "설명 메시지를 출력합니다."
-        },
-        {
-          "label": "정상 호출",
-          "state": "3은 그대로 반환됩니다."
-        }
-      ]
+      "id": "exceptions-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

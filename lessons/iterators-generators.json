@@ -28,38 +28,8 @@
       ],
       "code": "cursor = iter([4, 2])\nprint(next(cursor))\nprint(next(cursor))\nprint(next(cursor, \"끝\"))",
       "output": "4\n2\n끝",
-      "diagram": {
-        "type": "timeline",
-        "nodes": [
-          {
-            "label": "처음 위치",
-            "value": "4를 꺼낼 차례"
-          },
-          {
-            "label": "다음 위치",
-            "value": "2를 꺼낼 차례"
-          },
-          {
-            "label": "소비 완료",
-            "value": "기본값 끝"
-          }
-        ],
-        "caption": "처음 위치: 4를 꺼낼 차례 · 다음 위치: 2를 꺼낼 차례 · 소비 완료: 기본값 끝"
-      },
-      "trace": [
-        {
-          "label": "첫 next",
-          "state": "4를 받고 위치가 이동합니다."
-        },
-        {
-          "label": "둘째 next",
-          "state": "2를 받고 항목이 없어집니다."
-        },
-        {
-          "label": "셋째 next",
-          "state": "종료 기본값을 받습니다."
-        }
-      ]
+      "id": "iterators-generators-scene-1",
+      "kind": "reading"
     },
     {
       "title": "yield에서 멈추고 재개하기",
@@ -100,7 +70,26 @@
           "label": "list 실행",
           "state": "남아 있는 5와 9를 소비합니다."
         }
-      ]
+      ],
+      "id": "iterators-generators-scene-2",
+      "kind": "visualization",
+      "question": "첫 next() 뒤 list(stream)은 2부터 다시 모을까요?",
+      "rationale": "제너레이터가 멈춘 위치를 기억한 채 다음 요청에서 재개하는 관계를 보여줍니다. 출력만 비교하면 list()가 처음부터 다시 실행했다고 생각할 수 있어 현재 위치와 남은 값을 함께 추적합니다.",
+      "interpretation": [
+        "첫 next()가 2를 내보낸 뒤 제너레이터는 첫 yield 뒤에서 멈춰 있습니다. list(stream)은 그 다음의 5와 9만 모읍니다.",
+        "같은 제너레이터를 끝까지 소비하면 처음으로 자동 되돌아가지 않습니다. 다시 같은 값을 만들려면 milestones()를 새로 호출해야 합니다."
+      ],
+      "visualization": {
+        "ref": "iterators-generators-scene-2",
+        "pin": true,
+        "scrollDistance": 215,
+        "stops": [
+          0,
+          0.28,
+          0.62,
+          1
+        ]
+      }
     },
     {
       "title": "짧은 제너레이터 식 쓰기",
@@ -110,38 +99,8 @@
       ],
       "code": "stream = (n * n for n in range(1, 4))\nprint(sum(stream))\nprint(sum(stream))\nprint(sum(n * n for n in range(1, 4)))",
       "output": "14\n0\n14",
-      "diagram": {
-        "type": "timeline",
-        "nodes": [
-          {
-            "label": "첫 소비",
-            "value": "1 + 4 + 9 → 14"
-          },
-          {
-            "label": "재사용한 객체",
-            "value": "남은 항목 없음 → 0"
-          },
-          {
-            "label": "새 객체",
-            "value": "새로 만든 항목 → 14"
-          }
-        ],
-        "caption": "첫 소비: 1 + 4 + 9 → 14 · 재사용한 객체: 남은 항목 없음 → 0 · 새 객체: 새로 만든 항목 → 14"
-      },
-      "trace": [
-        {
-          "label": "첫 합계",
-          "state": "세 결과를 소비합니다."
-        },
-        {
-          "label": "둘째 합계",
-          "state": "같은 stream은 이미 끝났습니다."
-        },
-        {
-          "label": "새 식",
-          "state": "새 제너레이터를 만들어 다시 계산합니다."
-        }
-      ]
+      "id": "iterators-generators-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

@@ -56,7 +56,26 @@
           "label": "다음 항목",
           "state": "2를 더해 5가 됩니다."
         }
-      ]
+      ],
+      "id": "loop-control-scene-1",
+      "kind": "visualization",
+      "question": "-1을 만났을 때 total은 바뀌고, 다음 항목 2는 처리될까요?",
+      "rationale": "continue가 현재 항목의 누적만 건너뛰는 동안 total은 유지되고 다음 항목으로 실행 위치가 이동합니다. 항목 이동과 유지되는 누적값을 함께 보여줘 break와 혼동하지 않게 합니다.",
+      "interpretation": [
+        "-1을 읽는 동안 total은 3으로 유지됩니다. continue 뒤의 total += count를 건너뛰었기 때문입니다.",
+        "반복 전체를 끝낸 것은 아닙니다. 다음 항목 2를 더해 total이 5가 된 뒤 결과를 출력합니다."
+      ],
+      "visualization": {
+        "ref": "loop-control-scene-1",
+        "pin": true,
+        "scrollDistance": 210,
+        "stops": [
+          0,
+          0.32,
+          0.67,
+          1
+        ]
+      }
     },
     {
       "title": "발견한 순간 검색 끝내기",
@@ -84,16 +103,8 @@
         ],
         "caption": "첫 검사: 2는 기준 미달 · 다음 검사: 7이 일치 · 남은 항목: 9는 검사하지 않음"
       },
-      "trace": [
-        {
-          "label": "2 확인",
-          "state": "계속 검색합니다."
-        },
-        {
-          "label": "7 확인",
-          "state": "found=7로 대입하고 반복을 종료합니다."
-        }
-      ]
+      "id": "loop-control-scene-2",
+      "kind": "reading"
     },
     {
       "title": "끝까지 못 찾은 경우 처리하기",
@@ -103,34 +114,8 @@
       ],
       "code": "for place in [\"숲\", \"강\"]:\n    if place == \"못\":\n        print(\"찾음\")\n        break\nelse:\n    print(\"못 기록 없음\")",
       "output": "못 기록 없음",
-      "diagram": {
-        "type": "branch",
-        "nodes": [
-          {
-            "label": "검색 대상",
-            "value": "숲, 강"
-          },
-          {
-            "label": "break 발생",
-            "value": "없음"
-          },
-          {
-            "label": "else 실행",
-            "value": "못 기록 없음"
-          }
-        ],
-        "caption": "검색 대상: 숲, 강 · break 발생: 없음 · else 실행: 못 기록 없음"
-      },
-      "trace": [
-        {
-          "label": "전체 검사",
-          "state": "두 장소 모두 못과 다릅니다."
-        },
-        {
-          "label": "정상 종료",
-          "state": "항목을 끝까지 읽었으므로 else를 실행합니다."
-        }
-      ]
+      "id": "loop-control-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

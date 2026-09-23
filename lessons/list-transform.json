@@ -21,7 +21,18 @@
     {
       "title": "같은 리스트를 가리키는 이름",
       "body": [
-        "별칭은 같은 객체에 연결된 다른 이름입니다. backup = original은 리스트를 복사하지 않습니다. 둘 중 어느 이름으로 항목을 바꿔도 같은 리스트를 읽습니다.",
+        [
+          {
+            "text": "별칭은 "
+          },
+          {
+            "text": "같은 객체",
+            "bold": true
+          },
+          {
+            "text": "에 연결된 다른 이름입니다. backup = original은 리스트를 복사하지 않습니다. 둘 중 어느 이름으로 항목을 바꿔도 같은 리스트를 읽습니다."
+          }
+        ],
         "숫자 재대입을 배운 「값에 이름을 연결하기」 레슨과 비교하세요. 여기서는 backup이라는 이름을 재대입한 것이 아니라 backup이 가리키는 리스트의 항목을 변경합니다."
       ],
       "code": "original = [4, 2]\nbackup = original\nbackup[0] = 9\nprint(original)\nprint(original is backup)",
@@ -49,7 +60,25 @@
           "label": "항목 변경 후",
           "state": "그 객체의 첫 항목이 9로 바뀝니다."
         }
-      ]
+      ],
+      "id": "list-transform-scene-1",
+      "kind": "visualization",
+      "question": "backup으로 첫 항목을 바꿨는데 original에서도 9가 보이는 이유는 무엇일까요?",
+      "rationale": "서로 다른 이름이 객체 하나를 공유하는 관계와 그 객체의 항목 변경을 동시에 보여줍니다. 결과 두 개만 놓으면 복사본 두 개를 각각 수정했다고 오해할 수 있어 같은 객체의 동일성을 유지합니다.",
+      "interpretation": [
+        "original과 backup은 같은 리스트를 가리킵니다. backup[0] = 9는 이름을 새 리스트로 옮기지 않고 그 리스트의 첫 항목을 바꿉니다.",
+        "original is backup의 True는 두 이름으로 같은 객체를 읽는다는 뜻입니다. 다음 예제에서는 copy()로 별도 리스트를 만든 뒤 결과를 비교합니다."
+      ],
+      "visualization": {
+        "ref": "list-transform-scene-1",
+        "pin": true,
+        "scrollDistance": 175,
+        "stops": [
+          0,
+          0.54,
+          1
+        ]
+      }
     },
     {
       "title": "별도 리스트로 복사하기",
@@ -73,20 +102,8 @@
         ],
         "caption": "원본: [4, 2] 유지 · 복사본: [9, 2, 6, 8]"
       },
-      "trace": [
-        {
-          "label": "copy 이후",
-          "state": "바깥 리스트 객체가 두 개입니다."
-        },
-        {
-          "label": "수정과 확장",
-          "state": "복사본만 바뀝니다."
-        },
-        {
-          "label": "부분 선택",
-          "state": "위치 1과 2를 새 리스트로 읽습니다."
-        }
-      ]
+      "id": "list-transform-scene-2",
+      "kind": "reading"
     },
     {
       "title": "원본 정렬과 새 정렬 결과",
@@ -96,34 +113,8 @@
       ],
       "code": "counts = [4, 2, 7]\nordered = sorted(counts)\nprint(counts)\nprint(ordered)\ncounts.sort(reverse=True)\nprint(counts)",
       "output": "[4, 2, 7]\n[2, 4, 7]\n[7, 4, 2]",
-      "diagram": {
-        "type": "collection",
-        "nodes": [
-          {
-            "label": "원래 순서",
-            "value": "4, 2, 7"
-          },
-          {
-            "label": "새 오름차순",
-            "value": "2, 4, 7"
-          },
-          {
-            "label": "원본 내림차순 변경",
-            "value": "7, 4, 2"
-          }
-        ],
-        "caption": "원래 순서: 4, 2, 7 · 새 오름차순: 2, 4, 7 · 원본 내림차순 변경: 7, 4, 2"
-      },
-      "trace": [
-        {
-          "label": "sorted 이후",
-          "state": "ordered만 정렬되어 있습니다."
-        },
-        {
-          "label": "sort 이후",
-          "state": "counts 자체의 순서가 달라집니다."
-        }
-      ]
+      "id": "list-transform-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

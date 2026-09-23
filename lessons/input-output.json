@@ -38,17 +38,9 @@
         ],
         "caption": "제공한 입력: 숲 + 줄바꿈 · 읽은 값: 문자열 \"숲\""
       },
-      "trace": [
-        {
-          "label": "입력 대기",
-          "state": "input()이 한 줄을 기다립니다."
-        },
-        {
-          "label": "입력 후",
-          "state": "place에 문자열을 연결하고 장소를 출력합니다."
-        }
-      ],
-      "stdin": "숲\n"
+      "stdin": "숲\n",
+      "id": "input-output-scene-1",
+      "kind": "reading"
     },
     {
       "title": "입력 문자를 수량으로 바꾸기",
@@ -58,39 +50,9 @@
       ],
       "code": "text = input()\ncount = int(text)\nprint(count + 2)",
       "output": "8",
-      "diagram": {
-        "type": "pipeline",
-        "nodes": [
-          {
-            "label": "입력",
-            "value": "문자열 \"6\""
-          },
-          {
-            "label": "변환",
-            "value": "정수 6"
-          },
-          {
-            "label": "계산",
-            "value": "6 + 2 → 8"
-          }
-        ],
-        "caption": "입력: 문자열 \"6\" · 변환: 정수 6 · 계산: 6 + 2 → 8"
-      },
-      "trace": [
-        {
-          "label": "읽기",
-          "state": "text에 문자열 6을 연결합니다."
-        },
-        {
-          "label": "변환하기",
-          "state": "count에 정수 6을 연결합니다."
-        },
-        {
-          "label": "출력하기",
-          "state": "정수 덧셈 결과 8을 출력합니다."
-        }
-      ],
-      "stdin": "6\n"
+      "stdin": "6\n",
+      "id": "input-output-scene-2",
+      "kind": "reading"
     },
     {
       "title": "안내와 결과를 나누기",
@@ -100,31 +62,9 @@
       ],
       "code": "place = input(\"장소: \")\nprint(place, 3, sep=\" | \", end=\"\\n\")",
       "output": "장소: 강 | 3",
-      "diagram": {
-        "type": "flow",
-        "nodes": [
-          {
-            "label": "입력 안내",
-            "value": "장소: "
-          },
-          {
-            "label": "결과 출력",
-            "value": "강 | 3"
-          }
-        ],
-        "caption": "입력 안내: 장소:  · 결과 출력: 강 | 3"
-      },
-      "trace": [
-        {
-          "label": "안내 출력",
-          "state": "장소: 뒤에 줄바꿈 없이 입력을 기다립니다."
-        },
-        {
-          "label": "입력 완료",
-          "state": "강을 읽고 구분자 |로 결과를 출력합니다."
-        }
-      ],
-      "stdin": "강\n"
+      "stdin": "강\n",
+      "id": "input-output-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

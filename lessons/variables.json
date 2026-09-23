@@ -17,9 +17,40 @@
   "takeaway": "대입은 오른쪽 값을 먼저 구한 뒤 왼쪽 이름을 그 객체에 연결합니다.",
   "sections": [
     {
+      "id": "variables-reading-introduction",
+      "kind": "reading",
+      "title": "관찰한 수에 이름 붙이기",
+      "body": [
+        "관찰한 새가 7마리라면 숫자 7만 적어 둘 수도 있습니다. 하지만 그 수가 무엇을 뜻하는지, 다음 계산에서 어떤 수를 쓸지 알려면 이름이 필요합니다.",
+        "먼저 이름과 값의 관계를 글과 짧은 예제로 읽겠습니다. 두 이름 중 하나를 다시 대입할 때에는 연결이 어떻게 달라지는지 함께 보겠습니다."
+      ]
+    },
+    {
       "title": "이름과 값 구분하기",
       "body": [
-        "값은 7이나 \"산책\"처럼 프로그램이 다루는 내용입니다. Python에서 값은 객체로 표현됩니다. 객체는 자료형과 값을 갖는 프로그램 안의 대상입니다. 변수는 그 객체에 연결한 이름입니다.",
+        [
+          {
+            "text": "값은 7이나 \"산책\"처럼 프로그램이 다루는 내용입니다. Python에서 값은 객체로 표현됩니다. 객체는 자료형과 값을 갖는 프로그램 안의 대상입니다. 변수는 그 객체에 "
+          },
+          {
+            "text": "연결한 이름",
+            "bold": true,
+            "effect": {
+              "preset": "glow",
+              "mode": "scrub",
+              "purpose": "변수를 물건을 담는 상자로 오해하지 않도록 이름과 연결이라는 핵심 표현을 강조합니다.",
+              "start": "top 85%",
+              "end": "top 35%",
+              "duration": 0.95,
+              "reentry": "repeat",
+              "exit": "cancel",
+              "initial": "play"
+            }
+          },
+          {
+            "text": "입니다."
+          }
+        ],
         "birds = 7은 birds라는 이름을 값 7인 객체에 연결합니다. 빈 상자를 먼저 만들고 숫자를 집어넣는 과정으로 생각하지 마세요. 이름을 읽으면 현재 연결된 객체를 사용합니다."
       ],
       "code": "birds = 7\nprint(birds)",
@@ -38,53 +69,30 @@
         ],
         "caption": "이름: birds · 연결된 객체: 정수 7"
       },
-      "trace": [
-        {
-          "label": "대입 전",
-          "state": "이 예제에서 birds는 아직 정의되지 않았습니다."
-        },
-        {
-          "label": "대입 후",
-          "state": "birds가 정수 7에 연결됩니다."
-        },
-        {
-          "label": "사용",
-          "state": "print(birds)가 7을 출력합니다."
-        }
-      ]
+      "id": "variables-scene-1",
+      "kind": "reading"
     },
     {
       "title": "오른쪽을 먼저 계산하기",
       "body": [
-        "=는 같다는 질문이 아니라 대입을 하는 기호입니다. 오른쪽의 4 + 3을 먼저 계산하고, 그 결과 7에 total이라는 이름을 연결합니다.",
+        [
+          {
+            "text": "=는 같다는 질문이 아니라 대입을 하는 기호입니다. "
+          },
+          {
+            "text": "오른쪽의 4 + 3을 먼저 계산",
+            "bold": true
+          },
+          {
+            "text": "하고, 그 결과 7에 total이라는 이름을 연결합니다."
+          }
+        ],
         "이름에는 공백을 넣지 않고 숫자로 시작하지 않습니다. 단어를 이을 때 total_birds처럼 밑줄을 사용할 수 있습니다. 대문자와 소문자는 구별되므로 total과 Total은 다른 이름입니다."
       ],
       "code": "total = 4 + 3\nprint(total)",
       "output": "7",
-      "diagram": {
-        "type": "binding",
-        "nodes": [
-          {
-            "label": "오른쪽 식",
-            "value": "4 + 3 → 7"
-          },
-          {
-            "label": "왼쪽 이름",
-            "value": "total → 7"
-          }
-        ],
-        "caption": "오른쪽 식: 4 + 3 → 7 · 왼쪽 이름: total → 7"
-      },
-      "trace": [
-        {
-          "label": "계산",
-          "state": "오른쪽의 덧셈 결과를 구합니다."
-        },
-        {
-          "label": "대입",
-          "state": "total을 결과 7에 연결합니다."
-        }
-      ]
+      "id": "variables-scene-2",
+      "kind": "reading"
     },
     {
       "title": "이름으로 값을 사용하기",
@@ -108,20 +116,8 @@
         ],
         "caption": "birds: 정수 7 · doubled: 정수 14"
       },
-      "trace": [
-        {
-          "label": "기존 연결",
-          "state": "birds → 7"
-        },
-        {
-          "label": "계산 결과",
-          "state": "7 × 2 = 14"
-        },
-        {
-          "label": "새 연결",
-          "state": "doubled → 14, birds → 7 유지"
-        }
-      ]
+      "id": "variables-scene-3",
+      "kind": "reading"
     },
     {
       "title": "재대입으로 연결 바꾸기",
@@ -158,7 +154,26 @@
           "label": "재대입 이후",
           "state": "birds → 8, saved → 7"
         }
-      ]
+      ],
+      "id": "variables-scene-4",
+      "kind": "visualization",
+      "question": "재대입하면 birds와 saved의 연결 중 무엇이 바뀔까요?",
+      "rationale": "같은 정수 객체를 읽던 두 이름 중 하나만 새 객체로 이동합니다. 앞뒤 결과만 비교하면 두 이름이나 원래 정수 자체가 함께 바뀐다고 오해할 수 있어, 유지되는 연결과 바뀌는 연결을 같은 자리에서 추적합니다.",
+      "interpretation": [
+        "birds는 새 정수 8을 가리키고 saved는 정수 7을 계속 가리킵니다. 정수 7 자체가 8로 변한 것은 아닙니다.",
+        "재대입은 이름의 연결을 바꿉니다. 다음에 리스트 항목을 바꿀 때에는 이름을 옮긴 것인지, 함께 가리키는 객체의 내용을 바꾼 것인지 다시 구별하겠습니다."
+      ],
+      "visualization": {
+        "ref": "variables-scene-4",
+        "pin": true,
+        "scrollDistance": 200,
+        "stops": [
+          0,
+          0.24,
+          0.62,
+          1
+        ]
+      }
     }
   ],
   "quiz": {

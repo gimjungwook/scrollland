@@ -46,24 +46,70 @@
       },
       "trace": [
         {
-          "label": "def 실행",
-          "state": "함수 객체를 만들지만 본문은 실행하지 않습니다."
+          "label": "함수 정의",
+          "state": "함수 객체를 만들지만 함수 본문은 실행하지 않습니다."
         },
         {
-          "label": "호출 실행",
-          "state": "본문을 실행합니다."
+          "label": "바깥 지시",
+          "state": "함수 호출 전에 준비됨을 출력합니다."
         },
         {
-          "label": "호출 종료",
-          "state": "호출 다음 줄로 돌아갑니다."
+          "label": "함수 호출",
+          "state": "announce()에서 함수 본문으로 이동해 관찰 시작을 출력합니다."
+        },
+        {
+          "label": "호출 뒤로 복귀",
+          "state": "본문이 끝나면 호출 다음 줄로 돌아와 다음 작업을 출력합니다."
         }
-      ]
+      ],
+      "id": "functions-scene-1",
+      "kind": "visualization",
+      "question": "함수를 정의한 줄과 실제 본문이 실행되는 줄은 같은 순간일까요?",
+      "rationale": "실행 위치가 정의를 지나 호출에서 함수 본문으로 이동하고 다시 호출 다음 줄로 돌아옵니다. 위에서 아래로만 읽는 오해를 풀기 위해 코드의 이동 경로와 누적 출력을 함께 표시합니다.",
+      "interpretation": [
+        "def를 읽었을 때 관찰 시작은 출력되지 않습니다. 함수 객체를 준비한 뒤 바깥의 준비됨이 먼저 출력됩니다.",
+        "announce()가 호출되면 함수 본문을 실행합니다. 본문이 끝난 뒤 호출 다음 줄로 돌아와 다음 작업을 출력합니다."
+      ],
+      "visualization": {
+        "ref": "functions-scene-1",
+        "pin": true,
+        "scrollDistance": 240,
+        "stops": [
+          0,
+          0.2,
+          0.4,
+          0.7,
+          1
+        ]
+      }
     },
     {
       "title": "입력으로 다른 계산 하기",
       "body": [
         "매개변수는 함수 정의에서 입력을 받는 이름입니다. 인자는 함수를 호출할 때 전달한 값입니다. count와 extra는 매개변수이고 4와 2는 이 호출의 인자입니다.",
-        "return은 함수 실행을 끝내고 값을 호출한 곳에 돌려줍니다. 출력과 반환은 다릅니다. 반환값은 다른 계산에 사용할 수 있고 print()는 화면에 결과를 남깁니다."
+        [
+          {
+            "text": "return은 함수 실행을 끝내고 값을 호출한 곳에 돌려줍니다. "
+          },
+          {
+            "text": "출력과 반환은 다릅니다.",
+            "bold": true,
+            "effect": {
+              "preset": "burst",
+              "mode": "enter",
+              "purpose": "비슷하게 느껴지는 두 동작을 구별하는 짧은 문장에 문맥상 놀라움을 더합니다.",
+              "start": "top 85%",
+              "end": "top 35%",
+              "duration": 0.85,
+              "reentry": "once",
+              "exit": "finish",
+              "initial": "skip"
+            }
+          },
+          {
+            "text": " 반환값은 다른 계산에 사용할 수 있고 print()는 화면에 결과를 남깁니다."
+          }
+        ]
       ],
       "code": "def total_count(count, extra):\n    return count + extra\n\nresult = total_count(4, 2)\nprint(result)\nprint(total_count(1, 3) * 2)",
       "output": "6\n8",
@@ -85,20 +131,8 @@
         ],
         "caption": "입력: count=4, extra=2 · 계산: 4 + 2 · 반환: result → 6"
       },
-      "trace": [
-        {
-          "label": "호출 진입",
-          "state": "인자를 매개변수에 연결합니다."
-        },
-        {
-          "label": "return 실행",
-          "state": "6을 호출한 곳에 돌려줍니다."
-        },
-        {
-          "label": "후속 사용",
-          "state": "반환값을 출력하거나 다른 계산에 씁니다."
-        }
-      ]
+      "id": "functions-scene-2",
+      "kind": "reading"
     },
     {
       "title": "계약을 설명하고 None 확인하기",
@@ -108,30 +142,8 @@
       ],
       "code": "def display(count):\n    \"\"\"관찰 수량을 출력합니다.\"\"\"\n    print(\"수량:\", count)\n\nresult = display(4)\nprint(result)",
       "output": "수량: 4\nNone",
-      "diagram": {
-        "type": "pipeline",
-        "nodes": [
-          {
-            "label": "화면에 남긴 값",
-            "value": "수량: 4"
-          },
-          {
-            "label": "호출한 곳으로 반환",
-            "value": "None"
-          }
-        ],
-        "caption": "화면에 남긴 값: 수량: 4 · 호출한 곳으로 반환: None"
-      },
-      "trace": [
-        {
-          "label": "본문 실행",
-          "state": "수량을 출력합니다."
-        },
-        {
-          "label": "함수 끝",
-          "state": "명시한 반환값이 없어 None을 돌려줍니다."
-        }
-      ]
+      "id": "functions-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

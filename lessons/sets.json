@@ -26,30 +26,8 @@
       ],
       "code": "visited = set([\"숲\", \"강\", \"숲\"])\nprint(len(visited))\nprint(sorted(visited))\nprint(\"숲\" in visited)",
       "output": "2\n['강', '숲']\nTrue",
-      "diagram": {
-        "type": "collection",
-        "nodes": [
-          {
-            "label": "원래 기록",
-            "value": "숲, 강, 숲"
-          },
-          {
-            "label": "서로 다른 장소",
-            "value": "강, 숲"
-          }
-        ],
-        "caption": "원래 기록: 숲, 강, 숲 · 서로 다른 장소: 강, 숲"
-      },
-      "trace": [
-        {
-          "label": "중복 제거",
-          "state": "반복한 숲을 한 항목으로 봅니다."
-        },
-        {
-          "label": "개수 확인",
-          "state": "서로 다른 장소가 두 곳입니다."
-        }
-      ]
+      "id": "sets-scene-1",
+      "kind": "reading"
     },
     {
       "title": "두 묶음의 관계 계산하기",
@@ -77,16 +55,8 @@
         ],
         "caption": "아침만: 숲 · 공통: 강 · 오후만: 못"
       },
-      "trace": [
-        {
-          "label": "공통 항목 검사",
-          "state": "양쪽에 강이 있습니다."
-        },
-        {
-          "label": "한쪽 항목 검사",
-          "state": "아침만 숲, 오후만 못이 있습니다."
-        }
-      ]
+      "id": "sets-scene-2",
+      "kind": "reading"
     },
     {
       "title": "수정할 집합과 고정할 집합",
@@ -96,30 +66,8 @@
       ],
       "code": "allowed = {\"숲\"}\nallowed.add(\"강\")\nallowed.discard(\"못\")\nfixed = frozenset(allowed)\nallowed.add(\"공원\")\nprint(sorted(allowed))\nprint(sorted(fixed))",
       "output": "['강', '공원', '숲']\n['강', '숲']",
-      "diagram": {
-        "type": "collection",
-        "nodes": [
-          {
-            "label": "변경 가능한 allowed",
-            "value": "강, 공원, 숲"
-          },
-          {
-            "label": "고정한 fixed",
-            "value": "강, 숲"
-          }
-        ],
-        "caption": "변경 가능한 allowed: 강, 공원, 숲 · 고정한 fixed: 강, 숲"
-      },
-      "trace": [
-        {
-          "label": "고정 시점",
-          "state": "강과 숲을 frozenset으로 만듭니다."
-        },
-        {
-          "label": "이후 추가",
-          "state": "allowed에만 공원이 추가됩니다."
-        }
-      ]
+      "id": "sets-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

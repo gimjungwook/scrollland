@@ -42,16 +42,8 @@
         ],
         "caption": "바깥 리스트: 두 기록이 순서대로 있음 · 위치 1의 기록: place: 강, count: 2 · count 키: 2"
       },
-      "trace": [
-        {
-          "label": "첫 접근",
-          "state": "records[1]로 딕셔너리를 고릅니다."
-        },
-        {
-          "label": "둘째 접근",
-          "state": "그 딕셔너리에서 count를 읽습니다."
-        }
-      ]
+      "id": "nested-data-scene-1",
+      "kind": "reading"
     },
     {
       "title": "안쪽의 특정 값만 수정하기",
@@ -61,34 +53,8 @@
       ],
       "code": "record = {\"place\": \"숲\", \"counts\": [4, 2]}\nrecord[\"counts\"][0] = 5\nprint(record[\"place\"])\nprint(record[\"counts\"])",
       "output": "숲\n[5, 2]",
-      "diagram": {
-        "type": "collection",
-        "nodes": [
-          {
-            "label": "place",
-            "value": "숲 유지"
-          },
-          {
-            "label": "counts의 첫 항목",
-            "value": "4 → 5"
-          },
-          {
-            "label": "counts의 둘째 항목",
-            "value": "2 유지"
-          }
-        ],
-        "caption": "place: 숲 유지 · counts의 첫 항목: 4 → 5 · counts의 둘째 항목: 2 유지"
-      },
-      "trace": [
-        {
-          "label": "경로 선택",
-          "state": "record에서 counts 리스트를 고릅니다."
-        },
-        {
-          "label": "항목 변경",
-          "state": "그 리스트의 위치 0을 5로 바꿉니다."
-        }
-      ]
+      "id": "nested-data-scene-2",
+      "kind": "reading"
     },
     {
       "title": "얕은 복사의 안쪽 공유 확인하기",
@@ -125,7 +91,26 @@
           "label": "개별 수정",
           "state": "독립한 리스트의 첫 값만 9가 됩니다."
         }
-      ]
+      ],
+      "id": "nested-data-scene-3",
+      "kind": "visualization",
+      "question": "바깥 딕셔너리를 복사하면 안쪽 리스트도 독립해질까요?",
+      "rationale": "바깥 복사와 안쪽 복사를 서로 다른 시점에 수행합니다. copied와 original이 계속 공유하는 안쪽 리스트와 independent의 새 리스트를 나란히 유지해야 변경이 전해지는 경계를 따라갈 수 있습니다.",
+      "interpretation": [
+        "original과 copied의 바깥 딕셔너리는 달라도 counts로 읽는 리스트는 하나입니다. append(3)의 결과가 양쪽에서 보이는 이유입니다.",
+        "independent에는 안쪽 리스트를 한 번 더 복사해 연결했습니다. 그 리스트의 첫 항목을 9로 바꿔도 공유 리스트의 첫 항목 4는 유지됩니다."
+      ],
+      "visualization": {
+        "ref": "nested-data-scene-3",
+        "pin": true,
+        "scrollDistance": 245,
+        "stops": [
+          0,
+          0.28,
+          0.7,
+          1
+        ]
+      }
     }
   ],
   "quiz": {

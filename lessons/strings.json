@@ -38,16 +38,8 @@
         ],
         "caption": "앞에서 센 위치: 0: O, 1: B, 2: S · 뒤에서 센 위치: -1: 7, -2: 2"
       },
-      "trace": [
-        {
-          "label": "문자열 준비",
-          "state": "길이 6의 문자열을 code에 연결합니다."
-        },
-        {
-          "label": "위치 읽기",
-          "state": "0에서 O, -1에서 7을 가져옵니다."
-        }
-      ]
+      "id": "strings-scene-1",
+      "kind": "reading"
     },
     {
       "title": "부분 범위를 잘라 읽기",
@@ -75,16 +67,8 @@
         ],
         "caption": "전체: OBS-27 · 선택 범위: [:3] → OBS · 다른 범위: [4:] → 27"
       },
-      "trace": [
-        {
-          "label": "선택 전",
-          "state": "code는 OBS-27입니다."
-        },
-        {
-          "label": "선택 후",
-          "state": "OBS와 27을 각각 읽어도 원본은 유지됩니다."
-        }
-      ]
+      "id": "strings-scene-2",
+      "kind": "reading"
     },
     {
       "title": "값을 문장 안에 넣기",
@@ -94,30 +78,8 @@
       ],
       "code": "distance = 2.36\nprint(f\"산책 거리: {distance:.1f} km\")\nprint(\"관찰\\n기록\")",
       "output": "산책 거리: 2.4 km\n관찰\n기록",
-      "diagram": {
-        "type": "flow",
-        "nodes": [
-          {
-            "label": "수치",
-            "value": "distance → 2.36"
-          },
-          {
-            "label": "문장에 표시",
-            "value": "산책 거리: 2.4 km"
-          }
-        ],
-        "caption": "수치: distance → 2.36 · 문장에 표시: 산책 거리: 2.4 km"
-      },
-      "trace": [
-        {
-          "label": "서식 적용",
-          "state": "2.36을 소수점 아래 한 자리로 표시합니다."
-        },
-        {
-          "label": "줄바꿈 처리",
-          "state": "\\n 위치에서 다음 출력 줄로 넘어갑니다."
-        }
-      ]
+      "id": "strings-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

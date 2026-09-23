@@ -47,16 +47,8 @@
         ],
         "caption": "패턴: OBS- 다음 숫자 세 자리 · 부분 검색: 긴 문장 안에서도 발견 · 전체 검사: 앞에 다른 글이 있으면 불일치"
       },
-      "trace": [
-        {
-          "label": "search",
-          "state": "문장 중간의 패턴을 찾습니다."
-        },
-        {
-          "label": "fullmatch",
-          "state": "문자열 전체가 그 형식인지 확인합니다."
-        }
-      ]
+      "id": "regex-scene-1",
+      "kind": "reading"
     },
     {
       "title": "찾은 결과에서 일부 꺼내기",
@@ -66,34 +58,8 @@
       ],
       "code": "import re\n\nmatch = re.search(r\"OBS-([0-9]{3})\", \"기록 OBS-027\")\nif match is not None:\n    print(match.group(0))\n    print(match.group(1))\nprint(re.findall(r\"[0-9]+\", \"숲 12, 강 3\"))",
       "output": "OBS-027\n027\n['12', '3']",
-      "diagram": {
-        "type": "pipeline",
-        "nodes": [
-          {
-            "label": "전체 일치",
-            "value": "OBS-027"
-          },
-          {
-            "label": "첫 그룹",
-            "value": "027"
-          },
-          {
-            "label": "모든 숫자 덩어리",
-            "value": "12, 3"
-          }
-        ],
-        "caption": "전체 일치: OBS-027 · 첫 그룹: 027 · 모든 숫자 덩어리: 12, 3"
-      },
-      "trace": [
-        {
-          "label": "검색 성공 확인",
-          "state": "None이 아닌 경우만 결과를 읽습니다."
-        },
-        {
-          "label": "그룹 선택",
-          "state": "일치한 코드에서 숫자 부분을 꺼냅니다."
-        }
-      ]
+      "id": "regex-scene-2",
+      "kind": "reading"
     },
     {
       "title": "일치 부분만 치환하기",
@@ -103,34 +69,8 @@
       ],
       "code": "import re\n\ntext = \"숲   관찰  기록\"\ncleaned = re.sub(r\" +\", \" \", text)\nprint(cleaned)\nprint(text)",
       "output": "숲 관찰 기록\n숲   관찰  기록",
-      "diagram": {
-        "type": "pipeline",
-        "nodes": [
-          {
-            "label": "원본",
-            "value": "불규칙한 연속 공백"
-          },
-          {
-            "label": "치환 규칙",
-            "value": "일반 공백 한 개로 통일"
-          },
-          {
-            "label": "새 문자열",
-            "value": "숲 관찰 기록"
-          }
-        ],
-        "caption": "원본: 불규칙한 연속 공백 · 치환 규칙: 일반 공백 한 개로 통일 · 새 문자열: 숲 관찰 기록"
-      },
-      "trace": [
-        {
-          "label": "패턴 찾기",
-          "state": "연속된 공백 덩어리를 찾습니다."
-        },
-        {
-          "label": "치환 결과",
-          "state": "원본을 유지하고 새 문자열을 만듭니다."
-        }
-      ]
+      "id": "regex-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

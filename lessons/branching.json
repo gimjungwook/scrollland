@@ -58,7 +58,26 @@
           "label": "분기 종료",
           "state": "들여쓰기 바깥 지시로 이어집니다."
         }
-      ]
+      ],
+      "id": "branching-scene-1",
+      "kind": "visualization",
+      "question": "조건이 거짓이면 건너뛴 줄과 계속 실행하는 줄은 각각 어디일까요?",
+      "rationale": "분기 안에서 실행하지 않는 코드와 분기 밖에서 이어지는 코드를 함께 추적해야 합니다. 최종 출력 두 줄만으로는 실행 경로와 건너뛴 코드의 관계가 드러나지 않아 현재 경로를 표시합니다.",
+      "interpretation": [
+        "count는 끝까지 0입니다. if 아래의 출력은 건너뛰고 else의 출력만 실행합니다.",
+        "검사 끝은 분기 바깥에 있으므로 선택한 분기의 실행이 끝난 뒤 출력됩니다. 들여쓰기는 화면 장식이 아니라 실행 묶음을 정하는 문법입니다."
+      ],
+      "visualization": {
+        "ref": "branching-scene-1",
+        "pin": false,
+        "scrollDistance": 145,
+        "stops": [
+          0,
+          0.3,
+          0.68,
+          1
+        ]
+      }
     },
     {
       "title": "여러 기준 중 하나 선택하기",
@@ -68,38 +87,8 @@
       ],
       "code": "count = 6\nif count == 0:\n    label = \"없음\"\nelif count < 5:\n    label = \"조금\"\nelse:\n    label = \"충분\"\nprint(label)\nprint(\"계속\" if count < 10 else \"마침\")",
       "output": "충분\n계속",
-      "diagram": {
-        "type": "branch",
-        "nodes": [
-          {
-            "label": "첫 검사",
-            "value": "6 == 0 → False"
-          },
-          {
-            "label": "둘째 검사",
-            "value": "6 < 5 → False"
-          },
-          {
-            "label": "선택 결과",
-            "value": "충분"
-          }
-        ],
-        "caption": "첫 검사: 6 == 0 → False · 둘째 검사: 6 < 5 → False · 선택 결과: 충분"
-      },
-      "trace": [
-        {
-          "label": "if 검사",
-          "state": "0개가 아니므로 다음 기준을 확인합니다."
-        },
-        {
-          "label": "elif 검사",
-          "state": "5개 미만이 아니므로 else를 실행합니다."
-        },
-        {
-          "label": "조건식",
-          "state": "6 < 10이 참이라 계속을 선택합니다."
-        }
-      ]
+      "id": "branching-scene-2",
+      "kind": "reading"
     },
     {
       "title": "정해진 값에 따라 나누기",
@@ -109,34 +98,8 @@
       ],
       "code": "direction = \"west\"\nmatch direction:\n    case \"west\":\n        print(\"서쪽 길\")\n    case \"skip\":\n        pass\n    case _:\n        print(\"다른 길\")",
       "output": "서쪽 길",
-      "diagram": {
-        "type": "branch",
-        "nodes": [
-          {
-            "label": "비교할 값",
-            "value": "direction → west"
-          },
-          {
-            "label": "일치한 경우",
-            "value": "case \"west\""
-          },
-          {
-            "label": "출력",
-            "value": "서쪽 길"
-          }
-        ],
-        "caption": "비교할 값: direction → west · 일치한 경우: case \"west\" · 출력: 서쪽 길"
-      },
-      "trace": [
-        {
-          "label": "match 시작",
-          "state": "direction의 값을 확인합니다."
-        },
-        {
-          "label": "case 선택",
-          "state": "west와 일치하는 첫 경우를 실행합니다."
-        }
-      ]
+      "id": "branching-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

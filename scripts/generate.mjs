@@ -36,7 +36,7 @@ export async function generate(check = false) {
     if (check) { const current = await readFile(resolve(root, name), 'utf8').catch(() => ''); if (current !== html) throw new Error(`원본과 생성 결과가 다릅니다: ${name}. npm run build를 실행하세요.`); }
     else await writeFile(resolve(root, name), html);
   }
-  const required = ['styles.css', 'app.js', 'favicon.svg', 'lib/contract.js', 'lib/scroll-state.js', 'lib/graph-layout.js', 'lib/gsap.min.js', 'lib/ScrollTrigger.min.js'];
+  const required = ['styles.css', 'app.js', 'favicon.svg', 'lib/contract.js', 'lib/scroll-state.js', 'lib/text-effects.js', 'lib/graph-layout.js', 'lib/gsap.min.js', 'lib/ScrollTrigger.min.js'];
   for (const file of required) await readFile(resolve(root, file));
   for (const [name, html] of output) {
     for (const [, link] of html.matchAll(/(?:href|src)="([^"#]+)(?:#[^"]*)?"/g)) {
@@ -48,6 +48,7 @@ export async function generate(check = false) {
       await readFile(file).catch(() => { throw new Error(`없는 링크: ${name} → ${link}`); });
     }
   }
-  console.log(`${check ? '검증' : '생성'} 완료: ${content.curriculum.courses.length}개 코스, ${content.order.length}개 레슨, ${content.order.reduce((n, s) => n + content.lessons[s].sections.length, 0)}개 장면. 모든 내부 파일 링크 정상.`);
+  const sections = content.order.flatMap(slug => content.lessons[slug].sections);
+  console.log(`${check ? '검증' : '생성'} 완료: ${content.curriculum.courses.length}개 코스, ${content.order.length}개 레슨, 읽기 ${sections.filter(section => section.kind === 'reading').length}개 구간, 시각화 ${sections.filter(section => section.kind === 'visualization').length}개 구간. 모든 내부 파일 링크 정상.`);
 }
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) generate(process.argv.includes('--check')).catch(error => { console.error(error.message); process.exitCode = 1; });

@@ -47,16 +47,8 @@
         ],
         "caption": "첫 호출: count=3, unit은 기본값 마리 · 둘째 호출: count=2, unit=곳 · 셋째 호출: 키워드로 count=4, unit=회"
       },
-      "trace": [
-        {
-          "label": "인자 연결",
-          "state": "위치 또는 이름으로 값을 받습니다."
-        },
-        {
-          "label": "기본값 선택",
-          "state": "생략한 unit에만 기본값을 사용합니다."
-        }
-      ]
+      "id": "arguments-scene-1",
+      "kind": "reading"
     },
     {
       "title": "여러 인자를 묶어 받기",
@@ -81,16 +73,8 @@
         ],
         "caption": "위치 인자 묶음: counts → (2, 3) · 키워드 인자 묶음: details → {place: 숲}"
       },
-      "trace": [
-        {
-          "label": "입력 모으기",
-          "state": "위치와 키워드 인자를 별도 묶음으로 받습니다."
-        },
-        {
-          "label": "반환",
-          "state": "수량 합계와 장소를 튜플로 돌려줍니다."
-        }
-      ]
+      "id": "arguments-scene-2",
+      "kind": "reading"
     },
     {
       "title": "기본값 객체를 공유하지 않기",
@@ -100,30 +84,8 @@
       ],
       "code": "def add_count(count, counts=None):\n    if counts is None:\n        counts = []\n    counts.append(count)\n    return counts\n\nprint(add_count(2))\nprint(add_count(3))",
       "output": "[2]\n[3]",
-      "diagram": {
-        "type": "binding",
-        "nodes": [
-          {
-            "label": "첫 호출",
-            "value": "새 리스트 [2]"
-          },
-          {
-            "label": "둘째 호출",
-            "value": "별도 새 리스트 [3]"
-          }
-        ],
-        "caption": "첫 호출: 새 리스트 [2] · 둘째 호출: 별도 새 리스트 [3]"
-      },
-      "trace": [
-        {
-          "label": "각 호출 시작",
-          "state": "counts가 None인지 확인합니다."
-        },
-        {
-          "label": "새 객체 생성",
-          "state": "None이면 호출마다 빈 리스트를 만듭니다."
-        }
-      ]
+      "id": "arguments-scene-3",
+      "kind": "reading"
     },
     {
       "title": "실수하기 쉬운 옵션은 이름으로 받기",
@@ -147,16 +109,8 @@
         ],
         "caption": "위치 전용: count는 첫 인자 5 · 키워드 전용: unit=\"곳\"처럼 이름 표시"
       },
-      "trace": [
-        {
-          "label": "호출 확인",
-          "state": "count는 위치로, unit은 이름으로 받습니다."
-        },
-        {
-          "label": "생략 처리",
-          "state": "unit을 생략한 두 번째 호출은 마리를 사용합니다."
-        }
-      ]
+      "id": "arguments-scene-4",
+      "kind": "reading"
     }
   ],
   "quiz": {

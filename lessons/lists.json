@@ -27,34 +27,8 @@
       ],
       "code": "places = [\"숲\", \"강\", \"공원\"]\nprint(places[1])\nprint(places[-1])\nprint(len(places))",
       "output": "강\n공원\n3",
-      "diagram": {
-        "type": "collection",
-        "nodes": [
-          {
-            "label": "위치 0",
-            "value": "숲"
-          },
-          {
-            "label": "위치 1",
-            "value": "강"
-          },
-          {
-            "label": "위치 2",
-            "value": "공원"
-          }
-        ],
-        "caption": "위치 0: 숲 · 위치 1: 강 · 위치 2: 공원"
-      },
-      "trace": [
-        {
-          "label": "생성",
-          "state": "세 항목이 순서대로 들어 있는 리스트를 만듭니다."
-        },
-        {
-          "label": "읽기",
-          "state": "1은 두 번째, -1은 마지막 항목입니다."
-        }
-      ]
+      "id": "lists-scene-1",
+      "kind": "reading"
     },
     {
       "title": "추가하고 한 항목 수정하기",
@@ -64,34 +38,8 @@
       ],
       "code": "places = [\"숲\", \"강\"]\nplaces.append(\"공원\")\nplaces[0] = \"정원\"\nplaces.insert(1, \"못\")\nprint(places)",
       "output": "['정원', '못', '강', '공원']",
-      "diagram": {
-        "type": "collection",
-        "nodes": [
-          {
-            "label": "변경 전",
-            "value": "숲, 강"
-          },
-          {
-            "label": "변경 후",
-            "value": "정원, 못, 강, 공원"
-          }
-        ],
-        "caption": "변경 전: 숲, 강 · 변경 후: 정원, 못, 강, 공원"
-      },
-      "trace": [
-        {
-          "label": "끝에 추가",
-          "state": "숲, 강, 공원"
-        },
-        {
-          "label": "첫 항목 수정",
-          "state": "정원, 강, 공원"
-        },
-        {
-          "label": "위치 1에 삽입",
-          "state": "정원, 못, 강, 공원"
-        }
-      ]
+      "id": "lists-scene-2",
+      "kind": "reading"
     },
     {
       "title": "위치와 값으로 삭제하기",
@@ -101,38 +49,8 @@
       ],
       "code": "places = [\"숲\", \"강\", \"못\", \"강\"]\nremoved = places.pop(2)\nplaces.remove(\"강\")\nprint(removed)\nprint(places)\ndel places[0]\nprint(places)",
       "output": "못\n['숲', '강']\n['강']",
-      "diagram": {
-        "type": "collection",
-        "nodes": [
-          {
-            "label": "pop(2)",
-            "value": "위치 2의 못 제거"
-          },
-          {
-            "label": "remove(\"강\")",
-            "value": "처음 나오는 강 하나 제거"
-          },
-          {
-            "label": "del [0]",
-            "value": "남은 첫 항목 숲 제거"
-          }
-        ],
-        "caption": "pop(2): 위치 2의 못 제거 · remove(\"강\"): 처음 나오는 강 하나 제거 · del [0]: 남은 첫 항목 숲 제거"
-      },
-      "trace": [
-        {
-          "label": "최초 목록",
-          "state": "숲, 강, 못, 강"
-        },
-        {
-          "label": "pop과 remove 이후",
-          "state": "숲, 강"
-        },
-        {
-          "label": "del 이후",
-          "state": "강"
-        }
-      ]
+      "id": "lists-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

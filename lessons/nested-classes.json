@@ -24,30 +24,8 @@
       ],
       "code": "class Report:\n    class Status:\n        def __init__(self, label):\n            self.label = label\n\nstatus = Report.Status(\"작성 중\")\nprint(status.label)\nprint(isinstance(status, Report.Status))",
       "output": "작성 중\nTrue",
-      "diagram": {
-        "type": "object",
-        "nodes": [
-          {
-            "label": "이름 경로",
-            "value": "Report.Status"
-          },
-          {
-            "label": "별도 인스턴스",
-            "value": "status.label=작성 중"
-          }
-        ],
-        "caption": "이름 경로: Report.Status · 별도 인스턴스: status.label=작성 중"
-      },
-      "trace": [
-        {
-          "label": "정의",
-          "state": "Report 안에 Status 클래스를 둡니다."
-        },
-        {
-          "label": "생성",
-          "state": "Status를 호출해 독립 객체를 만듭니다."
-        }
-      ]
+      "id": "nested-classes-scene-1",
+      "kind": "reading"
     },
     {
       "title": "바깥 정보를 쓰려면 직접 전달하기",
@@ -71,16 +49,8 @@
         ],
         "caption": "바깥 인스턴스: report.title=숲 관찰 · 안쪽 인스턴스: status.report → report"
       },
-      "trace": [
-        {
-          "label": "명시적 전달",
-          "state": "report를 Status 생성 인자로 넘깁니다."
-        },
-        {
-          "label": "속성 읽기",
-          "state": "status가 저장한 report를 통해 제목을 읽습니다."
-        }
-      ]
+      "id": "nested-classes-scene-2",
+      "kind": "reading"
     },
     {
       "title": "중첩과 구성을 구별하기",
@@ -104,16 +74,8 @@
         ],
         "caption": "독립 자료형: Status · 포함하는 객체: report.status → Status 인스턴스"
       },
-      "trace": [
-        {
-          "label": "상태 생성",
-          "state": "검토 전 상태 객체를 만듭니다."
-        },
-        {
-          "label": "연결",
-          "state": "그 객체를 report.status에 연결합니다."
-        }
-      ]
+      "id": "nested-classes-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

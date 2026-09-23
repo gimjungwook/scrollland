@@ -26,30 +26,8 @@
       ],
       "code": "import json\n\nrecord = {\"place\": \"숲\", \"count\": 4}\ntext = json.dumps(record, ensure_ascii=False)\nprint(text)\nprint(type(text))",
       "output": "{\"place\": \"숲\", \"count\": 4}\n<class 'str'>",
-      "diagram": {
-        "type": "pipeline",
-        "nodes": [
-          {
-            "label": "Python 객체",
-            "value": "딕셔너리 record"
-          },
-          {
-            "label": "직렬화 결과",
-            "value": "JSON 문자열 text"
-          }
-        ],
-        "caption": "Python 객체: 딕셔너리 record · 직렬화 결과: JSON 문자열 text"
-      },
-      "trace": [
-        {
-          "label": "dumps 실행",
-          "state": "객체의 내용을 JSON 규칙의 글로 만듭니다."
-        },
-        {
-          "label": "자료형 확인",
-          "state": "결과는 str입니다."
-        }
-      ]
+      "id": "json-data-scene-1",
+      "kind": "reading"
     },
     {
       "title": "텍스트에서 객체 복원하기",
@@ -59,30 +37,8 @@
       ],
       "code": "import json\n\ntext = '{\"place\":\"강\",\"confirmed\":true,\"note\":null}'\nrecord = json.loads(text)\nprint(record[\"place\"])\nprint(record[\"confirmed\"])\nprint(record[\"note\"] is None)",
       "output": "강\nTrue\nTrue",
-      "diagram": {
-        "type": "pipeline",
-        "nodes": [
-          {
-            "label": "JSON true",
-            "value": "Python True"
-          },
-          {
-            "label": "JSON null",
-            "value": "Python None"
-          }
-        ],
-        "caption": "JSON true: Python True · JSON null: Python None"
-      },
-      "trace": [
-        {
-          "label": "텍스트 읽기",
-          "state": "JSON 형식에 따라 객체를 만듭니다."
-        },
-        {
-          "label": "객체 사용",
-          "state": "딕셔너리 키로 복원한 값을 읽습니다."
-        }
-      ]
+      "id": "json-data-scene-2",
+      "kind": "reading"
     },
     {
       "title": "왕복해도 모든 자료형이 같지는 않기",
@@ -111,20 +67,8 @@
         ],
         "caption": "원본 counts: 튜플 (2, 4) · JSON 중간 표현: 배열 [2, 4] · 복원 counts: 리스트 [2, 4]"
       },
-      "trace": [
-        {
-          "label": "쓰기",
-          "state": "튜플 항목을 JSON 배열로 표현합니다."
-        },
-        {
-          "label": "읽기",
-          "state": "JSON 배열을 Python 리스트로 만듭니다."
-        },
-        {
-          "label": "구조 확인",
-          "state": "필요한 필드의 자료형을 별도로 검사합니다."
-        }
-      ]
+      "id": "json-data-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

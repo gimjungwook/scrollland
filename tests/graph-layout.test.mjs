@@ -164,13 +164,13 @@ test('layout and interpolation are deterministic, bounded and do not mutate thei
   assert.equal(JSON.stringify({ before, after }), original);
 });
 
-test('all 135 authored scenes produce valid interpolated graphs for every state transition', async () => {
+test('every selected visualization produces valid graphs through all authored state transitions', async () => {
   const content = await readContent();
   let scenes = 0;
   for (const slug of content.order) {
-    content.lessons[slug].sections.forEach((section, i) => {
+    content.lessons[slug].sections.filter(section => section.kind === 'visualization').forEach(section => {
       scenes++;
-      const authored = content.motion.lessons[slug][i];
+      const authored = content.motion.scenes[section.id];
       const layouts = [...authored.steps.map(step => step.nodes), authored.finalNodes].map(nodes => layoutGraph(nodes, section.diagram.type));
       layouts.forEach(validGraph);
       for (let j = 1; j < layouts.length; j++) {
@@ -178,13 +178,14 @@ test('all 135 authored scenes produce valid interpolated graphs for every state 
       }
     });
   }
-  assert.equal(scenes, 135);
+  assert(scenes > 0);
+  assert.equal(scenes, Object.keys(content.motion.scenes).length);
 });
 
 test('the real alias and nested-copy lessons preserve mutable identity through every displayed edit', async () => {
   const content = await readContent();
   const layouts = (slug, scene) => {
-    const authored = content.motion.lessons[slug][scene];
+    const authored = content.motion.scenes[`${slug}-scene-${scene + 1}`];
     return [...authored.steps.map(step => step.nodes), authored.finalNodes].map(nodes => layoutGraph(nodes, 'binding'));
   };
   const target = (graph, name) => {

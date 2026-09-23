@@ -27,30 +27,8 @@
       ],
       "code": "from datetime import date\n\nstart = date(2026, 9, 20)\nend = date.fromisoformat(\"2026-09-23\")\nprint(start.isoformat())\nprint(end > start)",
       "output": "2026-09-20\nTrue",
-      "diagram": {
-        "type": "pipeline",
-        "nodes": [
-          {
-            "label": "문자열 입력",
-            "value": "2026-09-23"
-          },
-          {
-            "label": "날짜 객체",
-            "value": "2026년 9월 23일"
-          }
-        ],
-        "caption": "문자열 입력: 2026-09-23 · 날짜 객체: 2026년 9월 23일"
-      },
-      "trace": [
-        {
-          "label": "파싱",
-          "state": "형식에 맞는 문자열을 날짜로 읽습니다."
-        },
-        {
-          "label": "비교",
-          "state": "날짜 객체끼리 선후 관계를 비교합니다."
-        }
-      ]
+      "id": "dates-scene-1",
+      "kind": "reading"
     },
     {
       "title": "기간을 더하고 날짜를 빼기",
@@ -60,34 +38,8 @@
       ],
       "code": "from datetime import date, timedelta\n\nstart = date(2026, 9, 29)\nend = start + timedelta(days=3)\nprint(end.isoformat())\nprint((end - start).days)",
       "output": "2026-10-02\n3",
-      "diagram": {
-        "type": "timeline",
-        "nodes": [
-          {
-            "label": "시작 날짜",
-            "value": "2026-09-29"
-          },
-          {
-            "label": "기간",
-            "value": "3일"
-          },
-          {
-            "label": "계산 결과",
-            "value": "2026-10-02"
-          }
-        ],
-        "caption": "시작 날짜: 2026-09-29 · 기간: 3일 · 계산 결과: 2026-10-02"
-      },
-      "trace": [
-        {
-          "label": "기간 더하기",
-          "state": "월말을 지나 다음 달로 넘어갑니다."
-        },
-        {
-          "label": "차이 계산",
-          "state": "결과 날짜에서 시작을 빼면 3일입니다."
-        }
-      ]
+      "id": "dates-scene-2",
+      "kind": "reading"
     },
     {
       "title": "시각과 시간대를 명시하기",
@@ -111,16 +63,8 @@
         ],
         "caption": "정한 입력 기준: UTC의 2026-09-23 09:30 · 표준 표시: 2026-09-23T09:30:00+00:00"
       },
-      "trace": [
-        {
-          "label": "문자열 읽기",
-          "state": "연월일·시·분을 지정 형식으로 읽습니다."
-        },
-        {
-          "label": "기준 표시",
-          "state": "UTC 기준임을 결과 문자열에 남깁니다."
-        }
-      ]
+      "id": "dates-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

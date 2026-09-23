@@ -25,38 +25,8 @@
       ],
       "code": "places = [\"숲\", \"강\", \"못\"]\nfor place in places:\n    print(\"관찰:\", place)\nprint(\"목록 끝\")",
       "output": "관찰: 숲\n관찰: 강\n관찰: 못\n목록 끝",
-      "diagram": {
-        "type": "timeline",
-        "nodes": [
-          {
-            "label": "첫 항목",
-            "value": "place → 숲"
-          },
-          {
-            "label": "둘째 항목",
-            "value": "place → 강"
-          },
-          {
-            "label": "셋째 항목",
-            "value": "place → 못"
-          }
-        ],
-        "caption": "첫 항목: place → 숲 · 둘째 항목: place → 강 · 셋째 항목: place → 못"
-      },
-      "trace": [
-        {
-          "label": "첫 반복",
-          "state": "숲을 출력합니다."
-        },
-        {
-          "label": "다음 반복들",
-          "state": "강과 못을 차례대로 출력합니다."
-        },
-        {
-          "label": "반복 종료",
-          "state": "목록 끝을 한 번 출력합니다."
-        }
-      ]
+      "id": "for-range-scene-1",
+      "kind": "reading"
     },
     {
       "title": "정해진 횟수만큼 반복하기",
@@ -84,16 +54,8 @@
         ],
         "caption": "시작: 1 포함 · 중간: 2, 3 · 끝 경계: 4 제외"
       },
-      "trace": [
-        {
-          "label": "range 순회",
-          "state": "1, 2, 3에 대해 세 번 반복합니다."
-        },
-        {
-          "label": "감소 범위",
-          "state": "5, 3, 1을 만들고 0 아래로 가기 전에 멈춥니다."
-        }
-      ]
+      "id": "for-range-scene-2",
+      "kind": "reading"
     },
     {
       "title": "번호와 여러 묶음 함께 읽기",
@@ -103,30 +65,8 @@
       ],
       "code": "for no, place in enumerate([\"숲\", \"강\"], start=1):\n    print(no, place)\nfor place, count in zip([\"숲\", \"강\"], [4, 2]):\n    print(place, count)\nfor place in [\"숲\", \"강\"]:\n    for period in [\"아침\", \"저녁\"]:\n        print(place, period)",
       "output": "1 숲\n2 강\n숲 4\n강 2\n숲 아침\n숲 저녁\n강 아침\n강 저녁",
-      "diagram": {
-        "type": "timeline",
-        "nodes": [
-          {
-            "label": "숲의 안쪽 반복",
-            "value": "아침 → 저녁"
-          },
-          {
-            "label": "강의 안쪽 반복",
-            "value": "아침 → 저녁"
-          }
-        ],
-        "caption": "숲의 안쪽 반복: 아침 → 저녁 · 강의 안쪽 반복: 아침 → 저녁"
-      },
-      "trace": [
-        {
-          "label": "첫 바깥 항목",
-          "state": "숲에 대해 두 시간대를 출력합니다."
-        },
-        {
-          "label": "둘째 바깥 항목",
-          "state": "강에 대해 두 시간대를 출력합니다."
-        }
-      ]
+      "id": "for-range-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {

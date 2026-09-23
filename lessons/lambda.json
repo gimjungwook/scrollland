@@ -27,30 +27,8 @@
       ],
       "code": "double = lambda n: n * 2\nprint(double(3))\n\ndef apply(value, operation):\n    return operation(value)\n\nprint(apply(4, double))",
       "output": "6\n8",
-      "diagram": {
-        "type": "pipeline",
-        "nodes": [
-          {
-            "label": "함수 객체",
-            "value": "double → n을 두 배로 하는 작업"
-          },
-          {
-            "label": "전달",
-            "value": "operation → 같은 함수"
-          }
-        ],
-        "caption": "함수 객체: double → n을 두 배로 하는 작업 · 전달: operation → 같은 함수"
-      },
-      "trace": [
-        {
-          "label": "첫 호출",
-          "state": "double(3)이 6을 반환합니다."
-        },
-        {
-          "label": "함수 전달",
-          "state": "apply가 전달받은 함수를 값 4로 호출합니다."
-        }
-      ]
+      "id": "lambda-scene-1",
+      "kind": "reading"
     },
     {
       "title": "정렬 기준만 알려주기",
@@ -78,16 +56,8 @@
         ],
         "caption": "숲의 비교 기준: 4 · 강의 비교 기준: 2 · 정렬 순서: 강 → 숲"
       },
-      "trace": [
-        {
-          "label": "기준 계산",
-          "state": "기록별 count 값을 꺼냅니다."
-        },
-        {
-          "label": "정렬",
-          "state": "수량 오름차순으로 기록을 배치합니다."
-        }
-      ]
+      "id": "lambda-scene-2",
+      "kind": "reading"
     },
     {
       "title": "변환과 선택 구별하기",
@@ -97,30 +67,8 @@
       ],
       "code": "counts = [1, 4, 2]\nprint(list(map(lambda n: n * 2, counts)))\nprint(list(filter(lambda n: n >= 2, counts)))",
       "output": "[2, 8, 4]\n[4, 2]",
-      "diagram": {
-        "type": "pipeline",
-        "nodes": [
-          {
-            "label": "map",
-            "value": "각 값 두 배 → 2, 8, 4"
-          },
-          {
-            "label": "filter",
-            "value": "기준을 통과한 원래 값 → 4, 2"
-          }
-        ],
-        "caption": "map: 각 값 두 배 → 2, 8, 4 · filter: 기준을 통과한 원래 값 → 4, 2"
-      },
-      "trace": [
-        {
-          "label": "변환",
-          "state": "map은 모든 항목을 계산 결과로 바꿉니다."
-        },
-        {
-          "label": "선택",
-          "state": "filter는 조건에 맞는 원래 항목을 남깁니다."
-        }
-      ]
+      "id": "lambda-scene-3",
+      "kind": "reading"
     }
   ],
   "quiz": {
