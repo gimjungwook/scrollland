@@ -85,7 +85,7 @@
       ],
       "visualization": {
         "ref": "attributes-scene-2",
-        "pin": false,
+        "pin": true,
         "scrollDistance": 155,
         "stops": [
           0,

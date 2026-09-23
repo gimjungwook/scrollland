@@ -62,10 +62,10 @@ for (const navigation of ['reload', 'back_forward']) test(`${navigation} uses th
   assert.equal(ui.header.textContent, '모듈을 불러와 연결하기'); assert.deepEqual(ui.anchors, []);
 });
 
-test('resizing recalculates the reading line, and returning from page cache reinstalls one observer', async t => {
+test('resizing recalculates the reading line, and returning from page cache preserves one observer', async t => {
   const ui = await setup(t); ui.scrollTo(2700); assert.equal(ui.header.textContent, '외부 도구와 데이터 연결하기');
   ui.resize(200); assert.equal(ui.header.textContent, '값에 이름을 연결하기');
-  ui.pagehide(); assert.equal(ui.listeners.get('scroll').size, 0);
+  ui.pagehide(); assert.equal(ui.listeners.get('scroll').size, 1);
   ui.pageshow(); assert.equal(ui.listeners.get('scroll').size, 1); assert.equal(ui.header.textContent, '값에 이름을 연결하기');
   ui.resize(800); assert.equal(ui.header.textContent, '외부 도구와 데이터 연결하기');
 });

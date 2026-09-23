@@ -114,7 +114,7 @@ test('only selected visualizations receive scroll controllers; prose, titles and
 test('fast and reverse scroll synchronize code, objects and output without touching prose or neighboring visualizations', async t => {
   const ui = await setup(t), scene = ui.scenes[0], trigger = ui.active()[0], initial = snapshot(scene);
   for (const p of [.7, 1, .37, .99, 0]) {
-    trigger.seek(p); const expected = sampleScene(source, motion, p), actual = snapshot(scene);
+    trigger.seek(p * .9); const expected = sampleScene(source, motion, p), actual = snapshot(scene);
     assert.equal(actual.index, String(expected.index)); assert.deepEqual(actual.activeLines, expected.lines); assert.equal(actual.output, expected.output); assert.equal(actual.state, expected.state); assert.equal(actual.label, expected.label);
     const graph = layoutGraph(expected.nodes, source.diagram.type);
     assert.deepEqual(actual.graph.map(node => node.id).sort(), graph.items.map(item => item.id).sort());
@@ -143,9 +143,12 @@ test('resize recomputes the selected stage distance and code camera at the same 
   assert.equal(scene.parts['[data-visualization-track]'].style.getPropertyValue('--stage-height'), '896px');
 });
 
-test('unpinned visualization uses its normal document geometry without adding sticky distance', async t => {
+test('an unpinned visualization remains a complete static reading instead of a passing animation', async t => {
   const section = structuredClone(source); section.visualization.pin = false;
-  const ui = await setup(t, { section }); assert.equal(ui.active()[0].options.start(), 'top 85%'); assert.equal(ui.active()[0].options.end(), '+=900');
+  const ui = await setup(t, { section }); assert.equal(ui.active()[0].options.start(), 'top 85%'); assert.equal(ui.active()[0].options.end(), '+=1');
+  assert(ui.scenes[0].parts['.scene-stage'].hidden);
+  assert(!ui.scenes[0].parts['.visualization-fallback'].hidden);
+  const before = snapshot(ui.scenes[0]); ui.active()[0].seek(.4); assert.deepEqual(snapshot(ui.scenes[0]), before);
   assert.equal(ui.scenes[0].parts['[data-visualization-track]'].style.minHeight, undefined);
 });
 
@@ -179,23 +182,23 @@ test('an explicit initial anchor is aligned once after layout but reload and bac
 });
 for (const navigationType of ['reload', 'back_forward']) test(`${navigationType} never receives an automatic anchor scroll`, async t => { const ui = await setup(t, { hash: '#scene-1', navigationType }); assert.deepEqual(ui.anchors, []); });
 
-test('back-forward cache restoration recreates disposed controllers without moving the reading position', async t => {
-  const ui = await setup(t); ui.pagehide(); assert.equal(ui.active().length, 0); ui.pageshow(); assert.equal(ui.active().length, 2); assert.deepEqual(ui.anchors, []);
+test('back-forward cache restoration preserves controllers and document geometry without repeating an anchor', async t => {
+  const ui = await setup(t), active = ui.active(); ui.pagehide(); assert.deepEqual(ui.active(), active); ui.pageshow(); assert.deepEqual(ui.active(), active); assert.deepEqual(ui.anchors, []);
 });
 
-test('short windows and zoom use a full readable unpinned stage rather than squeezing or clipping text', async t => {
+test('short windows and zoom show ordered static states and restore the held stage when it fits', async t => {
   const ui = await setup(t); globalThis.window.innerHeight = 520; ui.plugin.refresh();
-  for (const scene of ui.scenes) { assert.equal(scene.parts['[data-visualization-track]'].dataset.pin, 'false'); assert(!scene.parts['.visualization-fallback'].hidden); assert.equal(scene.parts['.visualization-fallback'].style.getPropertyValue('display'), 'block'); }
+  for (const scene of ui.scenes) { assert.equal(scene.parts['[data-visualization-track]'].dataset.pin, 'false'); assert(scene.parts['.scene-stage'].hidden); assert(!scene.parts['.visualization-fallback'].hidden); assert.equal(scene.parts['.visualization-fallback'].style.getPropertyValue('display'), 'block'); }
   assert.equal(ui.active()[0].options.start(), 'top 85%');
   globalThis.window.innerHeight = 1000; ui.plugin.refresh();
-  for (const scene of ui.scenes) { assert.equal(scene.parts['[data-visualization-track]'].dataset.pin, 'true'); assert(scene.parts['.visualization-fallback'].hidden); }
+  for (const scene of ui.scenes) { assert.equal(scene.parts['[data-visualization-track]'].dataset.pin, 'true'); assert(!scene.parts['.scene-stage'].hidden); assert(scene.parts['.visualization-fallback'].hidden); }
 });
 
 
 test('every state boundary atomically presents its current values and relationships, including zero transition progress', async t => {
   const ui = await setup(t), scene = ui.scenes[0], trigger = ui.active()[0];
   for (const p of [0, .25, .250001, .6, .600001, 1, .6, .25, 0]) {
-    trigger.seek(p); const state = sampleScene(source, motion, p), actual = snapshot(scene), graph = layoutGraph(state.nodes, source.diagram.type);
+    trigger.seek(p * .9); const state = sampleScene(source, motion, p), actual = snapshot(scene), graph = layoutGraph(state.nodes, source.diagram.type);
     assert.deepEqual(actual.graph.map(node => node.id).sort(), graph.items.map(node => node.id).sort());
     assert.deepEqual(actual.edges.sort(), graph.edges.map(edge => [edge.from, edge.to]).sort());
     for (const expected of graph.items) {
@@ -316,13 +319,25 @@ test('a diagram-only visualization synchronizes its relationships without requir
 });
 
 
-test('unpinned progress depends on the figure height, never on the ordered fallback below it', async t => {
+test('static fallback height does not create an invisible animation journey', async t => {
   const section = structuredClone(source); section.visualization.pin = false;
   const ui = await setup(t, { section }), scene = ui.scenes[0], trigger = ui.active()[0];
   const track = scene.parts['[data-visualization-track]'], stage = scene.parts['.scene-stage'];
   assert(!scene.parts['.visualization-fallback'].hidden);
   const before = trigger.options.end();
   track.offsetHeight += 9000; assert.equal(trigger.options.end(), before);
-  stage.offsetHeight += 200; assert.equal(trigger.options.end(), `+=${stage.offsetHeight + window.innerHeight * .5}`);
-  window.innerHeight = 520; assert.equal(trigger.options.end(), `+=${stage.offsetHeight + 260}`);
+  stage.offsetHeight += 200; assert.equal(trigger.options.end(), '+=1');
+  window.innerHeight = 520; assert.equal(trigger.options.end(), '+=1');
+  assert(stage.hidden);
+});
+
+
+test('the final visualization state remains visible for the last tenth of its held distance', async t => {
+  const ui = await setup(t), scene = ui.scenes[0], trigger = ui.active()[0];
+  trigger.seek(.9); const final = snapshot(scene);
+  assert.equal(scene.dataset.scrollProgress, '1.00000');
+  assert(!scene.parts['.scene-stage'].hidden);
+  assert.equal(scene.parts['[data-visualization-track]'].dataset.pin, 'true');
+  for (const p of [.95, 1, .92]) { trigger.seek(p); assert.deepEqual(snapshot(scene), final); }
+  trigger.seek(.5); assert.notDeepEqual(snapshot(scene), final);
 });

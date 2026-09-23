@@ -87,8 +87,8 @@ strong { font-weight: 700; }
 .prerequisites { font-size: 13px; line-height: 1.9; color: var(--secondary); margin-top: 20px; }
 .prerequisites a { display: inline-block; padding: 4px 0; }
 
-/* Course title sequences: a symbolic opening, then an ordinary reading page.
-   Nothing is pinned, hidden behind playback, or given an empty scroll runway. */
+/* Keep an observable title sequence in view while scrolling advances its art.
+   The surrounding reading flow stays native; no scroll interception or snap. */
 .course-opening { --intro-surface: var(--canvas); --intro-mark: var(--signal); background: var(--intro-surface); color: var(--paper); scroll-margin-top: var(--header); }
 .course-opening-inner { max-width: calc(var(--wide-width) + 2 * var(--gutter)); margin: auto; padding: 32px var(--gutter) 24px; }
 .course-opening-meta { display: flex; justify-content: space-between; gap: 16px; font: 11px/1.8 var(--mono); color: #bcc8b6; }
@@ -101,7 +101,15 @@ strong { font-weight: 700; }
 .intro-title-accent { color: var(--signal); }
 .course-premise { font-size: 16px; line-height: 1.9; margin-top: 28px; max-width: 33em; }
 .course-payoff { color: #bcc8b6; font-size: 14px; line-height: 1.85; margin-top: 12px; max-width: 36em; }
+.course-symbol-track { min-width: 0; }
 .course-symbol { margin: 0; min-width: 0; }
+.course-opening[data-intro-mode="whole"] { height: calc(var(--intro-stage-height) + var(--intro-travel)); }
+.course-opening[data-intro-mode="whole"] > .course-opening-inner { position: sticky; top: var(--intro-top); }
+.course-opening[data-intro-mode="figure"] .course-opening-grid { align-items: start; }
+.course-opening[data-intro-mode="figure"] .course-symbol-track { height: calc(var(--intro-figure-height) + var(--intro-travel)); }
+.course-opening[data-intro-mode="figure"] .course-symbol { position: sticky; top: var(--intro-top); }
+.course-symbol .intro-symbol { max-height: clamp(120px, calc(100svh - var(--header) - 220px), 370px); }
+
 .symbol-window { overflow: clip; }
 .intro-symbol { width: 100%; height: auto; overflow: visible; color: var(--intro-mark); }
 .intro-symbol [data-intro-piece] { transform-box: fill-box; transform-origin: center; }
@@ -160,7 +168,7 @@ strong { font-weight: 700; }
   .course-premise { font-size: 15px; margin-top: 20px; }
   .course-payoff { font-size: 13px; }
   .symbol-window { width: min(100%, 340px); margin: 0 auto; }
-  .course-symbol .intro-symbol { max-height: 225px; }
+  .course-symbol .intro-symbol { max-height: clamp(120px, calc(100svh - var(--header) - 220px), 225px); }
   .course-symbol figcaption { font-size: 11px; }
   .intro-preview { font-size: 11px; gap: 8px; margin-top: 12px; padding-top: 12px; }
   .course-opening-footer { font-size: 11px; padding-top: 16px; }
@@ -424,7 +432,15 @@ strong { font-weight: 700; }
   :is(.visualization-track.is-enhanced, .visualization-ready .visualization-track) .scene-stage { display: none !important; }
   :is(.visualization-track.is-enhanced, .visualization-ready .visualization-track) .visualization-fallback { display: block; }
 }
+@media (prefers-reduced-motion: reduce) {
+  .course-opening[data-intro-mode], .course-opening[data-intro-mode] .course-symbol-track { height: auto !important; }
+  .course-opening[data-intro-mode] :is(.course-opening-inner,.course-symbol) { position: static !important; }
+  [data-intro-piece], [data-intro-title] { translate: none !important; rotate: none !important; scale: none !important; }
+  [data-intro-line] { stroke-dashoffset: 0 !important; }
+}
 @media print {
+  .course-opening[data-intro-mode], .course-opening[data-intro-mode] .course-symbol-track { height: auto !important; }
+  .course-opening[data-intro-mode] :is(.course-opening-inner,.course-symbol) { position: static !important; }
   .course-opening { --intro-surface: white; --intro-mark: #183127; background: white !important; color: #183127; border-block: 1px solid #183127; }
   .course-opening :is(.intro-title-accent,.course-subtitle,.course-payoff,.course-opening-meta,figcaption,.intro-preview span,.intro-preview strong,.course-opening-footer) { color: #183127; }
   [data-intro-piece], [data-intro-title] { translate: none !important; rotate: none !important; scale: none !important; }

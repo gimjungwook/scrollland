@@ -78,7 +78,7 @@
       ],
       "visualization": {
         "ref": "branching-scene-1",
-        "pin": false,
+        "pin": true,
         "scrollDistance": 145,
         "stops": [
           0,

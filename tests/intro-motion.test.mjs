@@ -1,30 +1,32 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mountIntro, sampleIntro } from '../lib/intro-motion.js';
+import { introGeometry, mountIntro, sampleIntro } from '../lib/intro-motion.js';
 
 const offsets = [{ x: -64, y: 30, rotate: -18, scale: .84 }, { x: 52, y: -24, rotate: 12, scale: 1.08 }];
 function node(dataset = {}) {
   const values = new Map(), priorities = new Map(), attributes = new Map(), classes = new Set();
   return { dataset, offsetHeight: 550, hidden: false, textContent: '제목과 본문은 계속 읽을 수 있습니다.',
+    getBoundingClientRect() { return { top: (this.pageTop || 0) - (globalThis.window?.scrollY || 0), height: this.offsetHeight }; },
     style: { setProperty(name, value, priority = '') { values.set(name, String(value)); priorities.set(name, priority); }, getPropertyValue: name => values.get(name) || '', getPropertyPriority: name => priorities.get(name) || '', removeProperty(name) { values.delete(name); priorities.delete(name); } },
     setAttribute: (name, value) => attributes.set(name, String(value)), getAttribute: name => attributes.get(name) ?? null, removeAttribute: name => attributes.delete(name),
     classList: { add: name => classes.add(name), remove: name => classes.delete(name), contains: name => classes.has(name) },
   };
 }
 function intro(kind = 'course') {
-  const title = node(), art = node(), body = node(), line = node();
+  const title = node(), art = node(), body = node(), line = node(), stage = node(), figureTrack = node(), figure = node(), focus = node();
+  figure.offsetHeight = 350; figureTrack.pageTop = 100;
   const pieces = offsets.map(offset => node({ fromX: String(offset.x), fromY: String(offset.y), fromRotate: String(offset.rotate), fromScale: String(offset.scale) }));
   pieces[0].setAttribute('transform', 'translate(10 20)');
   title.style.setProperty('opacity', '.9');
   art.querySelectorAll = selector => ({ '[data-intro-piece]': pieces, '[data-intro-line]': [line] })[selector] || [];
-  return { ...node({ introKind: kind, introMotif: 'course-1' }), title, art, pieces, line, body,
-    querySelector: selector => ({ '[data-intro-art]': art, '[data-intro-title]': title })[selector] || null,
+  return { ...node({ introKind: kind, introMotif: 'course-1' }), title, art, pieces, line, body, stage, figureTrack, figure, focus,
+    querySelector: selector => ({ '[data-intro-art]': art, '[data-intro-title]': title, '[data-intro-stage]': stage, '[data-intro-figure-track]': figureTrack, '[data-intro-figure]': figure, '[data-intro-lesson-focus]': focus })[selector] || null,
   };
 }
 function plugin(initialProgress = .4, onCreate = () => {}) {
   const triggers = [];
   return { triggers, create(options) {
-    const trigger = { options, progress: initialProgress, killed: false, kill() { this.killed = true; }, seek(p) { this.progress = p; options.onUpdate?.(this); }, refresh() { options.onRefresh?.(this); } };
+    const trigger = { options, progress: initialProgress, killed: false, kill() { this.killed = true; }, seek(p) { this.progress = p; options.onUpdate?.(this); }, refresh() { options.onRefreshInit?.(this); if (!this.killed) options.onRefresh?.(this); } };
     triggers.push(trigger); onCreate(options); options.onRefresh?.(trigger); return trigger;
   }, refresh() { triggers.filter(trigger => !trigger.killed).forEach(trigger => trigger.refresh()); }, update() {} };
 }
@@ -63,7 +65,8 @@ test('mounting applies the current scroll position immediately without hiding co
   assert.equal(element.pieces[0].getAttribute('transform'), 'translate(10 20)');
   assert.equal(element.title.style.getPropertyValue('opacity'), '.9');
   for (const target of [element, element.title, element.art, element.body, ...element.pieces]) assert(!target.hidden);
-  assert.equal(ScrollTrigger.triggers[0].options.start, 'top 15%'); assert.equal(ScrollTrigger.triggers[0].options.end(), '+=310');
+  assert.equal(element.dataset.introMode, 'whole');
+  assert.equal(ScrollTrigger.triggers[0].options.start(), -76); assert.equal(ScrollTrigger.triggers[0].options.end(), '+=560');
   assert.equal(ScrollTrigger.triggers[0].options.pin, undefined); assert.equal(ScrollTrigger.triggers[0].options.snap, undefined);
   dispose();
 });
@@ -80,10 +83,13 @@ test('disposal restores authored styles and SVG attributes for a complete static
   const element = intro(), ScrollTrigger = plugin();
   element.line.setAttribute('pathLength', '240'); element.line.style.setProperty('stroke-dashoffset', '0');
   element.pieces[0].style.setProperty('scale', '1', 'important');
+  element.style.setProperty('--intro-travel', '0px', 'important');
   const before = snapshot(element), dispose = mountIntro(element, { ScrollTrigger });
   assert.equal(element.line.getAttribute('pathLength'), '1');
   dispose(); assert.deepEqual(snapshot(element), before); assert.equal(element.line.getAttribute('pathLength'), '240');
   assert.equal(element.pieces[0].style.getPropertyPriority('scale'), 'important'); assert.equal(element.dataset.introStatus, undefined); assert(ScrollTrigger.triggers[0].killed);
+  assert.equal(element.dataset.introMode, undefined); assert.equal(element.style.getPropertyValue('--intro-travel'), '0px'); assert.equal(element.style.getPropertyPriority('--intro-travel'), 'important');
+  for (const property of ['--intro-stage-height', '--intro-figure-height', '--intro-top']) assert.equal(element.style.getPropertyValue(property), '');
 });
 
 test('invalid authored offsets fail before changing the title or artwork', () => {
@@ -95,12 +101,14 @@ test('invalid authored offsets fail before changing the title or artwork', () =>
 
 test('a rendering failure restores only that intro and leaves neighboring intro motion operational', () => {
   const first = intro(), second = intro('lesson'), ScrollTrigger = plugin(), errors = [];
-  const before = snapshot(first), disposeFirst = mountIntro(first, { ScrollTrigger, reportError: (...args) => errors.push(args) }), disposeSecond = mountIntro(second, { ScrollTrigger });
+  let refreshes = 0;
+  const before = snapshot(first), disposeFirst = mountIntro(first, { ScrollTrigger, reportError: (...args) => errors.push(args), requestRefresh: () => refreshes++ }), disposeSecond = mountIntro(second, { ScrollTrigger });
   const set = first.pieces[0].style.setProperty;
   first.pieces[0].style.setProperty = () => { throw new Error('unavailable geometry'); };
   ScrollTrigger.triggers[0].seek(.7);
   first.pieces[0].style.setProperty = set;
   assert.equal(errors.length, 1); assert.equal(first.dataset.introStatus, 'failed'); assert.deepEqual(snapshot(first), before);
+  assert.equal(first.dataset.introMode, undefined); assert.equal(first.style.getPropertyValue('--intro-travel'), ''); assert.equal(refreshes, 1);
   assert(ScrollTrigger.triggers[0].killed); assert(!ScrollTrigger.triggers[1].killed); ScrollTrigger.triggers[1].seek(1); assert.equal(second.line.style.getPropertyValue('stroke-dashoffset'), '0');
   assert.equal(first.title.textContent, '제목과 본문은 계속 읽을 수 있습니다.');
   disposeFirst(); disposeSecond();
@@ -111,7 +119,7 @@ async function app(t, { reduced = false, libraries = true, malformed = false, ha
   const globals = Object.fromEntries(['window', 'document'].map(name => [name, Object.getOwnPropertyDescriptor(globalThis, name)]));
   t.after(() => Object.entries(globals).forEach(([name, descriptor]) => { if (descriptor) Object.defineProperty(globalThis, name, descriptor); else delete globalThis[name]; }));
   const intros = [intro(), intro('lesson')], events = [], errors = [], root = node(), fallback = node(), mediaListeners = new Map(), listeners = new Map();
-  intros.forEach((element, i) => { element.id = `intro-${i}`; element.scrollIntoView = () => events.push('anchor'); });
+  intros.forEach((element, i) => { element.id = `intro-${i}`; element.scrollIntoView = () => { assert.equal(intros[0].dataset.introMode, 'whole'); events.push('anchor'); }; });
   if (malformed) intros[0].pieces[0].dataset.fromX = 'invalid';
   const ScrollTrigger = plugin(.4, () => events.push('intro-created'));
   const media = { matches: reduced, addEventListener: (name, callback) => mediaListeners.set(name, callback) };
@@ -120,7 +128,7 @@ async function app(t, { reduced = false, libraries = true, malformed = false, ha
     querySelectorAll: selector => selector === '[data-intro]' ? intros : [],
     getElementById: id => intros.find(element => element.id === id) || null,
   };
-  globalThis.window = { location: { hash }, performance: { getEntriesByType: () => [{ type: 'navigate' }] }, matchMedia: () => media,
+  globalThis.window = { innerHeight: 800, scrollY: 0, getComputedStyle: () => ({ getPropertyValue: () => '64px' }), location: { hash }, performance: { getEntriesByType: () => [{ type: 'navigate' }] }, matchMedia: () => media,
     addEventListener: (name, callback) => listeners.set(name, callback), requestAnimationFrame: callback => callback(),
     ...(libraries ? { gsap: { registerPlugin() {} }, ScrollTrigger } : {}),
   };
@@ -138,15 +146,17 @@ for (const options of [{ reduced: true }, { libraries: false }]) test(`static ar
   for (const element of ui.intros) { assert.equal(element.dataset.introStatus, undefined); assert.equal(element.line.style.getPropertyValue('stroke-dashoffset'), ''); assert.equal(element.title.style.getPropertyValue('translate'), ''); assert(!element.title.hidden); }
 });
 
-test('app lifecycle restores static intros for reduced motion and pagehide, then remounts at the current position', async t => {
+test('app lifecycle restores static intros for reduced motion and preserves held geometry through page cache', async t => {
   const ui = await app(t); assert.equal(ui.active().length, 2); const rendered = ui.intros.map(snapshot);
   ui.setReduced(true); assert.equal(ui.active().length, 0); assert(ui.intros.every(element => element.title.style.getPropertyValue('translate') === ''));
   ui.setReduced(false); assert.equal(ui.active().length, 2); assert.deepEqual(ui.intros.map(snapshot), rendered);
-  ui.pagehide(); assert.equal(ui.active().length, 0); ui.pageshow(); assert.equal(ui.active().length, 2); assert.deepEqual(ui.intros.map(snapshot), rendered);
+  const active = ui.active();
+  ui.pagehide(); assert.deepEqual(ui.active(), active); assert.deepEqual(ui.intros.map(snapshot), rendered);
+  ui.pageshow(); assert.deepEqual(ui.active(), active); assert.deepEqual(ui.intros.map(snapshot), rendered);
 });
 
-test('app aligns an explicit initial anchor before creating intro controllers', async t => {
-  const ui = await app(t, { hash: '#intro-1' }); assert.equal(ui.events[0], 'anchor'); assert.equal(ui.events.filter(event => event === 'anchor').length, 1);
+test('app settles course observation geometry before aligning an explicit initial anchor', async t => {
+  const ui = await app(t, { hash: '#intro-1' }); assert.deepEqual(ui.events, ['intro-created', 'intro-created', 'anchor']);
   assert(ui.intros.every(element => element.dataset.introProgress === '0.40000'));
 });
 
@@ -156,13 +166,74 @@ test('one invalid intro keeps its original text and does not interrupt the other
 });
 
 
-test('course intros use their actual height for progress while lesson intros retain the short entry range', () => {
-  const course = intro(), lesson = intro('lesson'), ScrollTrigger = plugin();
-  const disposeCourse = mountIntro(course, { ScrollTrigger }), disposeLesson = mountIntro(lesson, { ScrollTrigger });
-  const options = ScrollTrigger.triggers[0].options;
-  assert.equal(options.start, 'top 15%'); assert.equal(options.end(), '+=310');
-  course.offsetHeight = 320; assert.equal(options.end(), '+=80');
-  course.offsetHeight = 100; assert.equal(options.end(), '+=1');
-  assert.equal(ScrollTrigger.triggers[1].options.start, 'top 90%'); assert.equal(ScrollTrigger.triggers[1].options.end, 'top 20%');
-  assert.equal(options.pin, undefined); disposeCourse(); disposeLesson();
+test('a course completes its arrangement at 85% and holds it while still in the sticky observation range', () => {
+  const complete = sampleIntro('course', offsets, .85);
+  for (const progress of [.85, .9, 1]) {
+    const sampled = sampleIntro('course', offsets, progress);
+    assert.deepEqual(sampled.pieces, complete.pieces); assert.deepEqual(sampled.title, complete.title); assert.equal(sampled.lineOffset, 0);
+  }
+  assert(sampleIntro('course', offsets, .8).lineOffset > 0);
+});
+
+test('course geometry fits the complete stage or figure below the header and bounds the observation distance', () => {
+  assert.deepEqual(introGeometry(800, 64, 712, 350), { mode: 'whole', top: 76, travel: 560 });
+  assert.deepEqual(introGeometry(800, 64, 713, 350), { mode: 'figure', top: 76, travel: 560 });
+  assert.deepEqual(introGeometry(400, 64, 713, 313), { mode: 'static', top: 76, travel: 0 });
+  assert.equal(introGeometry(400, 64, 713, 312).travel, 320);
+  assert.equal(introGeometry(2000, 64, 713, 350).travel, 720);
+  assert.equal(introGeometry(70, 64, 10, 10).mode, 'static');
+  assert.equal(introGeometry(800, 64, 0, 0).mode, 'static');
+});
+
+test('resize remeasures unpinned content and switches whole, figure and static modes without stale travel', () => {
+  const element = intro(), ScrollTrigger = plugin(.4), before = snapshot(element);
+  const measuredModes = [], stageHeight = { value: 550 };
+  Object.defineProperty(element.stage, 'offsetHeight', { get() { measuredModes.push(element.dataset.introMode); return stageHeight.value; } });
+  const dispose = mountIntro(element, { ScrollTrigger }), trigger = ScrollTrigger.triggers[0];
+  const expected = snapshot(element); assert.equal(element.dataset.introMode, 'whole');
+  stageHeight.value = 900; trigger.refresh();
+  assert.equal(element.dataset.introMode, 'figure'); assert.equal(trigger.options.start(), 24); assert.deepEqual(snapshot(element), expected);
+  element.figure.offsetHeight = 730; trigger.refresh();
+  assert.equal(element.dataset.introMode, 'static'); assert.equal(element.style.getPropertyValue('--intro-travel'), '0px'); assert.equal(trigger.options.end(), '+=1');
+  assert.deepEqual(snapshot(element), { ...before, progress: '1.00000' });
+  trigger.seek(.1); assert.deepEqual(snapshot(element), { ...before, progress: '1.00000' });
+  stageHeight.value = 550; trigger.refresh();
+  assert.equal(element.dataset.introMode, 'whole'); trigger.seek(.4); assert.deepEqual(snapshot(element), expected);
+  assert(measuredModes.every(mode => mode === undefined)); dispose();
+});
+
+test('course start follows normal-flow position even when its stage is already sticky or earlier courses change height', t => {
+  const prior = Object.getOwnPropertyDescriptor(globalThis, 'window');
+  t.after(() => prior ? Object.defineProperty(globalThis, 'window', prior) : delete globalThis.window);
+  globalThis.window = { scrollY: 400, innerHeight: 800 };
+  const element = intro(), ScrollTrigger = plugin(); element.pageTop = 1000; element.stage.pageTop = 1030;
+  const dispose = mountIntro(element, { ScrollTrigger }), options = ScrollTrigger.triggers[0].options;
+  assert.equal(options.start(), 954);
+  element.stage.getBoundingClientRect = () => ({ top: 76 }); window.scrollY = 1100;
+  assert.equal(options.start(), 954, 'a sticky bounding box must not redefine the timeline');
+  element.pageTop += 500; assert.equal(options.start(), 1454, 'start includes geometry changes from preceding courses');
+  dispose();
+});
+
+test('viewport and header changes reevaluate the available observation space at refresh', t => {
+  const prior = Object.getOwnPropertyDescriptor(globalThis, 'window');
+  t.after(() => prior ? Object.defineProperty(globalThis, 'window', prior) : delete globalThis.window);
+  let header = 64;
+  globalThis.window = { innerHeight: 900, scrollY: 0, getComputedStyle: () => ({ getPropertyValue: () => `${header}px` }) };
+  const element = intro(), ScrollTrigger = plugin(), dispose = mountIntro(element, { ScrollTrigger }), trigger = ScrollTrigger.triggers[0];
+  assert.equal(element.dataset.introMode, 'whole'); assert.equal(trigger.options.end(), '+=630');
+  window.innerHeight = 450; header = 60; trigger.refresh();
+  assert.equal(element.dataset.introMode, 'figure'); assert.equal(element.style.getPropertyValue('--intro-top'), '72px'); assert.equal(trigger.options.end(), '+=320');
+  window.innerHeight = 400; trigger.refresh();
+  assert.equal(element.dataset.introMode, 'static'); assert.equal(element.dataset.introProgress, '1.00000');
+  window.innerHeight = 900; trigger.refresh();
+  assert.equal(element.dataset.introMode, 'whole'); assert.equal(element.dataset.introProgress, '0.40000');
+  dispose();
+});
+
+test('lesson animation uses its title/art focus and completes before that focus exits the viewport', () => {
+  const element = intro('lesson'), ScrollTrigger = plugin(), dispose = mountIntro(element, { ScrollTrigger }), options = ScrollTrigger.triggers[0].options;
+  assert.equal(options.trigger, element.focus); assert.equal(options.start, 'top 85%'); assert.equal(options.end, 'top 45%');
+  assert.equal(element.dataset.introMode, undefined); assert.equal(element.style.getPropertyValue('--intro-travel'), ''); assert.equal(options.pin, undefined);
+  dispose();
 });

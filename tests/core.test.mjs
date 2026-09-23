@@ -161,7 +161,7 @@ test('example comparison preserves meaningful internal whitespace and removes on
   await assert.rejects(executeExample({ code: 'print(2)', output: '3' }), /출력 불일치/);
   await assert.rejects(executeExample({ code: 'while True: pass', output: '' }, { timeout: 50 }), /제한/);
 });
-test('runtime has no persistence, code execution, wheel interception or arbitrary page scrolling', async () => {
+test('runtime excludes learning-data storage, code execution, wheel interception and unrestricted page scrolling', async () => {
   const app = await readFile(new URL('../app.js', import.meta.url), 'utf8');
   assert(!/localStorage|sessionStorage|document\.cookie|eval\(|new Function|scrollTo\(|preventDefault\(/.test(app));
   assert(app.includes('prefers-reduced-motion: reduce'));

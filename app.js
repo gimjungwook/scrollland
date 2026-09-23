@@ -1,7 +1,7 @@
-import { mountIntro } from './lib/intro-motion.js?v=5';
-import { mountTextEffect } from './lib/text-effects.js?v=5';
-import { clamp, sampleScene, validateMotion } from './lib/scroll-state.js?v=5';
-import { layoutGraph, interpolateGraph } from './lib/graph-layout.js?v=5';
+import { mountIntro } from './lib/intro-motion.js?v=6';
+import { mountTextEffect } from './lib/text-effects.js?v=6';
+import { clamp, sampleScene, validateMotion } from './lib/scroll-state.js?v=6';
+import { layoutGraph, interpolateGraph } from './lib/graph-layout.js?v=6';
 
 const escape = text => String(text).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 // Reserve each binding's own slot across the whole example. A second object
@@ -173,7 +173,14 @@ export function setupScrollExperience() {
     if (header.textContent !== current.title) header.textContent = current.title;
   };
   const fallback = document.querySelector('[data-motion-fallback]');
-  let disposers = [], initialAnchorApplied = false, refreshPending = false;
+  let disposers = [], refreshPending = false, mountEffects = () => {};
+  let positionReady = false, positionCancelled = false, positionGeneration = 0, pageHidden = false, destroyed = false;
+  const positionKey = '__scrolllandReadingPosition';
+  const entryURL = window.location.href;
+  const entryHash = window.location.hash;
+  const navigation = window.performance?.getEntriesByType?.('navigation')?.[0]?.type;
+  const saved = window.history?.state?.[positionKey];
+  let restorePosition = ['reload', 'back_forward'].includes(navigation) && saved?.url === entryURL && Number.isFinite(saved?.x) && Number.isFinite(saved?.y) && saved.y >= 0 ? saved : null;
   const dispose = () => { disposers.splice(0).reverse().forEach(stop => stop()); };
   const resetScene = element => {
     element.classList.remove('visualization-ready');
@@ -192,12 +199,64 @@ export function setupScrollExperience() {
     if (fallback && !['text-effect', 'intro'].includes(type)) { fallback.hidden = false; fallback.textContent = '일부 연출을 준비하지 못했습니다. 해당 내용은 정적으로 이어서 읽을 수 있습니다.'; }
   };
   const requestRefresh = () => {
-    if (refreshPending) return;
+    if (refreshPending || pageHidden || destroyed) return;
     refreshPending = true;
-    window.requestAnimationFrame(() => { refreshPending = false; window.ScrollTrigger?.refresh(); drawLocation(); });
+    window.requestAnimationFrame(() => { refreshPending = false; if (!pageHidden && !destroyed) { window.ScrollTrigger?.refresh(); drawLocation(); } });
+  };
+  const cancelPosition = event => {
+    if (event.type === 'keydown' && !['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' ', 'Tab'].includes(event.key)) return;
+    positionCancelled = true;
+  };
+  // Intentional input wins over a delayed font/load correction. Scroll events
+  // alone also come from native restoration and refresh, so cannot identify it.
+  const intentEvents = ['wheel', 'touchstart', 'pointerdown', 'keydown', 'hashchange'];
+  intentEvents.forEach(name => window.addEventListener(name, cancelPosition, { passive: true }));
+  const finishPosition = generation => {
+    if (destroyed || pageHidden || generation !== positionGeneration) return;
+    window.ScrollTrigger?.refresh();
+    if (!positionCancelled) {
+      if (restorePosition) window.scrollTo?.({ left: restorePosition.x, top: restorePosition.y, behavior: 'instant' });
+      else if (!positionReady && !['reload', 'back_forward'].includes(navigation) && window.location.hash === entryHash) {
+        let id = ''; try { id = decodeURIComponent(entryHash.slice(1)); } catch {}
+        if (id) document.getElementById(id)?.scrollIntoView({ behavior: 'instant', block: 'start' });
+      }
+    }
+    restorePosition = null;
+    positionReady = true;
+    window.ScrollTrigger?.update();
+    // Effects decide whether to skip their first play at the final position.
+    mountEffects(); drawLocation();
+  };
+  const settlePosition = () => {
+    const generation = ++positionGeneration;
+    const loading = document.readyState && document.readyState !== 'complete';
+    if (!document.fonts?.ready && !loading) { finishPosition(generation); return; }
+    const loaded = loading ? new Promise(resolve => window.addEventListener('load', resolve, { once: true })) : Promise.resolve();
+    Promise.all([loaded, Promise.resolve(document.fonts?.ready).catch(() => {})]).then(() => {
+      // Run after native restoration and ScrollTrigger's own load refresh.
+      window.requestAnimationFrame(() => window.requestAnimationFrame(() => finishPosition(generation)));
+    });
+  };
+  const pagehide = () => {
+    pageHidden = true; positionGeneration++;
+    const position = { url: window.location.href, x: window.scrollX || 0, y: window.scrollY || 0 };
+    restorePosition = position;
+    try {
+      const state = window.history?.state;
+      if (window.history?.replaceState && (state === null || state === undefined || typeof state === 'object' && !Array.isArray(state))) {
+        window.history.replaceState({ ...state, [positionKey]: position }, '');
+      }
+    } catch { /* A restricted history API leaves native browser restoration intact. */ }
+    // Keep document height and controllers intact in the back-forward cache.
+    // Disposing here shrinks the page before the browser saves its position.
+  };
+  const pageshow = event => {
+    if (!event.persisted) return;
+    pageHidden = false; positionCancelled = false; settlePosition();
   };
   const apply = () => {
     dispose(); scenes.forEach(resetScene);
+    mountEffects = () => {};
     document.documentElement.classList.remove('motion-on');
     // Location is useful with or without motion, and never changes page position.
     if (header && locations.length) {
@@ -235,7 +294,7 @@ export function setupScrollExperience() {
         stage.hidden = false;
         const safeRender = p => {
           if (stopped) return;
-          try { render(p); }
+          try { render(track.dataset.pin === 'true' ? clamp(p / .9) : 1); }
           catch (error) { restore(); element.dataset.visualizationStatus = 'failed'; reportError('visualization', element, error); requestRefresh(); }
         };
         render(0);
@@ -251,6 +310,8 @@ export function setupScrollExperience() {
             // Give the code camera a bounded panel before measuring. Otherwise a
             // long program's full source height incorrectly disqualifies pinning.
             track.dataset.pin = 'false';
+            stage.hidden = false;
+            stage.setAttribute('aria-hidden', 'false');
             const headerHeight = parseFloat(window.getComputedStyle(document.documentElement).getPropertyValue?.('--header')) || 72;
             stickyTop = headerHeight + 16;
             const viewport = window.innerHeight || document.documentElement.clientHeight;
@@ -265,13 +326,16 @@ export function setupScrollExperience() {
               render(stop);
               overflow = Math.max(overflow, stage.scrollHeight - Math.max(stage.clientHeight, candidate));
             }
-            render(progress);
+            render(clamp(progress / .9));
             const height = Math.max(candidate + overflow, stage.offsetHeight);
             const pinned = data.pin && height + stickyTop + 16 <= viewport + 1;
             track.dataset.pin = String(pinned);
             track.style.setProperty('--stage-height', `${height}px`);
-            // In a short window, scrolling past a tall unpinned figure can skip
-            // its early states. Keep the ordered reading version directly below.
+            // A stage that cannot remain fully visible is not a scroll movie.
+            // Show every ordered state as readable static material instead.
+            stage.hidden = !pinned;
+            stage.setAttribute('aria-hidden', String(!pinned));
+            if (!pinned) render(1);
             transcript.hidden = pinned;
             if (pinned) transcript.style.removeProperty('display');
             else transcript.style.setProperty('display', 'block');
@@ -283,7 +347,7 @@ export function setupScrollExperience() {
         trigger = ScrollTrigger.create({
           trigger: track,
           start: () => track.dataset.pin === 'true' ? `top ${stickyTop}px` : 'top 85%',
-          end: () => track.dataset.pin === 'true' ? `+=${Math.max(1, track.offsetHeight - stage.offsetHeight)}` : `+=${Math.max(1, stage.offsetHeight + (window.innerHeight || document.documentElement.clientHeight) * .5)}`,
+          end: () => track.dataset.pin === 'true' ? `+=${Math.max(1, track.offsetHeight - stage.offsetHeight)}` : '+=1',
           invalidateOnRefresh: true,
           onRefreshInit: geometry,
           onUpdate: self => safeRender(self.progress),
@@ -292,40 +356,42 @@ export function setupScrollExperience() {
         safeRender(trigger.progress);
       } catch (error) { restore(); element.dataset.visualizationStatus = 'failed'; reportError('visualization', element, error); }
     }
-    // Finish any explicit entry anchor before mounting phrase effects, so their
-    // authored initial policy observes the actual restored reading position.
-    ScrollTrigger.refresh();
-    if (!initialAnchorApplied) {
-      initialAnchorApplied = true;
-      let id = ''; try { id = decodeURIComponent(window.location.hash.slice(1)); } catch {}
-      const target = id ? document.getElementById(id) : null;
-      const navigation = window.performance?.getEntriesByType?.('navigation')?.[0]?.type;
-      if (target && navigation !== 'reload' && navigation !== 'back_forward') {
-        target.scrollIntoView({ behavior: 'instant', block: 'start' }); ScrollTrigger.update();
-      }
-    }
+    // Set every course's observation distance before resolving a deep link.
+    // Phrase effects mount afterwards to observe the actual reading position.
     for (const element of intros) {
-      try { disposers.push(mountIntro(element, { ScrollTrigger, reportError })); }
+      try { disposers.push(mountIntro(element, { ScrollTrigger, reportError, requestRefresh })); }
       catch (error) { element.dataset.introStatus = 'failed'; reportError('intro', element, error); }
     }
-    for (const element of effects) {
-      try { disposers.push(mountTextEffect(element, { gsap, ScrollTrigger, memory: effectMemory, reportError })); }
-      catch (error) { element.dataset.effectStatus = 'failed'; reportError('text-effect', element, error); }
-    }
+    let effectsMounted = false;
+    mountEffects = () => {
+      if (effectsMounted) return;
+      effectsMounted = true;
+      for (const element of effects) {
+        try { disposers.push(mountTextEffect(element, { gsap, ScrollTrigger, memory: effectMemory, reportError })); }
+        catch (error) { element.dataset.effectStatus = 'failed'; reportError('text-effect', element, error); }
+      }
+      ScrollTrigger.refresh();
+    };
     const progress = document.querySelector('[data-global-progress]');
     if (progress) {
       const drawProgress = self => { progress.style.transform = `scaleX(${self.progress})`; };
       const trigger = ScrollTrigger.create({ start: 0, end: 'max', onUpdate: drawProgress, onRefresh: drawProgress });
       disposers.push(() => trigger.kill());
     }
-    ScrollTrigger.refresh(); drawLocation();
+    ScrollTrigger.refresh();
+    if (positionReady) mountEffects();
+    drawLocation();
   };
   apply();
+  settlePosition();
   media.addEventListener('change', apply);
-  window.addEventListener('pagehide', dispose);
-  window.addEventListener('pageshow', event => { if (event.persisted) apply(); });
-  // Fonts can alter stage heights after first paint; refresh only when they settle.
-  document.fonts?.ready.then(requestRefresh);
-  return dispose;
+  window.addEventListener('pagehide', pagehide);
+  window.addEventListener('pageshow', pageshow);
+  return () => {
+    destroyed = true; positionGeneration++; dispose();
+    intentEvents.forEach(name => window.removeEventListener?.(name, cancelPosition));
+    media.removeEventListener?.('change', apply);
+    window.removeEventListener?.('pagehide', pagehide); window.removeEventListener?.('pageshow', pageshow);
+  };
 }
 if (typeof document !== 'undefined' && typeof window !== 'undefined') setupScrollExperience();
