@@ -1,6 +1,7 @@
-import { mountTextEffect } from './lib/text-effects.js?v=4';
-import { clamp, sampleScene, validateMotion } from './lib/scroll-state.js?v=4';
-import { layoutGraph, interpolateGraph } from './lib/graph-layout.js?v=4';
+import { mountIntro } from './lib/intro-motion.js?v=5';
+import { mountTextEffect } from './lib/text-effects.js?v=5';
+import { clamp, sampleScene, validateMotion } from './lib/scroll-state.js?v=5';
+import { layoutGraph, interpolateGraph } from './lib/graph-layout.js?v=5';
 
 const escape = text => String(text).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 // Reserve each binding's own slot across the whole example. A second object
@@ -151,7 +152,26 @@ export function setupScrollExperience() {
   const media = window.matchMedia('(prefers-reduced-motion: reduce)');
   const scenes = [...document.querySelectorAll('[data-visualization]')];
   const effects = [...document.querySelectorAll('.text-effect[data-effect]')];
+  const intros = [...document.querySelectorAll('[data-intro]')];
   const effectMemory = new WeakMap();
+  const header = document.querySelector('[data-header-current]');
+  const locations = header ? [...document.querySelectorAll('[data-intro-kind="course"], [data-lesson-article]')].map(element => ({
+    element, title: (element.dataset.title || element.querySelector('.course-subtitle')?.textContent || '').trim(),
+  })).filter(location => location.title) : [];
+  const drawLocation = () => {
+    if (!header || !locations.length) return;
+    const readingLine = (window.innerHeight || document.documentElement.clientHeight || 0) * .4;
+    // Document-order boundaries make a skipped range or reverse jump as reliable
+    // as slow scrolling. Six rectangle reads suffice for the complete course.
+    let low = 0, high = locations.length;
+    while (low < high) {
+      const middle = (low + high) >>> 1;
+      if (locations[middle].element.getBoundingClientRect().top <= readingLine) low = middle + 1;
+      else high = middle;
+    }
+    const current = locations[Math.max(0, low - 1)];
+    if (header.textContent !== current.title) header.textContent = current.title;
+  };
   const fallback = document.querySelector('[data-motion-fallback]');
   let disposers = [], initialAnchorApplied = false, refreshPending = false;
   const dispose = () => { disposers.splice(0).reverse().forEach(stop => stop()); };
@@ -169,16 +189,27 @@ export function setupScrollExperience() {
   const reportError = (type, element, error) => {
     // The event exposes only an element identifier and failure category, never lesson text.
     console.error(`ScrollLand ${type} failed (${element.id || 'inline'}):`, error);
-    if (fallback && type !== 'text-effect') { fallback.hidden = false; fallback.textContent = '일부 연출을 준비하지 못했습니다. 해당 내용은 정적으로 이어서 읽을 수 있습니다.'; }
+    if (fallback && !['text-effect', 'intro'].includes(type)) { fallback.hidden = false; fallback.textContent = '일부 연출을 준비하지 못했습니다. 해당 내용은 정적으로 이어서 읽을 수 있습니다.'; }
   };
   const requestRefresh = () => {
     if (refreshPending) return;
     refreshPending = true;
-    window.requestAnimationFrame(() => { refreshPending = false; window.ScrollTrigger?.refresh(); });
+    window.requestAnimationFrame(() => { refreshPending = false; window.ScrollTrigger?.refresh(); drawLocation(); });
   };
   const apply = () => {
     dispose(); scenes.forEach(resetScene);
     document.documentElement.classList.remove('motion-on');
+    // Location is useful with or without motion, and never changes page position.
+    if (header && locations.length) {
+      window.addEventListener('scroll', drawLocation, { passive: true });
+      window.addEventListener('resize', drawLocation);
+      window.ScrollTrigger?.addEventListener?.('refresh', drawLocation);
+      disposers.push(() => {
+        window.removeEventListener?.('scroll', drawLocation); window.removeEventListener?.('resize', drawLocation);
+        window.ScrollTrigger?.removeEventListener?.('refresh', drawLocation);
+      });
+      drawLocation();
+    }
     if (media.matches || !window.gsap || !window.ScrollTrigger) {
       if (fallback) { fallback.hidden = false; fallback.textContent = media.matches ? '움직임 줄이기 설정에 따라 강조와 상태 변화를 정적으로 표시합니다.' : '연출을 불러오지 못했습니다. 본문과 예제, 상태 설명을 그대로 읽을 수 있습니다.'; }
       return;
@@ -273,16 +304,13 @@ export function setupScrollExperience() {
         target.scrollIntoView({ behavior: 'instant', block: 'start' }); ScrollTrigger.update();
       }
     }
+    for (const element of intros) {
+      try { disposers.push(mountIntro(element, { ScrollTrigger, reportError })); }
+      catch (error) { element.dataset.introStatus = 'failed'; reportError('intro', element, error); }
+    }
     for (const element of effects) {
       try { disposers.push(mountTextEffect(element, { gsap, ScrollTrigger, memory: effectMemory, reportError })); }
       catch (error) { element.dataset.effectStatus = 'failed'; reportError('text-effect', element, error); }
-    }
-    // The header is only a location indicator. It does not animate learning content.
-    const header = document.querySelector('[data-header-current]');
-    for (const article of document.querySelectorAll('[data-lesson-article]')) {
-      if (!header) break;
-      const trigger = ScrollTrigger.create({ trigger: article, start: 'top 40%', end: 'bottom 40%', onToggle: self => { if (self.isActive) header.textContent = article.dataset.title; } });
-      disposers.push(() => trigger.kill());
     }
     const progress = document.querySelector('[data-global-progress]');
     if (progress) {
@@ -290,7 +318,7 @@ export function setupScrollExperience() {
       const trigger = ScrollTrigger.create({ start: 0, end: 'max', onUpdate: drawProgress, onRefresh: drawProgress });
       disposers.push(() => trigger.kill());
     }
-    ScrollTrigger.refresh();
+    ScrollTrigger.refresh(); drawLocation();
   };
   apply();
   media.addEventListener('change', apply);

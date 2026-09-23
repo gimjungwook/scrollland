@@ -4,6 +4,15 @@
   "title": "다른 도구에서도 읽을 수 있는 기록 만들기",
   "problem": "Python 안의 기록을 다른 프로그램과 교환할 텍스트로 만들고 싶습니다.",
   "goal": "JSON 문자열과 Python 객체를 구분해 직렬화·역직렬화합니다.",
+  "intro": {
+    "hook": "Python의 딕셔너리를 다른 프로그램에 전달하려 합니다. 화면에 보이는 모양만 복사하면 같은 자료가 될까요?",
+    "connection": "여러 값을 중첩해 담고 모듈을 불러왔습니다. JSON은 그 기록을 프로그램 사이에서 읽을 수 있는 텍스트 형식으로 표현합니다.",
+    "payoff": "객체를 문자열로 바꾸고 다시 복원합니다. true와 True의 차이, 왕복할 때 튜플이 리스트가 되는 경우도 확인합니다.",
+    "preview": {
+      "before": "Python: {\"counts\": (2, 4)}",
+      "after": "왕복 후 counts: [2, 4]"
+    }
+  },
   "prerequisites": [
     "nested-data",
     "modules"

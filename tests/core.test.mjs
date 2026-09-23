@@ -6,13 +6,63 @@ import { renderLesson, renderIndex, renderNotFound, normalizeBasePath, escapeHTM
 import { executeExample, normalizeOutput } from '../scripts/validate-examples.mjs';
 
 const section = { id: 'example-example', kind: 'reading', title: '이름으로 결과 읽기', body: ['이름은 객체를 가리킵니다.'], code: 'print(2)', output: '2', diagram: { type: 'binding', nodes: [{ label: '이름', value: 'x' }, { label: '값', value: '2' }], caption: 'x는 2를 가리킵니다.' } };
-const fixture = (slug = 'example') => ({ slug, courseId: 'values', title: '예제 읽기', problem: '어떤 수가 출력될까요?', goal: '출력된 수를 설명합니다.', prerequisites: [], topics: ['print', '출력'], takeaway: 'print는 값을 출력합니다.', sections: [
+const lessonIntro = () => ({ hook: '값 하나를 어떻게 기억할까요?', connection: '처음 읽는 코드 한 줄입니다.', payoff: '출력으로 값을 확인합니다.', preview: {before: 'print(2)', after: '2'} });
+const courseIntro = () => ({ headline: ['하나의 값,', '하나의 이름.'], premise: '결과를 읽습니다.', payoff: '이름으로 값을 사용합니다.', scene: {before: '2', after: 'x = 2', caption: '이름은 값을 가리킵니다.'} });
+const fixture = (slug = 'example') => ({ intro: lessonIntro(), slug, courseId: 'values', title: '예제 읽기', problem: '어떤 수가 출력될까요?', goal: '출력된 수를 설명합니다.', prerequisites: [], topics: ['print', '출력'], takeaway: 'print는 값을 출력합니다.', sections: [
   { id: `${slug}-reading`, kind: 'reading', title: '먼저 읽기', body: ['본문은 스크롤 위치와 관계없이 계속 읽을 수 있습니다.'] },
   { ...structuredClone(section), id: `${slug}-example` },
   { ...structuredClone(section), id: `${slug}-visual`, kind: 'visualization', question: '무엇이 바뀔까요?', rationale: '출력 전후를 추적합니다.', interpretation: ['이 코드는 2를 출력합니다.'], trace: [{label: '실행 전', state: '출력 전'}, {label: '실행 후', state: '2 출력'}], visualization: {ref: `${slug}-visual`, pin: true, scrollDistance: 140, stops: [0, 0.6, 1]} }
 ], quiz: { question: '출력은?', options: [{ text: '2', correct: true, feedback: '2가 출력됩니다.' }, { text: '3', correct: false, feedback: '코드의 숫자를 다시 읽으세요.' }, { text: '없음', correct: false, feedback: 'print가 있습니다.' }] }, sourceUrls: ['https://docs.python.org/3/tutorial/'] });
-const content = () => { const lesson = fixture(); return { curriculum: { title: 'ScrollLand', subtitle: 'Python 코드와 결과를 비교합니다.', language: 'ko', pythonVersion: '3.10+', courses: [{ id: 'values', title: '값', question: '값을 어떻게 읽을까요?', lessons: ['example'] }] }, lessons: { example: lesson }, order: ['example'], motion: {version: 2, scenes: {'example-visual': {steps: [{lines: [], nodes: [{label: '출력', value: '없음'}], output: ''}, {lines: [1], nodes: [{label: '출력', value: '2'}], output: '2'}], finalNodes: section.diagram.nodes}}} }; };
+const content = () => { const lesson = fixture(); return { curriculum: { title: 'ScrollLand', subtitle: 'Python 코드와 결과를 비교합니다.', language: 'ko', pythonVersion: '3.10+', courses: [{ intro: courseIntro(), id: 'values', title: '값', question: '값을 어떻게 읽을까요?', lessons: ['example'] }] }, lessons: { example: lesson }, order: ['example'], motion: {version: 2, scenes: {'example-visual': {steps: [{lines: [], nodes: [{label: '출력', value: '없음'}], output: ''}, {lines: [1], nodes: [{label: '출력', value: '2'}], output: '2'}], finalNodes: section.diagram.nodes}}} }; };
 const effect = () => ({preset: 'glow', mode: 'scrub', purpose: '핵심어 구분', start: 'top 85%', end: 'top 35%', duration: 0.9, reentry: 'repeat', exit: 'cancel', initial: 'skip'});
+
+test('course boundaries and lesson introductions are readable without animation', () => {
+  const c = content(); const html = renderIndex(c);
+  assert.equal((html.match(/data-intro-kind="course"/g)||[]).length, 1);
+  assert.equal((html.match(/data-intro-kind="lesson"/g)||[]).length, 1);
+  assert(html.indexOf('id="course-values"') < html.indexOf('id="lesson-example"'));
+  assert(html.includes('값 하나를 어떻게 기억할까요?'));
+  assert(html.includes('처음 읽는 코드 한 줄입니다.'));
+  assert(html.includes('출력으로 값을 확인합니다.'));
+  assert(html.includes('이름은 값을 가리킵니다.'));
+  assert(!html.includes('class="hero"'), 'the first course already serves as the opening');
+  const lesson = renderLesson(c.lessons.example,c);
+  assert(lesson.includes('href="../index.html#course-values"'));
+  assert(!lesson.includes('data-intro-kind="course"'), 'a direct lesson should not repeat a full course title sequence');
+  c.lessons.example.intro.hook = '<script>alert(1)</script>';
+  c.curriculum.courses[0].intro.headline[0] = '<img src=x>';
+  const escaped = renderIndex(c);
+  assert(escaped.includes('&lt;script&gt;alert(1)&lt;/script&gt;'));
+  assert(escaped.includes('&lt;img src=x&gt;'));
+});
+
+
+test('headings distinguish the service, courses, lessons, sections and example inputs without skipped levels', () => {
+  const c = content();
+  c.lessons.example.sections[1].stdin = '입력'; c.lessons.example.sections[1].files = { 'data.txt': '자료' };
+  const second = { ...fixture('second'), courseId: 'tools', title: '두 번째 레슨' };
+  c.curriculum.courses.push({ intro: courseIntro(), id: 'tools', title: '도구', question: '어떤 도구를 쓸까요?', lessons: ['second'] }); c.lessons.second = second; c.order.push('second');
+  const headingList = html => [...html.matchAll(/<h([1-6])(?:\s[^>]*)?>([\s\S]*?)<\/h\1>/g)].map(match => ({ level: Number(match[1]), text: match[2].replace(/<[^>]+>/g, '') }));
+  const whole = renderIndex(c), single = renderLesson(c.lessons.example, c);
+  const headings = headingList(whole), lessonHeadings = headingList(single);
+  assert.deepEqual(headings.filter(heading => heading.level === 1).map(heading => heading.text), ['ScrollLand · Python을 읽는 새로운 방법']);
+  assert.equal((whole.match(/<h2 id="course-title-/g) || []).length, 2);
+  assert(whole.includes('<h3 data-intro-title>예제 읽기</h3>')); assert(whole.includes('<h3 data-intro-title>두 번째 레슨</h3>'));
+  assert(whole.includes('<h4>먼저 읽기</h4>')); assert(whole.includes('<h4>출력은?</h4>')); assert(whole.includes('<h4>print는 값을 출력합니다.</h4>'));
+  assert(whole.includes('<h5 class="input-label">표준 입력</h5>')); assert(whole.includes('<h5 class="input-label">data.txt</h5>'));
+  assert.deepEqual(lessonHeadings.filter(heading => heading.level === 1).map(heading => heading.text), ['예제 읽기']);
+  assert(single.includes('<h2>먼저 읽기</h2>')); assert(single.includes('<h3 class="input-label">표준 입력</h3>'));
+  for (const list of [headings, lessonHeadings]) for (let i = 1; i < list.length; i++) assert(list[i].level <= list[i-1].level + 1, `${list[i].text} skips a heading level`);
+});
+
+test('intro contracts fail for missing learning context or symbolic scene captions', () => {
+  for (const mutate of [l=>delete l.intro, l=>l.intro.hook='', l=>delete l.intro.connection, l=>delete l.intro.preview.after]) {
+    const l=fixture(); mutate(l); assert.throws(()=>validateLesson(l));
+  }
+  for (const mutate of [c=>delete c.intro, c=>c.intro.headline=[], c=>delete c.intro.scene.caption]) {
+    const c=content(); mutate(c.curriculum.courses[0]); assert.throws(()=>validateCurriculum(c.curriculum,c.lessons,{exactCounts:false}));
+  }
+});
 
 test('reading content has no arbitrary example, diagram, paragraph or section quota', () => {
   const l = fixture(); l.sections = [l.sections[0]];
@@ -90,7 +140,7 @@ test('static lesson includes full code, output, diagrams, trace and answer expla
 });
 test('previous and next links follow the flattened course order and include destination titles', () => {
   const c = content(); const second = { ...fixture('second'), title: '두 번째 문제', courseId: 'tools' };
-  c.curriculum.courses.push({ id: 'tools', title: '도구', question: '도구는?', lessons: ['second'] }); c.lessons.second = second; c.order.push('second');
+  c.curriculum.courses.push({ intro: courseIntro(), id: 'tools', title: '도구', question: '도구는?', lessons: ['second'] }); c.lessons.second = second; c.order.push('second');
   assert(renderLesson(c.lessons.example, c).includes('href="../index.html#lesson-second">이어서 · 두 번째 문제'));
   assert(renderLesson(second, c).includes('href="example.html">이전 · 예제 읽기'));
   const index = renderIndex(c);
