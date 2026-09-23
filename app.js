@@ -1,7 +1,20 @@
-import { mountIntro } from './lib/intro-motion.js?v=6';
-import { mountTextEffect } from './lib/text-effects.js?v=6';
-import { clamp, sampleScene, validateMotion } from './lib/scroll-state.js?v=6';
-import { layoutGraph, interpolateGraph } from './lib/graph-layout.js?v=6';
+import { mountIntro } from './lib/intro-motion.js?v=7';
+import { mountTextEffect } from './lib/text-effects.js?v=7';
+import { clamp, sampleScene, validateMotion } from './lib/scroll-state.js?v=7';
+import { layoutGraph, interpolateGraph } from './lib/graph-layout.js?v=7';
+import { resolveLegacyDestination } from './lib/page-navigation.js?v=7';
+
+export function redirectLegacyEntry() {
+  if (document.body?.dataset.pageKind !== 'home') return false;
+  const routes = document.querySelector('[data-legacy-routes]');
+  if (!routes) return false;
+  try {
+    const destination = resolveLegacyDestination(window.location.hash, JSON.parse(routes.textContent));
+    if (!destination) return false;
+    window.location.replace(destination);
+    return true;
+  } catch { return false; } // The catalog's ordinary links remain usable.
+}
 
 const escape = text => String(text).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 // Reserve each binding's own slot across the whole example. A second object
@@ -394,4 +407,7 @@ export function setupScrollExperience() {
     window.removeEventListener?.('pagehide', pagehide); window.removeEventListener?.('pageshow', pageshow);
   };
 }
-if (typeof document !== 'undefined' && typeof window !== 'undefined') setupScrollExperience();
+if (typeof document !== 'undefined' && typeof window !== 'undefined' && !redirectLegacyEntry()) {
+  setupScrollExperience();
+  if (document.body?.dataset.pageKind === 'home') window.addEventListener('hashchange', redirectLegacyEntry);
+}

@@ -3,8 +3,8 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateCurriculum } from '../lib/contract.js';
 import { validateMotion } from '../lib/scroll-state.js';
-import { renderIndex, renderLesson } from './render-scroll.mjs';
-export { renderIndex, renderLesson };
+import { renderIndex, renderCourse, renderLesson } from './render-scroll.mjs';
+export { renderIndex, renderCourse, renderLesson };
 export const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 export const escapeHTML = value => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
 const e = escapeHTML;
@@ -15,7 +15,7 @@ export function normalizeBasePath(value = '/') {
 export function renderNotFound(basePath = '/') {
   const href = `${normalizeBasePath(basePath)}index.html`;
   return `<!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>레슨을 찾을 수 없습니다 · ScrollLand</title><style>body{margin:0;padding:48px 24px;background:#f7f8f4;color:#20312c;font:16px/1.8 sans-serif}main{max-width:640px;margin:32px auto}h1{font-size:32px;line-height:1.4}a{color:#245c4b;text-underline-offset:4px}a:focus-visible{outline:3px solid #0a6950;outline-offset:4px}</style></head><body><main><p>ScrollLand</p><h1>이 주소의 레슨을 찾을 수 없습니다.</h1><p>주소가 바뀌었거나 잘못 입력되었을 수 있습니다. 전체 목차에서 레슨 제목을 찾아 다시 열어 주세요.</p><p><a href="${e(href)}">전체 목차 열기</a></p></main></body></html>\n`;
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>페이지를 찾을 수 없습니다 · ScrollLand</title><style>body{margin:0;padding:48px 24px;background:#f7f8f4;color:#20312c;font:16px/1.8 sans-serif}main{max-width:640px;margin:32px auto}h1{font-size:32px;line-height:1.4}a{color:#245c4b;text-underline-offset:4px}a:focus-visible{outline:3px solid #0a6950;outline-offset:4px}</style></head><body><main><p>ScrollLand</p><h1>이 주소의 페이지를 찾을 수 없습니다.</h1><p>주소가 바뀌었거나 잘못 입력되었을 수 있습니다. 전체 목차에서 코스나 레슨 제목을 찾아 다시 열어 주세요.</p><p><a href="${e(href)}">전체 목차 열기</a></p></main></body></html>\n`;
 }
 export async function readContent() {
   const curriculum = JSON.parse(await readFile(resolve(root, 'curriculum.json'), 'utf8'));
@@ -28,15 +28,17 @@ export async function readContent() {
 export async function generate(check = false) {
   const content = await readContent();
   const basePath = normalizeBasePath(process.env.SCROLLLAND_BASE_PATH || '/');
-  const output = new Map([['index.html', renderIndex(content)], ['404.html', renderNotFound(basePath)], ...content.order.map(slug => [`learn/${slug}.html`, renderLesson(content.lessons[slug], content)])]);
-  await mkdir(resolve(root, 'learn'), { recursive: true });
-  const extra = (await readdir(resolve(root, 'learn'))).filter(name => name.endsWith('.html') && !output.has(`learn/${name}`));
-  if (extra.length) throw new Error(`목차에 없는 생성 페이지: ${extra.join(', ')}`);
+  const output = new Map([['index.html', renderIndex(content)], ['404.html', renderNotFound(basePath)], ...content.curriculum.courses.map(course => [`courses/${course.id}.html`, renderCourse(course, content)]), ...content.order.map(slug => [`learn/${slug}.html`, renderLesson(content.lessons[slug], content)])]);
+  for (const directory of ['courses', 'learn']) {
+    await mkdir(resolve(root, directory), { recursive: true });
+    const extra = (await readdir(resolve(root, directory))).filter(name => name.endsWith('.html') && !output.has(`${directory}/${name}`));
+    if (extra.length) throw new Error(`목차에 없는 생성 페이지: ${extra.map(name => `${directory}/${name}`).join(', ')}`);
+  }
   for (const [name, html] of output) {
     if (check) { const current = await readFile(resolve(root, name), 'utf8').catch(() => ''); if (current !== html) throw new Error(`원본과 생성 결과가 다릅니다: ${name}. npm run build를 실행하세요.`); }
     else await writeFile(resolve(root, name), html);
   }
-  const required = ['styles.css', 'app.js', 'favicon.svg', 'lib/contract.js', 'lib/scroll-state.js', 'lib/text-effects.js', 'lib/intro-motion.js', 'lib/graph-layout.js', 'lib/gsap.min.js', 'lib/ScrollTrigger.min.js'];
+  const required = ['styles.css', 'app.js', 'favicon.svg', 'lib/contract.js', 'lib/scroll-state.js', 'lib/text-effects.js', 'lib/intro-motion.js', 'lib/graph-layout.js', 'lib/page-navigation.js', 'lib/gsap.min.js', 'lib/ScrollTrigger.min.js'];
   for (const file of required) await readFile(resolve(root, file));
   for (const [name, html] of output) {
     for (const [, link] of html.matchAll(/(?:href|src)="([^"#]+)(?:#[^"]*)?"/g)) {

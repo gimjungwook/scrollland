@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { validateLesson, validateCurriculum, fingerprint } from '../lib/contract.js';
-import { renderLesson, renderIndex, renderNotFound, normalizeBasePath, escapeHTML } from '../scripts/generate.mjs';
+import { renderLesson, renderIndex, renderCourse, renderNotFound, normalizeBasePath, escapeHTML } from '../scripts/generate.mjs';
 import { executeExample, normalizeOutput } from '../scripts/validate-examples.mjs';
 
 const section = { id: 'example-example', kind: 'reading', title: '이름으로 결과 읽기', body: ['이름은 객체를 가리킵니다.'], code: 'print(2)', output: '2', diagram: { type: 'binding', nodes: [{ label: '이름', value: 'x' }, { label: '값', value: '2' }], caption: 'x는 2를 가리킵니다.' } };
@@ -16,43 +16,44 @@ const fixture = (slug = 'example') => ({ intro: lessonIntro(), slug, courseId: '
 const content = () => { const lesson = fixture(); return { curriculum: { title: 'ScrollLand', subtitle: 'Python 코드와 결과를 비교합니다.', language: 'ko', pythonVersion: '3.10+', courses: [{ intro: courseIntro(), id: 'values', title: '값', question: '값을 어떻게 읽을까요?', lessons: ['example'] }] }, lessons: { example: lesson }, order: ['example'], motion: {version: 2, scenes: {'example-visual': {steps: [{lines: [], nodes: [{label: '출력', value: '없음'}], output: ''}, {lines: [1], nodes: [{label: '출력', value: '2'}], output: '2'}], finalNodes: section.diagram.nodes}}} }; };
 const effect = () => ({preset: 'glow', mode: 'scrub', purpose: '핵심어 구분', start: 'top 85%', end: 'top 35%', duration: 0.9, reentry: 'repeat', exit: 'cancel', initial: 'skip'});
 
-test('course boundaries and lesson introductions are readable without animation', () => {
-  const c = content(); const html = renderIndex(c);
-  assert.equal((html.match(/data-intro-kind="course"/g)||[]).length, 1);
-  assert.equal((html.match(/data-intro-kind="lesson"/g)||[]).length, 1);
-  assert(html.indexOf('id="course-values"') < html.indexOf('id="lesson-example"'));
-  assert(html.includes('값 하나를 어떻게 기억할까요?'));
-  assert(html.includes('처음 읽는 코드 한 줄입니다.'));
-  assert(html.includes('출력으로 값을 확인합니다.'));
-  assert(html.includes('이름은 값을 가리킵니다.'));
-  assert(!html.includes('class="hero"'), 'the first course already serves as the opening');
+test('service, course and lesson introductions belong to separate readable pages', () => {
+  const c = content(), index = renderIndex(c), course = renderCourse(c.curriculum.courses[0], c);
+  assert(!index.includes('data-intro-kind="course"'));
+  assert(!index.includes('data-intro-kind="lesson"'));
+  assert(!index.includes('data-lesson-article'));
+  assert(index.includes('href="courses/values.html"'));
+  assert(index.includes('href="learn/example.html"'));
+  assert.equal((course.match(/data-intro-kind="course"/g)||[]).length, 1);
+  assert(!course.includes('data-lesson-article'));
+  assert(course.includes('이름은 값을 가리킵니다.'));
   const lesson = renderLesson(c.lessons.example,c);
-  assert(lesson.includes('href="../index.html#course-values"'));
-  assert(!lesson.includes('data-intro-kind="course"'), 'a direct lesson should not repeat a full course title sequence');
+  assert(lesson.includes('값 하나를 어떻게 기억할까요?'));
+  assert(lesson.includes('처음 읽는 코드 한 줄입니다.'));
+  assert(lesson.includes('출력으로 값을 확인합니다.'));
+  assert(lesson.includes('href="../courses/values.html"'));
+  assert(!lesson.includes('data-intro-kind="course"'));
   c.lessons.example.intro.hook = '<script>alert(1)</script>';
   c.curriculum.courses[0].intro.headline[0] = '<img src=x>';
-  const escaped = renderIndex(c);
-  assert(escaped.includes('&lt;script&gt;alert(1)&lt;/script&gt;'));
-  assert(escaped.includes('&lt;img src=x&gt;'));
+  assert(renderLesson(c.lessons.example,c).includes('&lt;script&gt;alert(1)&lt;/script&gt;'));
+  assert(renderCourse(c.curriculum.courses[0],c).includes('&lt;img src=x&gt;'));
 });
 
-
-test('headings distinguish the service, courses, lessons, sections and example inputs without skipped levels', () => {
+test('every page has one primary heading and section/input headings descend one level at a time', () => {
   const c = content();
   c.lessons.example.sections[1].stdin = '입력'; c.lessons.example.sections[1].files = { 'data.txt': '자료' };
-  const second = { ...fixture('second'), courseId: 'tools', title: '두 번째 레슨' };
-  c.curriculum.courses.push({ intro: courseIntro(), id: 'tools', title: '도구', question: '어떤 도구를 쓸까요?', lessons: ['second'] }); c.lessons.second = second; c.order.push('second');
   const headingList = html => [...html.matchAll(/<h([1-6])(?:\s[^>]*)?>([\s\S]*?)<\/h\1>/g)].map(match => ({ level: Number(match[1]), text: match[2].replace(/<[^>]+>/g, '') }));
-  const whole = renderIndex(c), single = renderLesson(c.lessons.example, c);
-  const headings = headingList(whole), lessonHeadings = headingList(single);
-  assert.deepEqual(headings.filter(heading => heading.level === 1).map(heading => heading.text), ['ScrollLand · Python을 읽는 새로운 방법']);
-  assert.equal((whole.match(/<h2 id="course-title-/g) || []).length, 2);
-  assert(whole.includes('<h3 data-intro-title>예제 읽기</h3>')); assert(whole.includes('<h3 data-intro-title>두 번째 레슨</h3>'));
-  assert(whole.includes('<h4>먼저 읽기</h4>')); assert(whole.includes('<h4>출력은?</h4>')); assert(whole.includes('<h4>print는 값을 출력합니다.</h4>'));
-  assert(whole.includes('<h5 class="input-label">표준 입력</h5>')); assert(whole.includes('<h5 class="input-label">data.txt</h5>'));
-  assert.deepEqual(lessonHeadings.filter(heading => heading.level === 1).map(heading => heading.text), ['예제 읽기']);
-  assert(single.includes('<h2>먼저 읽기</h2>')); assert(single.includes('<h3 class="input-label">표준 입력</h3>'));
-  for (const list of [headings, lessonHeadings]) for (let i = 1; i < list.length; i++) assert(list[i].level <= list[i-1].level + 1, `${list[i].text} skips a heading level`);
+  const pages = [renderIndex(c), renderCourse(c.curriculum.courses[0], c), renderLesson(c.lessons.example, c)];
+  for (const html of pages) {
+    const headings = headingList(html);
+    assert.equal(headings.filter(h=>h.level===1).length,1);
+    assert.equal(headings[0].level,1);
+    for (let i=1;i<headings.length;i++) assert(headings[i].level<=headings[i-1].level+1, `${headings[i].text} skips a heading level`);
+  }
+  const single = pages[2];
+  assert.deepEqual(headingList(single).filter(h=>h.level===1).map(h=>h.text), ['예제 읽기']);
+  assert(single.includes('<h2>먼저 읽기</h2>'));
+  assert(single.includes('<h3 class="input-label">표준 입력</h3>'));
+  assert(single.includes('<h3 class="input-label">data.txt</h3>'));
 });
 
 test('intro contracts fail for missing learning context or symbolic scene captions', () => {
@@ -131,20 +132,22 @@ test('static lesson includes full code, output, diagrams, trace and answer expla
   assert(html.indexOf('class="section-interpretation"') > html.indexOf('class="visualization-fallback"'));
   assert(html.includes('data-content-fingerprint')); assert(html.includes('정답: 2'));
   assert(html.includes('실행 전')); assert(html.includes('x는 2를 가리킵니다.')); assert(html.includes('print(2)'));
-  assert(!html.includes('이전 레슨')); assert(!html.includes('다음 레슨 →')); assert(html.includes('전체 목차 보기'));
+  assert(!html.includes('이전 레슨')); assert(!html.includes('다음 레슨 →')); assert(html.includes('href="../courses/values.html"'));
   assert(html.includes('id="example-reading"')); assert.match(html, /href="\.\.\/styles\.css(?:\?[^"\s]*)?"/);
-  const index = renderIndex(c); assert(index.includes('href="#lesson-example"'));
+  const index = renderIndex(c); assert(index.includes('href="learn/example.html"')); assert(!index.includes('data-lesson-article'));
   assert(index.includes('id="lesson-example"'));
-  assert(!/<(?:button|input|select|textarea)\b/.test(index), 'the continuous learning path must not require form controls');
+  assert(!/<(?:button|input|select|textarea)\b/.test(index), 'the catalog must work through ordinary links without form controls');
   assert.equal(escapeHTML('"<>&'), '&quot;&lt;&gt;&amp;');
 });
-test('previous and next links follow the flattened course order and include destination titles', () => {
+test('previous and next links open lesson pages directly and name the destination course when crossing courses', () => {
   const c = content(); const second = { ...fixture('second'), title: '두 번째 문제', courseId: 'tools' };
   c.curriculum.courses.push({ intro: courseIntro(), id: 'tools', title: '도구', question: '도구는?', lessons: ['second'] }); c.lessons.second = second; c.order.push('second');
-  assert(renderLesson(c.lessons.example, c).includes('href="../index.html#lesson-second">이어서 · 두 번째 문제'));
-  assert(renderLesson(second, c).includes('href="example.html">이전 · 예제 읽기'));
-  const index = renderIndex(c);
-  assert(index.indexOf('id="lesson-example"') < index.indexOf('id="lesson-second"'), 'continuous lessons must follow the same flattened order');
+  const firstHTML = renderLesson(c.lessons.example, c), secondHTML = renderLesson(second, c);
+  const linkText = (html, href) => [...html.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)].filter(match=>match[1]===href).map(match=>match[2].replace(/<[^>]+>/g,''));
+  assert(linkText(firstHTML,'second.html').some(text=>text.includes('두 번째 문제')&&text.includes('도구')));
+  assert(linkText(secondHTML,'example.html').some(text=>text.includes('예제 읽기')&&text.includes('값')));
+  assert(!firstHTML.includes('../index.html#lesson-second'));
+  assert(!secondHTML.includes('../index.html#lesson-example'));
 });
 test('missing-page navigation reaches the configured catalog without JavaScript', () => {
   assert(renderNotFound().includes('href="/index.html"'));
